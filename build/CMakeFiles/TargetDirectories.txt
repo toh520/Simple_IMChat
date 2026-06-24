@@ -1,3 +1,0 @@
-/home/toh/ChatServer/build/CMakeFiles/ChatServer.dir
-/home/toh/ChatServer/build/CMakeFiles/edit_cache.dir
-/home/toh/ChatServer/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,27 @@
+# CMake artifacts
+build/
+bin/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# Object files & libraries
+*.o
+*.a
+*.so
+*.dylib
+
+# Editor artifacts
+.vscode/
+*.swp
+*.swo
+
+# Python artifacts (from proto)
+__pycache__/
+*.pyc
+
+# IDEs
+.idea/
+.DS_Store
