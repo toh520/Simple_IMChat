@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package chat; // 命名空间
+
+// 1. 登录请求
+message LoginRequest {
+    string username = 1; // 用户名
+    string password = 2; // 密码
+}
+
+// 2. 登录响应
+message LoginResponse {
+    bool success = 1;    // 是否成功
+    string msg = 2;      // 错误信息
+    int32 uid = 3;       // 用户 ID
+}
+
+// 3. 注册请求 (新增)
+message RegRequest {
+    string username = 1;
+    string password = 2;
+}
+
+// 4. 注册响应 (新增)
+message RegResponse {
+    bool success = 1;
+    int32 uid = 2;       // 注册成功返回 ID
+    string msg = 3;
+}
+
+// 5. 聊天消息 (新增)
+message OneChatRequest {
+    int32 from_id = 1;   // 发送者ID
+    int32 to_id = 2;     // 接收者ID
+    string msg = 3;      // 消息内容
+}
