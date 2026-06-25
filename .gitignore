@@ -30,3 +30,7 @@ compile_commands.json
 # Python artifacts
 __pycache__/
 *.pyc
+
+# Local Task Records & AI Agent configurations
+.agents/
+TaskRecords/
