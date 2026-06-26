@@ -47,7 +47,7 @@ struct TableStruct_msg_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[15]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[17]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -97,6 +97,12 @@ extern RegRequestDefaultTypeInternal _RegRequest_default_instance_;
 class RegResponse;
 class RegResponseDefaultTypeInternal;
 extern RegResponseDefaultTypeInternal _RegResponse_default_instance_;
+class SyncReq;
+class SyncReqDefaultTypeInternal;
+extern SyncReqDefaultTypeInternal _SyncReq_default_instance_;
+class SyncResp;
+class SyncRespDefaultTypeInternal;
+extern SyncRespDefaultTypeInternal _SyncResp_default_instance_;
 class UserStatusNotify;
 class UserStatusNotifyDefaultTypeInternal;
 extern UserStatusNotifyDefaultTypeInternal _UserStatusNotify_default_instance_;
@@ -116,6 +122,8 @@ template<> ::chat::ProcessFriendReq* Arena::CreateMaybeMessage<::chat::ProcessFr
 template<> ::chat::ProcessFriendResp* Arena::CreateMaybeMessage<::chat::ProcessFriendResp>(Arena*);
 template<> ::chat::RegRequest* Arena::CreateMaybeMessage<::chat::RegRequest>(Arena*);
 template<> ::chat::RegResponse* Arena::CreateMaybeMessage<::chat::RegResponse>(Arena*);
+template<> ::chat::SyncReq* Arena::CreateMaybeMessage<::chat::SyncReq>(Arena*);
+template<> ::chat::SyncResp* Arena::CreateMaybeMessage<::chat::SyncResp>(Arena*);
 template<> ::chat::UserStatusNotify* Arena::CreateMaybeMessage<::chat::UserStatusNotify>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace chat {
@@ -2754,6 +2762,322 @@ class AddFriendSuccessNotify PROTOBUF_FINAL :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_msg_2eproto;
 };
+// -------------------------------------------------------------------
+
+class SyncReq PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:chat.SyncReq) */ {
+ public:
+  inline SyncReq() : SyncReq(nullptr) {};
+  virtual ~SyncReq();
+
+  SyncReq(const SyncReq& from);
+  SyncReq(SyncReq&& from) noexcept
+    : SyncReq() {
+    *this = ::std::move(from);
+  }
+
+  inline SyncReq& operator=(const SyncReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SyncReq& operator=(SyncReq&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SyncReq& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SyncReq* internal_default_instance() {
+    return reinterpret_cast<const SyncReq*>(
+               &_SyncReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    15;
+
+  friend void swap(SyncReq& a, SyncReq& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SyncReq* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SyncReq* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SyncReq* New() const final {
+    return CreateMaybeMessage<SyncReq>(nullptr);
+  }
+
+  SyncReq* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SyncReq>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SyncReq& from);
+  void MergeFrom(const SyncReq& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SyncReq* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "chat.SyncReq";
+  }
+  protected:
+  explicit SyncReq(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_msg_2eproto);
+    return ::descriptor_table_msg_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kLastSyncKeyFieldNumber = 2,
+    kUidFieldNumber = 1,
+  };
+  // int64 last_sync_key = 2;
+  void clear_last_sync_key();
+  ::PROTOBUF_NAMESPACE_ID::int64 last_sync_key() const;
+  void set_last_sync_key(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_last_sync_key() const;
+  void _internal_set_last_sync_key(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // int32 uid = 1;
+  void clear_uid();
+  ::PROTOBUF_NAMESPACE_ID::int32 uid() const;
+  void set_uid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_uid() const;
+  void _internal_set_uid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:chat.SyncReq)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::int64 last_sync_key_;
+  ::PROTOBUF_NAMESPACE_ID::int32 uid_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_msg_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SyncResp PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:chat.SyncResp) */ {
+ public:
+  inline SyncResp() : SyncResp(nullptr) {};
+  virtual ~SyncResp();
+
+  SyncResp(const SyncResp& from);
+  SyncResp(SyncResp&& from) noexcept
+    : SyncResp() {
+    *this = ::std::move(from);
+  }
+
+  inline SyncResp& operator=(const SyncResp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SyncResp& operator=(SyncResp&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const SyncResp& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const SyncResp* internal_default_instance() {
+    return reinterpret_cast<const SyncResp*>(
+               &_SyncResp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    16;
+
+  friend void swap(SyncResp& a, SyncResp& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SyncResp* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SyncResp* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SyncResp* New() const final {
+    return CreateMaybeMessage<SyncResp>(nullptr);
+  }
+
+  SyncResp* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SyncResp>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SyncResp& from);
+  void MergeFrom(const SyncResp& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SyncResp* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "chat.SyncResp";
+  }
+  protected:
+  explicit SyncResp(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_msg_2eproto);
+    return ::descriptor_table_msg_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kMessagesFieldNumber = 2,
+    kNewSyncKeyFieldNumber = 3,
+    kSuccessFieldNumber = 1,
+  };
+  // repeated .chat.OneChatRequest messages = 2;
+  int messages_size() const;
+  private:
+  int _internal_messages_size() const;
+  public:
+  void clear_messages();
+  ::chat::OneChatRequest* mutable_messages(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::chat::OneChatRequest >*
+      mutable_messages();
+  private:
+  const ::chat::OneChatRequest& _internal_messages(int index) const;
+  ::chat::OneChatRequest* _internal_add_messages();
+  public:
+  const ::chat::OneChatRequest& messages(int index) const;
+  ::chat::OneChatRequest* add_messages();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::chat::OneChatRequest >&
+      messages() const;
+
+  // int64 new_sync_key = 3;
+  void clear_new_sync_key();
+  ::PROTOBUF_NAMESPACE_ID::int64 new_sync_key() const;
+  void set_new_sync_key(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_new_sync_key() const;
+  void _internal_set_new_sync_key(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // bool success = 1;
+  void clear_success();
+  bool success() const;
+  void set_success(bool value);
+  private:
+  bool _internal_success() const;
+  void _internal_set_success(bool value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:chat.SyncResp)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::chat::OneChatRequest > messages_;
+  ::PROTOBUF_NAMESPACE_ID::int64 new_sync_key_;
+  bool success_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_msg_2eproto;
+};
 // ===================================================================
 
 
@@ -4715,9 +5039,140 @@ inline void AddFriendSuccessNotify::set_allocated_friend_info(::chat::FriendInfo
   // @@protoc_insertion_point(field_set_allocated:chat.AddFriendSuccessNotify.friend_info)
 }
 
+// -------------------------------------------------------------------
+
+// SyncReq
+
+// int32 uid = 1;
+inline void SyncReq::clear_uid() {
+  uid_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SyncReq::_internal_uid() const {
+  return uid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 SyncReq::uid() const {
+  // @@protoc_insertion_point(field_get:chat.SyncReq.uid)
+  return _internal_uid();
+}
+inline void SyncReq::_internal_set_uid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  uid_ = value;
+}
+inline void SyncReq::set_uid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_uid(value);
+  // @@protoc_insertion_point(field_set:chat.SyncReq.uid)
+}
+
+// int64 last_sync_key = 2;
+inline void SyncReq::clear_last_sync_key() {
+  last_sync_key_ = PROTOBUF_LONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 SyncReq::_internal_last_sync_key() const {
+  return last_sync_key_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 SyncReq::last_sync_key() const {
+  // @@protoc_insertion_point(field_get:chat.SyncReq.last_sync_key)
+  return _internal_last_sync_key();
+}
+inline void SyncReq::_internal_set_last_sync_key(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  
+  last_sync_key_ = value;
+}
+inline void SyncReq::set_last_sync_key(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_last_sync_key(value);
+  // @@protoc_insertion_point(field_set:chat.SyncReq.last_sync_key)
+}
+
+// -------------------------------------------------------------------
+
+// SyncResp
+
+// bool success = 1;
+inline void SyncResp::clear_success() {
+  success_ = false;
+}
+inline bool SyncResp::_internal_success() const {
+  return success_;
+}
+inline bool SyncResp::success() const {
+  // @@protoc_insertion_point(field_get:chat.SyncResp.success)
+  return _internal_success();
+}
+inline void SyncResp::_internal_set_success(bool value) {
+  
+  success_ = value;
+}
+inline void SyncResp::set_success(bool value) {
+  _internal_set_success(value);
+  // @@protoc_insertion_point(field_set:chat.SyncResp.success)
+}
+
+// repeated .chat.OneChatRequest messages = 2;
+inline int SyncResp::_internal_messages_size() const {
+  return messages_.size();
+}
+inline int SyncResp::messages_size() const {
+  return _internal_messages_size();
+}
+inline void SyncResp::clear_messages() {
+  messages_.Clear();
+}
+inline ::chat::OneChatRequest* SyncResp::mutable_messages(int index) {
+  // @@protoc_insertion_point(field_mutable:chat.SyncResp.messages)
+  return messages_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::chat::OneChatRequest >*
+SyncResp::mutable_messages() {
+  // @@protoc_insertion_point(field_mutable_list:chat.SyncResp.messages)
+  return &messages_;
+}
+inline const ::chat::OneChatRequest& SyncResp::_internal_messages(int index) const {
+  return messages_.Get(index);
+}
+inline const ::chat::OneChatRequest& SyncResp::messages(int index) const {
+  // @@protoc_insertion_point(field_get:chat.SyncResp.messages)
+  return _internal_messages(index);
+}
+inline ::chat::OneChatRequest* SyncResp::_internal_add_messages() {
+  return messages_.Add();
+}
+inline ::chat::OneChatRequest* SyncResp::add_messages() {
+  // @@protoc_insertion_point(field_add:chat.SyncResp.messages)
+  return _internal_add_messages();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::chat::OneChatRequest >&
+SyncResp::messages() const {
+  // @@protoc_insertion_point(field_list:chat.SyncResp.messages)
+  return messages_;
+}
+
+// int64 new_sync_key = 3;
+inline void SyncResp::clear_new_sync_key() {
+  new_sync_key_ = PROTOBUF_LONGLONG(0);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 SyncResp::_internal_new_sync_key() const {
+  return new_sync_key_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 SyncResp::new_sync_key() const {
+  // @@protoc_insertion_point(field_get:chat.SyncResp.new_sync_key)
+  return _internal_new_sync_key();
+}
+inline void SyncResp::_internal_set_new_sync_key(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  
+  new_sync_key_ = value;
+}
+inline void SyncResp::set_new_sync_key(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_new_sync_key(value);
+  // @@protoc_insertion_point(field_set:chat.SyncResp.new_sync_key)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

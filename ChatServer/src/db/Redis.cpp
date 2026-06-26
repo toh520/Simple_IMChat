@@ -197,3 +197,61 @@ bool Redis::sismember(const std::string &key, const std::string &member) {
     freeReplyObject(reply);
     return is_member;
 }
+
+bool Redis::zadd(const std::string &key, long long score, const std::string &member) {
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "ZADD %s %lld %b", key.c_str(), score, member.data(), member.size());
+    if (nullptr == reply) {
+        std::cerr << "zadd command failed!" << std::endl;
+        return false;
+    }
+    freeReplyObject(reply);
+    return true;
+}
+
+bool Redis::zremrangebyrank(const std::string &key, int start, int stop) {
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "ZREMRANGEBYRANK %s %d %d", key.c_str(), start, stop);
+    if (nullptr == reply) {
+        std::cerr << "zremrangebyrank command failed!" << std::endl;
+        return false;
+    }
+    freeReplyObject(reply);
+    return true;
+}
+
+long long Redis::zminscore(const std::string &key) {
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "ZRANGE %s 0 0 WITHSCORES", key.c_str());
+    if (nullptr == reply) {
+        std::cerr << "zminscore command failed!" << std::endl;
+        return -1;
+    }
+    
+    long long min_score = -1;
+    if (reply->type == REDIS_REPLY_ARRAY && reply->elements >= 2) {
+        if (reply->element[1] && reply->element[1]->str) {
+            min_score = atoll(reply->element[1]->str);
+        }
+    }
+    freeReplyObject(reply);
+    return min_score;
+}
+
+std::vector<std::string> Redis::zrangebyscore(const std::string &key, long long minScore) {
+    std::string minScoreStr = "(" + std::to_string(minScore);
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "ZRANGEBYSCORE %s %s +inf", key.c_str(), minScoreStr.c_str());
+    
+    std::vector<std::string> vec;
+    if (nullptr == reply) {
+        std::cerr << "zrangebyscore command failed!" << std::endl;
+        return vec;
+    }
+
+    if (reply->type == REDIS_REPLY_ARRAY) {
+        for (size_t i = 0; i < reply->elements; ++i) {
+            if (reply->element[i] && reply->element[i]->str) {
+                vec.push_back(std::string(reply->element[i]->str, reply->element[i]->len));
+            }
+        }
+    }
+    freeReplyObject(reply);
+    return vec;
+}

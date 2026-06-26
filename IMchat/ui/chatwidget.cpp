@@ -68,30 +68,37 @@ bool ChatWidget::eventFilter(QObject *watched, QEvent *event)
 // 接收单聊消息槽函数
 void ChatWidget::onOneChatReceived(int fromId, int toId, const QString &msg, qint64 msgId)
 {
-    Q_UNUSED(toId);
-
     // 构造聊天消息结构
     ChatMessage chatMsg;
     chatMsg.msgId = msgId;
     chatMsg.fromId = fromId;
-    chatMsg.toId = ImClient::instance().getMyUid(); // 接收者即为当前用户自己
+    chatMsg.toId = toId;
     chatMsg.content = msg;
-    chatMsg.timestamp = QDateTime::currentDateTime();
+    
+    // 从雪花 ID 中解析出精确的时间戳
+    if (msgId > 0) {
+        qint64 timestampMS = (msgId >> 22) + 1704067200000ULL;
+        chatMsg.timestamp = QDateTime::fromMSecsSinceEpoch(timestampMS);
+    } else {
+        chatMsg.timestamp = QDateTime::currentDateTime();
+    }
     chatMsg.status = MSG_STATUS_SUCCESS; // 接收到的消息默认为成功
 
+    int sessionUserId = (fromId == ImClient::instance().getMyUid()) ? toId : fromId;
+
     // 存入当前会话的历史数据队列中
-    chatHistory_[fromId].append(chatMsg);
+    chatHistory_[sessionUserId].append(chatMsg);
 
     // 检查是否为好友，若是，当非当前活跃会话时，设为未读状态
-    if (friendsMap_.contains(fromId)) {
-        if (activeUserId_ != fromId) {
-            unreadUsers_.insert(fromId);
+    if (friendsMap_.contains(sessionUserId)) {
+        if (activeUserId_ != sessionUserId) {
+            unreadUsers_.insert(sessionUserId);
             refreshFriendList();
         }
     }
 
     // 如果当前打开的会话窗口正是发信人，则直接将其呈呈现界面消息列表，并滚动至底部
-    if (activeUserId_ == fromId) {
+    if (activeUserId_ == sessionUserId) {
         appendMessageToView(chatMsg);
         ui->list_messages->scrollToBottom();
     }
@@ -135,7 +142,7 @@ void ChatWidget::on_btn_send_clicked()
     chatMsg.fromId = ImClient::instance().getMyUid(); // 发送方是自己
     chatMsg.toId = activeUserId_;                     // 接收方是对方
     chatMsg.content = text;
-    chatMsg.timestamp = QDateTime::currentDateTime();
+    chatMsg.timestamp = QDateTime::fromMSecsSinceEpoch((msgId >> 22) + 1704067200000ULL);
     chatMsg.status = MSG_STATUS_SENDING;
     chatHistory_[activeUserId_].append(chatMsg);
 

@@ -26,6 +26,8 @@ enum EnMsgType {
     PROCESS_FRIEND_RESP,        // 被申请人处理加好友申请响应 (服务端 -> 客户端)
     USER_STATUS_NOTIFY_MSG,      // 好友状态变动通知 (上线/下线)
     ADD_FRIEND_SUCCESS_NOTIFY,   // 申请人收到好友绑定成功实时通知
+    SYNC_REQ,                   // 消息同步请求 (客户端 -> 服务端)
+    SYNC_RESP,                  // 消息同步响应 (服务端 -> 客户端)
 };
 
 #include <iostream>

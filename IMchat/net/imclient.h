@@ -44,6 +44,9 @@ public:
 
     bool isConnected() const;
 
+    // 消息同步方法
+    void syncMessages(qint64 lastSyncKey);
+
 signals:
     void loginResult(bool success, int uid, const QString &msg);
     void regResult(bool success, int uid, const QString &msg);
@@ -110,6 +113,9 @@ private:
 
     // 当前登录成功的用户 UID
     int myUid_{-1};
+
+    // 本地持久化的同步消息 Key
+    qint64 lastSyncKey_{0};
 
     static constexpr const char *kServerHost = "127.0.0.1";
     quint16 serverPort_{8888};

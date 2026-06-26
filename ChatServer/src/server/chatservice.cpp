@@ -21,17 +21,17 @@ void ChatService::setHostInfo(std::string ip, int port) {
 }
 
 // 注册消息以及对应的Handler回调操作
-ChatService::ChatService() : _running(true) {
+ChatService::ChatService() : _running(true), _saveThreadRunning(true) {
     // 启动线程池 (例如 4 个 worker 线程)
     // 根据机器 CPU 核心数或者业务负载调整，这里默认给 4 个
     _threadPool = std::make_unique<ThreadPool>(4);
 
     // 用户注册业务管理
-    // 当收到 REG_MSG (注册) 消息时，绑定到 ChatService::reg 方法
+    // 当收到 REG_MSG (注册) 消息时，绑定 to ChatService::reg 方法
     _msgHandlerMap.insert({REG_MSG, std::bind(&ChatService::reg, this, std::placeholders::_1, std::placeholders::_2)});
     
     // 用户登录业务管理
-    // 当收到 LOGIN_MSG (登录) 消息时，绑定到 ChatService::login 方法
+    // 当收到 LOGIN_MSG (登录) 消息时，绑定 to ChatService::login 方法
     _msgHandlerMap.insert({LOGIN_MSG, std::bind(&ChatService::login, this, std::placeholders::_1, std::placeholders::_2)});
 
     // 一对一聊天业务管理
@@ -49,6 +49,9 @@ ChatService::ChatService() : _running(true) {
     // [新增] 注册心跳消息处理
     _msgHandlerMap.insert({HEART_BEAT_MSG, std::bind(&ChatService::clientHeartBeat, this, std::placeholders::_1, std::placeholders::_2)});
 
+    // [新增] 注册消息同步处理 (Timeline Sync)
+    _msgHandlerMap.insert({SYNC_REQ, std::bind(&ChatService::syncMessages, this, std::placeholders::_1, std::placeholders::_2)});
+
     // [新增] 只有在构造时重置一次所有用户状态为 offline
     // 防止服务器崩溃重启后，状态仍为 online 导致无法登录
     _userModel.resetState();
@@ -61,12 +64,22 @@ ChatService::ChatService() : _running(true) {
 
     // 启动重传扫描守护线程
     _retransmitThread = std::thread(&ChatService::retransmitLoop, this);
+
+    // [新增] 启动后台存盘守护线程
+    _saveThread = std::thread(&ChatService::backgroundSaveThread, this);
 }
 
 ChatService::~ChatService() {
     _running = false;
     if (_retransmitThread.joinable()) {
         _retransmitThread.join();
+    }
+
+    // [新增] 安全停止后台存盘线程
+    _saveThreadRunning = false;
+    _queueCond.notify_all();
+    if (_saveThread.joinable()) {
+        _saveThread.join();
     }
 }
 
@@ -246,17 +259,6 @@ void ChatService::login(const std::shared_ptr<TcpConnection>& conn, std::string&
         
         resp.SerializeToString(&send_str);
         conn->send(LOGIN_MSG_ACK, send_str);
-
-        // 4. 如果登录成功，再推送离线消息
-        if (resp.success()) {
-            vector<string> vec = _offlineMsgModel.query(id);
-            if (!vec.empty()) {
-                for (const string& msg : vec) {
-                    conn->send(ONE_CHAT_MSG, msg);
-                }
-                _offlineMsgModel.remove(id);
-            }
-        }
     }
 }
 
@@ -377,76 +379,88 @@ void ChatService::handleRedisSubscribeMessage(int userid, std::string msg) {
 
 // 一对一聊天业务
 void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::string& data) {
-        // 1. 立即给发送端回发 MSG_SEND_ACK 告诉发送方服务器已接管该消息
-        OneChatRequest req;
-        if (!req.ParseFromString(data)) {
-            LOG_ERROR("反序列化 OneChatRequest 失败");
-            return;
-        }
-        int toid = req.to_id();
-        int fromid = req.from_id();
+    // 1. 立即给发送端回发 MSG_SEND_ACK 告诉发送方服务器已接管该消息
+    OneChatRequest req;
+    if (!req.ParseFromString(data)) {
+        LOG_ERROR("反序列化 OneChatRequest 失败");
+        return;
+    }
+    int toid = req.to_id();
+    int fromid = req.from_id();
 
-        // [新增] 好友关系鉴权 (防骚扰)：必须是好友才能发送消息
-        bool isFriend = _redis.sismember("user:friends:" + to_string(fromid), to_string(toid));
-        if (!isFriend) {
-            MsgSendAck ack;
-            ack.set_msg_id(req.msg_id());
-            ack.set_success(false);
-            ack.set_err_msg("对方还不是您的好友，请先添加好友");
-            std::string ackStr;
-            ack.SerializeToString(&ackStr);
-            conn->send(MSG_SEND_ACK, ackStr);
-            LOG_WARN("非好友单聊拦截: 发送方 UID=" + to_string(fromid) + " -> 接收方 UID=" + to_string(toid) + ", msgId=" + to_string(req.msg_id()));
-            return;
-        }
-
-        LOG_INFO("收到单聊消息：发送方 UID=" + std::to_string(fromid) + " -> 接收方 UID=" + std::to_string(toid) + ", msgId=" + std::to_string(req.msg_id()));
-
+    // 好友关系鉴权 (防骚扰)：必须是好友才能发送消息
+    bool isFriend = _redis.sismember("user:friends:" + to_string(fromid), to_string(toid));
+    if (!isFriend) {
         MsgSendAck ack;
         ack.set_msg_id(req.msg_id());
-        ack.set_success(true);
+        ack.set_success(false);
+        ack.set_err_msg("对方还不是您的好友，请先添加好友");
         std::string ackStr;
         ack.SerializeToString(&ackStr);
         conn->send(MSG_SEND_ACK, ackStr);
-        LOG_DEBUG("已向发送方 UID=" + std::to_string(fromid) + " 回发接管确认 ACK, msgId=" + std::to_string(req.msg_id()));
+        LOG_WARN("非好友单聊拦截: 发送方 UID=" + to_string(fromid) + " -> 接收方 UID=" + to_string(toid) + ", msgId=" + to_string(req.msg_id()));
+        return;
+    }
 
-        // 2. 查找接收端是否在线
-        {
-            lock_guard<mutex> lock(_connMutex);
-            auto it = _userConnMap.find(toid);
-            if (it != _userConnMap.end()) {
-                // 用户在线，转发消息
-                it->second->send(ONE_CHAT_MSG, data);
+    LOG_INFO("收到单聊消息：发送方 UID=" + std::to_string(fromid) + " -> 接收方 UID=" + std::to_string(toid) + ", msgId=" + std::to_string(req.msg_id()));
 
-                // 加入待接收确认队列
-                PendingRecvMsg pMsg;
-                pMsg.msgId = req.msg_id();
-                pMsg.fromId = fromid;
-                pMsg.toId = toid;
-                pMsg.msgData = data;
-                pMsg.lastSendTime = time(nullptr);
-                pMsg.retryCount = 0;
-                pMsg.conn = it->second;
+    MsgSendAck ack;
+    ack.set_msg_id(req.msg_id());
+    ack.set_success(true);
+    std::string ackStr;
+    ack.SerializeToString(&ackStr);
+    conn->send(MSG_SEND_ACK, ackStr);
+    LOG_DEBUG("已向发送方 UID=" + std::to_string(fromid) + " 回发接管确认 ACK, msgId=" + std::to_string(req.msg_id()));
 
-                lock_guard<mutex> pLock(_pendingMutex);
-                _pendingRecvAckMap.insert({req.msg_id(), pMsg});
-                LOG_INFO("接收方在线，本地直接转发消息，并将该消息加入待接收重传队列, msgId=" + std::to_string(req.msg_id()));
-                return;
-            } 
-        } // 锁在这里释放
+    // [新增] 2. 写入全局异步批量存盘队列，由后台线程批量合并 Insert
+    MessageHistory histMsg(req.msg_id(), fromid, toid, data, "");
+    {
+        lock_guard<mutex> lock(_queueMutex);
+        _saveMsgQueue.push(histMsg);
+    }
+    _queueCond.notify_one();
 
-        // 3. 本地不在线，查询 Redis 状态网关 (不需要查询 MySQL 关系表)
-        std::string route = _redis.hget("user:route", std::to_string(toid));
-        if (!route.empty()) {
-            // 用户在其他节点在线 -> 通过 Redis 发布订阅，完成分布式跨节点路由转发，加 "MSG:" 前缀
-            _redis.publish(toid, "MSG:" + data);
-            LOG_INFO("接收方在节点 [" + route + "] 在线，通过 Redis 状态网关完成跨服路由转发, msgId=" + std::to_string(req.msg_id()));
+    // [新增] 3. 写入 Redis ZSet 时间线缓存中，限制保留最新 100 条
+    std::string timelineKey = "user:timeline:" + to_string(toid);
+    _redis.zadd(timelineKey, req.msg_id(), data);
+    _redis.zremrangebyrank(timelineKey, 0, -101);
+
+    // 4. 查找接收端是否在线，在线则进行转发推送
+    {
+        lock_guard<mutex> lock(_connMutex);
+        auto it = _userConnMap.find(toid);
+        if (it != _userConnMap.end()) {
+            // 用户在线，直接转发消息
+            it->second->send(ONE_CHAT_MSG, data);
+
+            // 加入待接收确认队列
+            PendingRecvMsg pMsg;
+            pMsg.msgId = req.msg_id();
+            pMsg.fromId = fromid;
+            pMsg.toId = toid;
+            pMsg.msgData = data;
+            pMsg.lastSendTime = time(nullptr);
+            pMsg.retryCount = 0;
+            pMsg.conn = it->second;
+
+            lock_guard<mutex> pLock(_pendingMutex);
+            _pendingRecvAckMap.insert({req.msg_id(), pMsg});
+            LOG_INFO("接收方在线，本地直接转发消息，并将该消息加入待接收重传队列, msgId=" + std::to_string(req.msg_id()));
             return;
-        }
+        } 
+    } // 锁在这里释放
 
-        // 4. Redis 网关中没有路由 -> 用户确实不在线，转存为离线消息
-        _offlineMsgModel.insert(toid, data);
-        LOG_INFO("接收方当前不在线，消息已转存为离线消息存入数据库, msgId=" + std::to_string(req.msg_id()));
+    // 5. 本地不在线，查询 Redis 状态网关
+    std::string route = _redis.hget("user:route", std::to_string(toid));
+    if (!route.empty()) {
+        // 用户在其他节点在线 -> 通过 Redis 发布订阅，完成分布式跨节点路由转发，加 "MSG:" 前缀
+        _redis.publish(toid, "MSG:" + data);
+        LOG_INFO("接收方在节点 [" + route + "] 在线，通过 Redis 状态网关完成跨服路由转发, msgId=" + std::to_string(req.msg_id()));
+        return;
+    }
+
+    // 6. 不在线且没有路由，退化为静默缓存状态
+    LOG_INFO("接收方当前不在线，消息已存入后台存盘队列与 Redis ZSet, msgId=" + std::to_string(req.msg_id()));
 }
 
 // 处理接收端确认接收业务
@@ -636,5 +650,100 @@ void ChatService::processApply(const std::shared_ptr<TcpConnection>& conn, std::
 
         resp.SerializeToString(&send_str);
         conn->send(PROCESS_FRIEND_RESP, send_str);
+    }
+}
+
+// 后台异步合并存盘线程函数
+void ChatService::backgroundSaveThread() {
+    while (_saveThreadRunning) {
+        std::vector<MessageHistory> msgs;
+        {
+            std::unique_lock<std::mutex> lock(_queueMutex);
+            // 等待队列不为空，或者线程被终止，最多等待 1 秒
+            _queueCond.wait_for(lock, std::chrono::milliseconds(1000), [this]() {
+                return !_saveMsgQueue.empty() || !_saveThreadRunning;
+            });
+
+            // 批量从队列中提取消息，每次上限 100 条
+            while (!_saveMsgQueue.empty() && msgs.size() < 100) {
+                msgs.push_back(_saveMsgQueue.front());
+                _saveMsgQueue.pop();
+            }
+        }
+
+        // 执行批量落盘操作
+        if (!msgs.empty()) {
+            bool batchOk = _messageHistoryModel.insertBatch(msgs);
+            if (batchOk) {
+                LOG_INFO("[MySQL 异步批量落盘] 成功写入 " + std::to_string(msgs.size()) + " 条消息记录");
+            } else {
+                LOG_ERROR("[MySQL 异步批量落盘] 批量写入失败，数据条数: " + std::to_string(msgs.size()));
+            }
+        }
+    }
+}
+
+// 处理客户端同步消息的请求 (Timeline Sync)
+void ChatService::syncMessages(const std::shared_ptr<TcpConnection>& conn, std::string& data) {
+    SyncReq req;
+    SyncResp resp;
+    std::string send_str;
+
+    if (req.ParseFromString(data)) {
+        int uid = req.uid();
+        long long last_sync_key = req.last_sync_key();
+
+        LOG_INFO("收到消息同步请求：UID=" + to_string(uid) + ", last_sync_key=" + to_string(last_sync_key));
+
+        std::vector<MessageHistory> historyMsgs;
+        bool cacheHit = false;
+
+        // 1. 尝试从 Redis ZSet 时间线缓存中拉取
+        std::string timelineKey = "user:timeline:" + to_string(uid);
+        long long min_score = _redis.zminscore(timelineKey);
+
+        // 如果缓存非空，且 last_sync_key 大于等于缓存中最早的消息 ID，说明缓存完全覆盖了未读数据
+        if (min_score != -1 && last_sync_key >= min_score) {
+            std::vector<std::string> cachedMsgs = _redis.zrangebyscore(timelineKey, last_sync_key);
+            for (const auto &raw : cachedMsgs) {
+                MessageHistory msg;
+                // 从缓存中直接取出序列化后的 OneChatRequest
+                OneChatRequest oneReq;
+                if (oneReq.ParseFromString(raw)) {
+                    msg.setMsgId(oneReq.msg_id());
+                    msg.setFromId(oneReq.from_id());
+                    msg.setToId(oneReq.to_id());
+                    msg.setContent(oneReq.msg());
+                    historyMsgs.push_back(msg);
+                }
+            }
+            cacheHit = true;
+            LOG_INFO("[Redis Timeline 缓存命中] 从内存快速同步 " + std::to_string(historyMsgs.size()) + " 条消息给 UID=" + to_string(uid));
+        }
+
+        // 2. 如果缓存未命中（说明离线积压超出了 100 条限制，或者缓存已失效），则穿透到 MySQL 历史表查询
+        if (!cacheHit) {
+            historyMsgs = _messageHistoryModel.query(uid, last_sync_key);
+            LOG_INFO("[Redis 缓存未命中，查询 MySQL 消息历史表] 成功同步 " + std::to_string(historyMsgs.size()) + " 条消息给 UID=" + to_string(uid));
+        }
+
+        // 3. 组装响应包
+        resp.set_success(true);
+        long long max_sync_key = last_sync_key;
+        for (const auto &item : historyMsgs) {
+            OneChatRequest* singleMsg = resp.add_messages();
+            singleMsg->set_msg_id(item.getMsgId());
+            singleMsg->set_from_id(item.getFromId());
+            singleMsg->set_to_id(item.getToId());
+            singleMsg->set_msg(item.getContent());
+
+            if (item.getMsgId() > max_sync_key) {
+                max_sync_key = item.getMsgId();
+            }
+        }
+        resp.set_new_sync_key(max_sync_key);
+
+        resp.SerializeToString(&send_str);
+        conn->send(SYNC_RESP, send_str);
     }
 }

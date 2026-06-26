@@ -13,9 +13,12 @@
 #include "server/model/offlinemessagemodel.hpp"
 #include "server/model/friendmodel.hpp"
 #include "server/model/friendrequestmodel.hpp"
+#include "server/model/messagehistorymodel.hpp" // 新增消息历史表 Model
 #include "net/TcpConnection.h"
 #include "server/ThreadPool.hpp"
 #include "db/Redis.h"
+#include <queue>
+#include <condition_variable>
 
 // 业务回调函数类型
 // conn: 连接对象 (用于回发数据)
@@ -55,6 +58,9 @@ public:
     // [新增] 处理心跳业务
     void clientHeartBeat(const std::shared_ptr<TcpConnection>& conn, std::string& data);
 
+    // [新增] 处理消息历史同步业务 (Timeline Sync)
+    void syncMessages(const std::shared_ptr<TcpConnection>& conn, std::string& data);
+
     // 处理客户端异常退出
     void clientCloseException(const std::shared_ptr<TcpConnection>& conn);
     
@@ -84,6 +90,7 @@ private:
     OfflineMsgModel _offlineMsgModel;
     FriendModel _friendModel;
     FriendRequestModel _friendRequestModel;
+    MessageHistoryModel _messageHistoryModel; // 新增消息历史操作对象
 
     // 存储在线用户的通信连接
     std::mutex _connMutex;
@@ -108,4 +115,13 @@ private:
     // 本物理节点地址
     std::string _ip;
     int _port;
+
+    // --- 异步批量合并存盘组件 ---
+    std::queue<MessageHistory> _saveMsgQueue;
+    std::mutex _queueMutex;
+    std::condition_variable _queueCond;
+    std::thread _saveThread;
+    std::atomic_bool _saveThreadRunning;
+
+    void backgroundSaveThread(); // 后台存盘线程函数
 };

@@ -6,6 +6,7 @@
 #include <QAbstractSocket>
 #include <QtEndian>
 #include <QTimer> // 引入定时器头文件
+#include <QSettings>
 
 #include <cstring>
 
@@ -67,6 +68,7 @@ void ImClient::reg(const QString &username, const QString &password)
 void ImClient::logout()
 {
     myUid_ = -1;
+    lastSyncKey_ = 0;
     socket_.disconnectFromHost();
 }
 
@@ -115,6 +117,17 @@ void ImClient::sendOneChat(int toId, const QString &msg, qint64 msgId)
     pendingSendAckMap_.insert(msgId, pMsg);
 
     sendPacket(ONE_CHAT_MSG, payload); // 按照协议发送 ONE_CHAT_MSG 类型的消息
+}
+
+void ImClient::syncMessages(qint64 lastSyncKey)
+{
+    chat::SyncReq req;
+    req.set_uid(myUid_);
+    req.set_last_sync_key(lastSyncKey);
+
+    std::string payload;
+    req.SerializeToString(&payload);
+    sendPacket(SYNC_REQ, payload);
 }
 
 void ImClient::ensureConnected()
@@ -174,6 +187,8 @@ void ImClient::handleMessage(int msgId, const QByteArray &payload)
         // 登录成功时，在客户端保存自身的 UID
         if (resp.success()) {
             myUid_ = resp.uid();
+            QSettings settings("Simple_IMChat", "Client");
+            lastSyncKey_ = settings.value(QString("last_sync_key_%1").arg(myUid_), 0).toLongLong();
         }
 
         // 解析好友列表和状态
@@ -202,6 +217,7 @@ void ImClient::handleMessage(int msgId, const QByteArray &payload)
         
         if (resp.success()) {
             emit socialDataLoaded(friendsList, appliesList);
+            syncMessages(lastSyncKey_);
         }
         return;
     }
@@ -305,6 +321,42 @@ void ImClient::handleMessage(int msgId, const QByteArray &payload)
             emit friendBindSuccess(notify.friend_info().id(), 
                                    QString::fromStdString(notify.friend_info().name()), 
                                    QString::fromStdString(notify.friend_info().state()));
+        }
+        return;
+    }
+
+    // [新增] 处理服务端返回的同步消息响应 (SYNC_RESP)
+    if (msgId == SYNC_RESP) {
+        chat::SyncResp resp;
+        if (!resp.ParseFromString(data)) {
+            emit networkError(QString::fromUtf8("同步消息响应解析失败"));
+            return;
+        }
+
+        if (resp.success()) {
+            // 遍历拉取到的历史消息
+            for (int i = 0; i < resp.messages_size(); ++i) {
+                const auto& reqMsg = resp.messages(i);
+
+                // 滑动窗口去重
+                if (recvMsgWindow_.contains(reqMsg.msg_id())) {
+                    continue;
+                }
+                recvMsgWindow_.append(reqMsg.msg_id());
+                if (recvMsgWindow_.size() > 1000) {
+                    recvMsgWindow_.removeFirst();
+                }
+
+                // 触发单聊消息接收信号，通知 UI 层
+                emit oneChatReceived(reqMsg.from_id(), reqMsg.to_id(), QString::fromStdString(reqMsg.msg()), reqMsg.msg_id());
+            }
+
+            // 更新 SyncKey 并持久化
+            if (resp.new_sync_key() > lastSyncKey_) {
+                lastSyncKey_ = resp.new_sync_key();
+                QSettings settings("Simple_IMChat", "Client");
+                settings.setValue(QString("last_sync_key_%1").arg(myUid_), lastSyncKey_);
+            }
         }
         return;
     }

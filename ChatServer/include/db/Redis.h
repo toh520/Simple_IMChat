@@ -47,6 +47,12 @@ public:
     // 判断成员是否在 Redis 集合中
     bool sismember(const std::string &key, const std::string &member);
 
+    // --- 新增 ZSet 时间线缓存操作 ---
+    bool zadd(const std::string &key, long long score, const std::string &member);
+    bool zremrangebyrank(const std::string &key, int start, int stop);
+    long long zminscore(const std::string &key);
+    std::vector<std::string> zrangebyscore(const std::string &key, long long minScore);
+
 private:
     // hiredis同步上下文对象，负责reply
     redisContext *_publish_context;

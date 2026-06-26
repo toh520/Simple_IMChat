@@ -80,6 +80,9 @@ void UserModel::resetState() {
         // 启动自检：如果不存在，自动创建 FriendRequest 申请暂存表
         sp->update("CREATE TABLE IF NOT EXISTS FriendRequest (id INT AUTO_INCREMENT PRIMARY KEY, from_id INT NOT NULL, to_id INT NOT NULL, status VARCHAR(20) DEFAULT 'pending', create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, KEY idx_to_status (to_id, status))");
 
+        // 启动自检：如果不存在，自动创建 MessageHistory 消息历史表
+        sp->update("CREATE TABLE IF NOT EXISTS MessageHistory (msg_id BIGINT PRIMARY KEY, from_id INT NOT NULL, to_id INT NOT NULL, content VARCHAR(1000) NOT NULL, create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, KEY idx_to_msg (to_id, msg_id))");
+
         // 重置所有在线状态为离线
         char sql[1024] = "UPDATE User SET state = 'offline' WHERE state = 'online'";
         sp->update(sql);

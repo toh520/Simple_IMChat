@@ -16,6 +16,7 @@
 #include <google/protobuf/port_def.inc>
 extern PROTOBUF_INTERNAL_EXPORT_msg_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FriendInfo_msg_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_msg_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_FriendRequestNotify_msg_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_msg_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_OneChatRequest_msg_2eproto;
 namespace chat {
 class LoginRequestDefaultTypeInternal {
  public:
@@ -77,6 +78,14 @@ class AddFriendSuccessNotifyDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<AddFriendSuccessNotify> _instance;
 } _AddFriendSuccessNotify_default_instance_;
+class SyncReqDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SyncReq> _instance;
+} _SyncReq_default_instance_;
+class SyncRespDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SyncResp> _instance;
+} _SyncResp_default_instance_;
 }  // namespace chat
 static void InitDefaultsscc_info_AddFriendReq_msg_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -278,6 +287,35 @@ static void InitDefaultsscc_info_RegResponse_msg_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_RegResponse_msg_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_RegResponse_msg_2eproto}, {}};
 
+static void InitDefaultsscc_info_SyncReq_msg_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::chat::_SyncReq_default_instance_;
+    new (ptr) ::chat::SyncReq();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::chat::SyncReq::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SyncReq_msg_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SyncReq_msg_2eproto}, {}};
+
+static void InitDefaultsscc_info_SyncResp_msg_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::chat::_SyncResp_default_instance_;
+    new (ptr) ::chat::SyncResp();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::chat::SyncResp::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_SyncResp_msg_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_SyncResp_msg_2eproto}, {
+      &scc_info_OneChatRequest_msg_2eproto.base,}};
+
 static void InitDefaultsscc_info_UserStatusNotify_msg_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
@@ -292,7 +330,7 @@ static void InitDefaultsscc_info_UserStatusNotify_msg_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_UserStatusNotify_msg_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_UserStatusNotify_msg_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_msg_2eproto[15];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_msg_2eproto[17];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_msg_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_msg_2eproto = nullptr;
 
@@ -416,6 +454,21 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_msg_2eproto::offsets[] PROTOBU
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::chat::AddFriendSuccessNotify, friend_info_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::chat::SyncReq, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::chat::SyncReq, uid_),
+  PROTOBUF_FIELD_OFFSET(::chat::SyncReq, last_sync_key_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::chat::SyncResp, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::chat::SyncResp, success_),
+  PROTOBUF_FIELD_OFFSET(::chat::SyncResp, messages_),
+  PROTOBUF_FIELD_OFFSET(::chat::SyncResp, new_sync_key_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::chat::LoginRequest)},
@@ -433,6 +486,8 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 96, -1, sizeof(::chat::ProcessFriendResp)},
   { 106, -1, sizeof(::chat::UserStatusNotify)},
   { 113, -1, sizeof(::chat::AddFriendSuccessNotify)},
+  { 119, -1, sizeof(::chat::SyncReq)},
+  { 126, -1, sizeof(::chat::SyncResp)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -451,6 +506,8 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::chat::_ProcessFriendResp_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::chat::_UserStatusNotify_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::chat::_AddFriendSuccessNotify_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::chat::_SyncReq_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::chat::_SyncResp_default_instance_),
 };
 
 const char descriptor_table_protodef_msg_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
@@ -481,11 +538,14 @@ const char descriptor_table_protodef_msg_2eproto[] PROTOBUF_SECTION_VARIABLE(pro
   "endInfo\".\n\020UserStatusNotify\022\013\n\003uid\030\001 \001(\005"
   "\022\r\n\005state\030\002 \001(\t\"\?\n\026AddFriendSuccessNotif"
   "y\022%\n\013friend_info\030\001 \001(\0132\020.chat.FriendInfo"
-  "b\006proto3"
+  "\"-\n\007SyncReq\022\013\n\003uid\030\001 \001(\005\022\025\n\rlast_sync_ke"
+  "y\030\002 \001(\003\"Y\n\010SyncResp\022\017\n\007success\030\001 \001(\010\022&\n\010"
+  "messages\030\002 \003(\0132\024.chat.OneChatRequest\022\024\n\014"
+  "new_sync_key\030\003 \001(\003b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_msg_2eproto_deps[1] = {
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_msg_2eproto_sccs[15] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_msg_2eproto_sccs[17] = {
   &scc_info_AddFriendReq_msg_2eproto.base,
   &scc_info_AddFriendResp_msg_2eproto.base,
   &scc_info_AddFriendSuccessNotify_msg_2eproto.base,
@@ -500,14 +560,16 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_msg
   &scc_info_ProcessFriendResp_msg_2eproto.base,
   &scc_info_RegRequest_msg_2eproto.base,
   &scc_info_RegResponse_msg_2eproto.base,
+  &scc_info_SyncReq_msg_2eproto.base,
+  &scc_info_SyncResp_msg_2eproto.base,
   &scc_info_UserStatusNotify_msg_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_msg_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_msg_2eproto = {
-  false, false, descriptor_table_protodef_msg_2eproto, "msg.proto", 1088,
-  &descriptor_table_msg_2eproto_once, descriptor_table_msg_2eproto_sccs, descriptor_table_msg_2eproto_deps, 15, 0,
+  false, false, descriptor_table_protodef_msg_2eproto, "msg.proto", 1226,
+  &descriptor_table_msg_2eproto_once, descriptor_table_msg_2eproto_sccs, descriptor_table_msg_2eproto_deps, 17, 0,
   schemas, file_default_instances, TableStruct_msg_2eproto::offsets,
-  file_level_metadata_msg_2eproto, 15, file_level_enum_descriptors_msg_2eproto, file_level_service_descriptors_msg_2eproto,
+  file_level_metadata_msg_2eproto, 17, file_level_enum_descriptors_msg_2eproto, file_level_service_descriptors_msg_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -4489,6 +4551,499 @@ void AddFriendSuccessNotify::InternalSwap(AddFriendSuccessNotify* other) {
 }
 
 
+// ===================================================================
+
+void SyncReq::InitAsDefaultInstance() {
+}
+class SyncReq::_Internal {
+ public:
+};
+
+SyncReq::SyncReq(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.SyncReq)
+}
+SyncReq::SyncReq(const SyncReq& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&last_sync_key_, &from.last_sync_key_,
+    static_cast<size_t>(reinterpret_cast<char*>(&uid_) -
+    reinterpret_cast<char*>(&last_sync_key_)) + sizeof(uid_));
+  // @@protoc_insertion_point(copy_constructor:chat.SyncReq)
+}
+
+void SyncReq::SharedCtor() {
+  ::memset(&last_sync_key_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&uid_) -
+      reinterpret_cast<char*>(&last_sync_key_)) + sizeof(uid_));
+}
+
+SyncReq::~SyncReq() {
+  // @@protoc_insertion_point(destructor:chat.SyncReq)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void SyncReq::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void SyncReq::ArenaDtor(void* object) {
+  SyncReq* _this = reinterpret_cast< SyncReq* >(object);
+  (void)_this;
+}
+void SyncReq::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SyncReq::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const SyncReq& SyncReq::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SyncReq_msg_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void SyncReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.SyncReq)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ::memset(&last_sync_key_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&uid_) -
+      reinterpret_cast<char*>(&last_sync_key_)) + sizeof(uid_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SyncReq::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // int32 uid = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          uid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int64 last_sync_key = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          last_sync_key_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SyncReq::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:chat.SyncReq)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 uid = 1;
+  if (this->uid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_uid(), target);
+  }
+
+  // int64 last_sync_key = 2;
+  if (this->last_sync_key() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(2, this->_internal_last_sync_key(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.SyncReq)
+  return target;
+}
+
+size_t SyncReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:chat.SyncReq)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // int64 last_sync_key = 2;
+  if (this->last_sync_key() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
+        this->_internal_last_sync_key());
+  }
+
+  // int32 uid = 1;
+  if (this->uid() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_uid());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void SyncReq::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:chat.SyncReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SyncReq* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SyncReq>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:chat.SyncReq)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:chat.SyncReq)
+    MergeFrom(*source);
+  }
+}
+
+void SyncReq::MergeFrom(const SyncReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:chat.SyncReq)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.last_sync_key() != 0) {
+    _internal_set_last_sync_key(from._internal_last_sync_key());
+  }
+  if (from.uid() != 0) {
+    _internal_set_uid(from._internal_uid());
+  }
+}
+
+void SyncReq::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:chat.SyncReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SyncReq::CopyFrom(const SyncReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:chat.SyncReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SyncReq::IsInitialized() const {
+  return true;
+}
+
+void SyncReq::InternalSwap(SyncReq* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SyncReq, uid_)
+      + sizeof(SyncReq::uid_)
+      - PROTOBUF_FIELD_OFFSET(SyncReq, last_sync_key_)>(
+          reinterpret_cast<char*>(&last_sync_key_),
+          reinterpret_cast<char*>(&other->last_sync_key_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SyncReq::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void SyncResp::InitAsDefaultInstance() {
+}
+class SyncResp::_Internal {
+ public:
+};
+
+SyncResp::SyncResp(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
+  messages_(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.SyncResp)
+}
+SyncResp::SyncResp(const SyncResp& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      messages_(from.messages_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::memcpy(&new_sync_key_, &from.new_sync_key_,
+    static_cast<size_t>(reinterpret_cast<char*>(&success_) -
+    reinterpret_cast<char*>(&new_sync_key_)) + sizeof(success_));
+  // @@protoc_insertion_point(copy_constructor:chat.SyncResp)
+}
+
+void SyncResp::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SyncResp_msg_2eproto.base);
+  ::memset(&new_sync_key_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&success_) -
+      reinterpret_cast<char*>(&new_sync_key_)) + sizeof(success_));
+}
+
+SyncResp::~SyncResp() {
+  // @@protoc_insertion_point(destructor:chat.SyncResp)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void SyncResp::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+}
+
+void SyncResp::ArenaDtor(void* object) {
+  SyncResp* _this = reinterpret_cast< SyncResp* >(object);
+  (void)_this;
+}
+void SyncResp::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void SyncResp::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const SyncResp& SyncResp::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SyncResp_msg_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void SyncResp::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.SyncResp)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  messages_.Clear();
+  ::memset(&new_sync_key_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&success_) -
+      reinterpret_cast<char*>(&new_sync_key_)) + sizeof(success_));
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* SyncResp::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // bool success = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          success_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // repeated .chat.OneChatRequest messages = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr -= 1;
+          do {
+            ptr += 1;
+            ptr = ctx->ParseMessage(_internal_add_messages(), ptr);
+            CHK_(ptr);
+            if (!ctx->DataAvailable(ptr)) break;
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+        } else goto handle_unusual;
+        continue;
+      // int64 new_sync_key = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          new_sync_key_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* SyncResp::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:chat.SyncResp)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // bool success = 1;
+  if (this->success() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_success(), target);
+  }
+
+  // repeated .chat.OneChatRequest messages = 2;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->_internal_messages_size()); i < n; i++) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(2, this->_internal_messages(i), target, stream);
+  }
+
+  // int64 new_sync_key = 3;
+  if (this->new_sync_key() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt64ToArray(3, this->_internal_new_sync_key(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.SyncResp)
+  return target;
+}
+
+size_t SyncResp::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:chat.SyncResp)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .chat.OneChatRequest messages = 2;
+  total_size += 1UL * this->_internal_messages_size();
+  for (const auto& msg : this->messages_) {
+    total_size +=
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  }
+
+  // int64 new_sync_key = 3;
+  if (this->new_sync_key() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int64Size(
+        this->_internal_new_sync_key());
+  }
+
+  // bool success = 1;
+  if (this->success() != 0) {
+    total_size += 1 + 1;
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void SyncResp::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:chat.SyncResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  const SyncResp* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SyncResp>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:chat.SyncResp)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:chat.SyncResp)
+    MergeFrom(*source);
+  }
+}
+
+void SyncResp::MergeFrom(const SyncResp& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:chat.SyncResp)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  messages_.MergeFrom(from.messages_);
+  if (from.new_sync_key() != 0) {
+    _internal_set_new_sync_key(from._internal_new_sync_key());
+  }
+  if (from.success() != 0) {
+    _internal_set_success(from._internal_success());
+  }
+}
+
+void SyncResp::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:chat.SyncResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SyncResp::CopyFrom(const SyncResp& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:chat.SyncResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SyncResp::IsInitialized() const {
+  return true;
+}
+
+void SyncResp::InternalSwap(SyncResp* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  messages_.InternalSwap(&other->messages_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(SyncResp, success_)
+      + sizeof(SyncResp::success_)
+      - PROTOBUF_FIELD_OFFSET(SyncResp, new_sync_key_)>(
+          reinterpret_cast<char*>(&new_sync_key_),
+          reinterpret_cast<char*>(&other->new_sync_key_));
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata SyncResp::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace chat
 PROTOBUF_NAMESPACE_OPEN
@@ -4536,6 +5091,12 @@ template<> PROTOBUF_NOINLINE ::chat::UserStatusNotify* Arena::CreateMaybeMessage
 }
 template<> PROTOBUF_NOINLINE ::chat::AddFriendSuccessNotify* Arena::CreateMaybeMessage< ::chat::AddFriendSuccessNotify >(Arena* arena) {
   return Arena::CreateMessageInternal< ::chat::AddFriendSuccessNotify >(arena);
+}
+template<> PROTOBUF_NOINLINE ::chat::SyncReq* Arena::CreateMaybeMessage< ::chat::SyncReq >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::chat::SyncReq >(arena);
+}
+template<> PROTOBUF_NOINLINE ::chat::SyncResp* Arena::CreateMaybeMessage< ::chat::SyncResp >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::chat::SyncResp >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

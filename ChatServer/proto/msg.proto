@@ -99,3 +99,16 @@ message UserStatusNotify {
 message AddFriendSuccessNotify {
     FriendInfo friend_info = 1; // 新建立好友的个人信息
 }
+
+// 12. 消息同步请求 (客户端 -> 服务端)
+message SyncReq {
+    int32 uid = 1;
+    int64 last_sync_key = 2; // 客户端本地最新收到的消息雪花ID
+}
+
+// 13. 消息同步响应 (服务端 -> 客户端)
+message SyncResp {
+    bool success = 1;
+    repeated OneChatRequest messages = 2;
+    int64 new_sync_key = 3;
+}

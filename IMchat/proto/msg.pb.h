@@ -109,6 +109,14 @@ class RegResponse;
 struct RegResponseDefaultTypeInternal;
 extern RegResponseDefaultTypeInternal _RegResponse_default_instance_;
 extern const ::google::protobuf::internal::ClassDataFull RegResponse_class_data_;
+class SyncReq;
+struct SyncReqDefaultTypeInternal;
+extern SyncReqDefaultTypeInternal _SyncReq_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull SyncReq_class_data_;
+class SyncResp;
+struct SyncRespDefaultTypeInternal;
+extern SyncRespDefaultTypeInternal _SyncResp_default_instance_;
+extern const ::google::protobuf::internal::ClassDataFull SyncResp_class_data_;
 class UserStatusNotify;
 struct UserStatusNotifyDefaultTypeInternal;
 extern UserStatusNotifyDefaultTypeInternal _UserStatusNotify_default_instance_;
@@ -331,6 +339,208 @@ class UserStatusNotify final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull UserStatusNotify_class_data_;
+// -------------------------------------------------------------------
+
+class SyncReq final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:chat.SyncReq) */ {
+ public:
+  inline SyncReq() : SyncReq(nullptr) {}
+  ~SyncReq() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SyncReq* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SyncReq));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SyncReq(::google::protobuf::internal::ConstantInitialized);
+
+  inline SyncReq(const SyncReq& from) : SyncReq(nullptr, from) {}
+  inline SyncReq(SyncReq&& from) noexcept
+      : SyncReq(nullptr, ::std::move(from)) {}
+  inline SyncReq& operator=(const SyncReq& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SyncReq& operator=(SyncReq&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SyncReq& default_instance() {
+    return *reinterpret_cast<const SyncReq*>(
+        &_SyncReq_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 15;
+  friend void swap(SyncReq& a, SyncReq& b) { a.Swap(&b); }
+  inline void Swap(SyncReq* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SyncReq* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SyncReq* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SyncReq>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SyncReq& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SyncReq& from) { SyncReq::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SyncReq* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "chat.SyncReq"; }
+
+  explicit SyncReq(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  SyncReq(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const SyncReq& from);
+  SyncReq(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, SyncReq&& from) noexcept
+      : SyncReq(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kLastSyncKeyFieldNumber = 2,
+    kUidFieldNumber = 1,
+  };
+  // int64 last_sync_key = 2;
+  void clear_last_sync_key() ;
+  ::int64_t last_sync_key() const;
+  void set_last_sync_key(::int64_t value);
+
+  private:
+  ::int64_t _internal_last_sync_key() const;
+  void _internal_set_last_sync_key(::int64_t value);
+
+  public:
+  // int32 uid = 1;
+  void clear_uid() ;
+  ::int32_t uid() const;
+  void set_uid(::int32_t value);
+
+  private:
+  ::int32_t _internal_uid() const;
+  void _internal_set_uid(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:chat.SyncReq)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<1, 2,
+                                   0, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const SyncReq& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::int64_t last_sync_key_;
+    ::int32_t uid_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_msg_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull SyncReq_class_data_;
 // -------------------------------------------------------------------
 
 class RegResponse final : public ::google::protobuf::Message
@@ -2716,6 +2926,227 @@ class AddFriendReq final : public ::google::protobuf::Message
 };
 
 extern const ::google::protobuf::internal::ClassDataFull AddFriendReq_class_data_;
+// -------------------------------------------------------------------
+
+class SyncResp final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:chat.SyncResp) */ {
+ public:
+  inline SyncResp() : SyncResp(nullptr) {}
+  ~SyncResp() PROTOBUF_FINAL;
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+  void operator delete(SyncResp* PROTOBUF_NONNULL msg, ::std::destroying_delete_t) {
+    SharedDtor(*msg);
+    ::google::protobuf::internal::SizedDelete(msg, sizeof(SyncResp));
+  }
+#endif
+
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR SyncResp(::google::protobuf::internal::ConstantInitialized);
+
+  inline SyncResp(const SyncResp& from) : SyncResp(nullptr, from) {}
+  inline SyncResp(SyncResp&& from) noexcept
+      : SyncResp(nullptr, ::std::move(from)) {}
+  inline SyncResp& operator=(const SyncResp& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SyncResp& operator=(SyncResp&& from) noexcept {
+    if (this == &from) return *this;
+    if (::google::protobuf::internal::CanMoveWithInternalSwap(GetArena(), from.GetArena())) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* PROTOBUF_NONNULL mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* PROTOBUF_NONNULL GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* PROTOBUF_NONNULL GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SyncResp& default_instance() {
+    return *reinterpret_cast<const SyncResp*>(
+        &_SyncResp_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 16;
+  friend void swap(SyncResp& a, SyncResp& b) { a.Swap(&b); }
+  inline void Swap(SyncResp* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    if (::google::protobuf::internal::CanUseInternalSwap(GetArena(), other->GetArena())) {
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SyncResp* PROTOBUF_NONNULL other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  SyncResp* PROTOBUF_NONNULL New(::google::protobuf::Arena* PROTOBUF_NULLABLE arena = nullptr) const {
+    return ::google::protobuf::Message::DefaultConstruct<SyncResp>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const SyncResp& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const SyncResp& from) { SyncResp::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(::google::protobuf::MessageLite& to_msg,
+                        const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      const ::google::protobuf::MessageLite& msg, ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* PROTOBUF_NONNULL _InternalSerialize(
+      ::uint8_t* PROTOBUF_NONNULL target,
+      ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static void SharedDtor(MessageLite& self);
+  void InternalSwap(SyncResp* PROTOBUF_NONNULL other);
+ private:
+  template <typename T>
+  friend ::absl::string_view(::google::protobuf::internal::GetAnyMessageName)();
+  static ::absl::string_view FullMessageName() { return "chat.SyncResp"; }
+
+  explicit SyncResp(::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  SyncResp(::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const SyncResp& from);
+  SyncResp(
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, SyncResp&& from) noexcept
+      : SyncResp(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL GetClassData() const PROTOBUF_FINAL;
+  static void* PROTOBUF_NONNULL PlacementNew_(
+      const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+      ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+  static constexpr auto InternalNewImpl_();
+
+ public:
+  static constexpr auto InternalGenerateClassData_();
+
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kMessagesFieldNumber = 2,
+    kNewSyncKeyFieldNumber = 3,
+    kSuccessFieldNumber = 1,
+  };
+  // repeated .chat.OneChatRequest messages = 2;
+  int messages_size() const;
+  private:
+  int _internal_messages_size() const;
+
+  public:
+  void clear_messages() ;
+  ::chat::OneChatRequest* PROTOBUF_NONNULL mutable_messages(int index);
+  ::google::protobuf::RepeatedPtrField<::chat::OneChatRequest>* PROTOBUF_NONNULL mutable_messages();
+
+  private:
+  const ::google::protobuf::RepeatedPtrField<::chat::OneChatRequest>& _internal_messages() const;
+  ::google::protobuf::RepeatedPtrField<::chat::OneChatRequest>* PROTOBUF_NONNULL _internal_mutable_messages();
+  public:
+  const ::chat::OneChatRequest& messages(int index) const;
+  ::chat::OneChatRequest* PROTOBUF_NONNULL add_messages();
+  const ::google::protobuf::RepeatedPtrField<::chat::OneChatRequest>& messages() const;
+  // int64 new_sync_key = 3;
+  void clear_new_sync_key() ;
+  ::int64_t new_sync_key() const;
+  void set_new_sync_key(::int64_t value);
+
+  private:
+  ::int64_t _internal_new_sync_key() const;
+  void _internal_set_new_sync_key(::int64_t value);
+
+  public:
+  // bool success = 1;
+  void clear_success() ;
+  bool success() const;
+  void set_success(bool value);
+
+  private:
+  bool _internal_success() const;
+  void _internal_set_success(bool value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:chat.SyncResp)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<2, 3,
+                                   1, 0,
+                                   2>
+      _table_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena);
+    inline explicit Impl_(
+        ::google::protobuf::internal::InternalVisibility visibility,
+        ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+        const SyncResp& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    ::google::protobuf::internal::CachedSize _cached_size_;
+    ::google::protobuf::RepeatedPtrField< ::chat::OneChatRequest > messages_;
+    ::int64_t new_sync_key_;
+    bool success_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_msg_2eproto;
+};
+
+extern const ::google::protobuf::internal::ClassDataFull SyncResp_class_data_;
 // -------------------------------------------------------------------
 
 class ProcessFriendResp final : public ::google::protobuf::Message
@@ -5357,6 +5788,170 @@ inline void AddFriendSuccessNotify::set_allocated_friend_info(::chat::FriendInfo
 
   _impl_.friend_info_ = reinterpret_cast<::chat::FriendInfo*>(value);
   // @@protoc_insertion_point(field_set_allocated:chat.AddFriendSuccessNotify.friend_info)
+}
+
+// -------------------------------------------------------------------
+
+// SyncReq
+
+// int32 uid = 1;
+inline void SyncReq::clear_uid() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.uid_ = 0;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::int32_t SyncReq::uid() const {
+  // @@protoc_insertion_point(field_get:chat.SyncReq.uid)
+  return _internal_uid();
+}
+inline void SyncReq::set_uid(::int32_t value) {
+  _internal_set_uid(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:chat.SyncReq.uid)
+}
+inline ::int32_t SyncReq::_internal_uid() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.uid_;
+}
+inline void SyncReq::_internal_set_uid(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.uid_ = value;
+}
+
+// int64 last_sync_key = 2;
+inline void SyncReq::clear_last_sync_key() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.last_sync_key_ = ::int64_t{0};
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::int64_t SyncReq::last_sync_key() const {
+  // @@protoc_insertion_point(field_get:chat.SyncReq.last_sync_key)
+  return _internal_last_sync_key();
+}
+inline void SyncReq::set_last_sync_key(::int64_t value) {
+  _internal_set_last_sync_key(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_set:chat.SyncReq.last_sync_key)
+}
+inline ::int64_t SyncReq::_internal_last_sync_key() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.last_sync_key_;
+}
+inline void SyncReq::_internal_set_last_sync_key(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.last_sync_key_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SyncResp
+
+// bool success = 1;
+inline void SyncResp::clear_success() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.success_ = false;
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000004U);
+}
+inline bool SyncResp::success() const {
+  // @@protoc_insertion_point(field_get:chat.SyncResp.success)
+  return _internal_success();
+}
+inline void SyncResp::set_success(bool value) {
+  _internal_set_success(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000004U);
+  // @@protoc_insertion_point(field_set:chat.SyncResp.success)
+}
+inline bool SyncResp::_internal_success() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.success_;
+}
+inline void SyncResp::_internal_set_success(bool value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.success_ = value;
+}
+
+// repeated .chat.OneChatRequest messages = 2;
+inline int SyncResp::_internal_messages_size() const {
+  return _internal_messages().size();
+}
+inline int SyncResp::messages_size() const {
+  return _internal_messages_size();
+}
+inline void SyncResp::clear_messages() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.messages_.Clear();
+  ClearHasBitForRepeated(_impl_._has_bits_[0],
+                  0x00000001U);
+}
+inline ::chat::OneChatRequest* PROTOBUF_NONNULL SyncResp::mutable_messages(int index)
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_mutable:chat.SyncResp.messages)
+  return _internal_mutable_messages()->Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField<::chat::OneChatRequest>* PROTOBUF_NONNULL SyncResp::mutable_messages()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_mutable_list:chat.SyncResp.messages)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _internal_mutable_messages();
+}
+inline const ::chat::OneChatRequest& SyncResp::messages(int index) const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:chat.SyncResp.messages)
+  return _internal_messages().Get(index);
+}
+inline ::chat::OneChatRequest* PROTOBUF_NONNULL SyncResp::add_messages()
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::chat::OneChatRequest* _add =
+      _internal_mutable_messages()->InternalAddWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), GetArena());
+  SetHasBitForRepeated(_impl_._has_bits_[0], 0x00000001U);
+  // @@protoc_insertion_point(field_add:chat.SyncResp.messages)
+  return _add;
+}
+inline const ::google::protobuf::RepeatedPtrField<::chat::OneChatRequest>& SyncResp::messages() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_list:chat.SyncResp.messages)
+  return _internal_messages();
+}
+inline const ::google::protobuf::RepeatedPtrField<::chat::OneChatRequest>&
+SyncResp::_internal_messages() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.messages_;
+}
+inline ::google::protobuf::RepeatedPtrField<::chat::OneChatRequest>* PROTOBUF_NONNULL
+SyncResp::_internal_mutable_messages() {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return &_impl_.messages_;
+}
+
+// int64 new_sync_key = 3;
+inline void SyncResp::clear_new_sync_key() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_sync_key_ = ::int64_t{0};
+  ClearHasBit(_impl_._has_bits_[0],
+                  0x00000002U);
+}
+inline ::int64_t SyncResp::new_sync_key() const {
+  // @@protoc_insertion_point(field_get:chat.SyncResp.new_sync_key)
+  return _internal_new_sync_key();
+}
+inline void SyncResp::set_new_sync_key(::int64_t value) {
+  _internal_set_new_sync_key(value);
+  SetHasBit(_impl_._has_bits_[0], 0x00000002U);
+  // @@protoc_insertion_point(field_set:chat.SyncResp.new_sync_key)
+}
+inline ::int64_t SyncResp::_internal_new_sync_key() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.new_sync_key_;
+}
+inline void SyncResp::_internal_set_new_sync_key(::int64_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.new_sync_key_ = value;
 }
 
 #ifdef __GNUC__
