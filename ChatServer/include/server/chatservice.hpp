@@ -29,6 +29,9 @@ public:
 
     ~ChatService();
 
+    // 设置节点物理地址并执行路由自清理
+    void setHostInfo(std::string ip, int port);
+
     // 处理登录业务
     void login(const std::shared_ptr<TcpConnection>& conn, std::string& data);
 
@@ -91,4 +94,8 @@ private:
     std::thread _retransmitThread;
     std::mutex _pendingMutex;
     std::unordered_map<int64_t, PendingRecvMsg> _pendingRecvAckMap;
+
+    // 本物理节点地址
+    std::string _ip;
+    int _port;
 };

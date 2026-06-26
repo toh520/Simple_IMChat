@@ -11,6 +11,15 @@ ChatService* ChatService::instance() {
     return &service;
 }
 
+void ChatService::setHostInfo(std::string ip, int port) {
+    _ip = ip;
+    _port = port;
+    // 清理上次本物理节点异常残留的路由缓存
+    std::string nodeVal = _ip + ":" + std::to_string(_port);
+    _redis.cleanNodeRoutes("user:route", nodeVal);
+    LOG_INFO("清理节点 [" + nodeVal + "] 在 Redis 中的历史残留路由完成");
+}
+
 // 注册消息以及对应的Handler回调操作
 ChatService::ChatService() : _running(true) {
     // 启动线程池 (例如 4 个 worker 线程)
@@ -165,6 +174,11 @@ void ChatService::login(const std::shared_ptr<TcpConnection>& conn, std::string&
                 // [新增] 登录成功后，向 Redis 订阅该用户的 Channel
                 _redis.subscribe(id);
 
+                // 注册路由网关：userid -> server_ip:port
+                std::string nodeVal = _ip + ":" + std::to_string(_port);
+                _redis.hset("user:route", std::to_string(id), nodeVal);
+                LOG_INFO("用户在线状态已同步至 Redis 状态网关, UID=" + std::to_string(id) + " -> " + nodeVal);
+
                 // 2. 更新数据库状态为 online
                 user.setState("online");
                 _userModel.updateState(user);
@@ -222,6 +236,10 @@ void ChatService::clientCloseException(const std::shared_ptr<TcpConnection>& con
         
         // 用户下线，取消订阅
         _redis.unsubscribe(user.getId());
+
+        // 从 Redis 状态网关注销路由
+        _redis.hdel("user:route", std::to_string(user.getId()));
+        LOG_INFO("用户已从 Redis 状态网关注销, UID=" + std::to_string(user.getId()));
 
         // 清理该用户在重传队列中的所有待接收确认消息，并转存为离线消息
         {
@@ -317,20 +335,18 @@ void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::strin
             } 
         } // 锁在这里释放
 
-        // 查询数据库：用户虽然不在本服务器，但可能在其他服务器
-        // 这一步是分布式聊天的关键！
-        User user = _userModel.query(toid);
-        if (user.getState() == "online") {
-            // 用户状态是 online，但不在我的 _userConnMap 里
-            // 说明用户在别的服务器上 -> 发布消息到 Redis
+        // 3. 本地不在线，查询 Redis 状态网关 (不需要查询 MySQL 关系表)
+        std::string route = _redis.hget("user:route", std::to_string(toid));
+        if (!route.empty()) {
+            // 用户在其他节点在线 -> 通过 Redis 发布订阅，完成分布式跨节点路由转发
             _redis.publish(toid, data);
-            LOG_INFO("接收方在其他节点在线，通过 Redis 发布完成分布式路由路由转发, msgId=" + std::to_string(req.msg_id()));
+            LOG_INFO("接收方在节点 [" + route + "] 在线，通过 Redis 状态网关完成跨服路由转发, msgId=" + std::to_string(req.msg_id()));
             return;
         }
 
-        // 用户不在线 -> 存储离线消息
+        // 4. Redis 网关中没有路由 -> 用户确实不在线，转存为离线消息
         _offlineMsgModel.insert(toid, data);
-        LOG_INFO("接收方不在线，消息已转存为离线消息存入数据库, msgId=" + std::to_string(req.msg_id()));
+        LOG_INFO("接收方当前不在线，消息已转存为离线消息存入数据库, msgId=" + std::to_string(req.msg_id()));
 }
 
 // 处理接收端确认接收业务

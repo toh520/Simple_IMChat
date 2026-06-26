@@ -29,6 +29,18 @@ public:
     // 初始化向业务层上报通道消息的回调对象
     void init_notify_handler(std::function<void(int, std::string)> fn);
 
+    // 写入 Hash 键值对
+    bool hset(const std::string &key, const std::string &field, const std::string &value);
+    
+    // 读取 Hash 字段值
+    std::string hget(const std::string &key, const std::string &field);
+    
+    // 删除 Hash 字段
+    bool hdel(const std::string &key, const std::string &field);
+
+    // 清理指定 Redis Key 中，所有 Value 匹配 nodeVal 的字段 (用于宕机自清理)
+    bool cleanNodeRoutes(const std::string &key, const std::string &nodeVal);
+
 private:
     // hiredis同步上下文对象，负责reply
     redisContext *_publish_context;

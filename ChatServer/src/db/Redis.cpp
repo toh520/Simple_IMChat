@@ -1,5 +1,6 @@
 #include "db/Redis.h"
 #include <iostream>
+#include <vector>
 
 Redis::Redis() : _publish_context(nullptr), _subcribe_context(nullptr) {
 }
@@ -102,4 +103,73 @@ void Redis::observer_channel_message() {
 
 void Redis::init_notify_handler(std::function<void(int, std::string)> fn) {
     this->_notify_message_handler = fn;
+}
+
+bool Redis::hset(const std::string &key, const std::string &field, const std::string &value) {
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "HSET %s %s %s", key.c_str(), field.c_str(), value.c_str());
+    if (nullptr == reply) {
+        std::cerr << "hset command failed!" << std::endl;
+        return false;
+    }
+    freeReplyObject(reply);
+    return true;
+}
+
+std::string Redis::hget(const std::string &key, const std::string &field) {
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "HGET %s %s", key.c_str(), field.c_str());
+    if (nullptr == reply) {
+        std::cerr << "hget command failed!" << std::endl;
+        return "";
+    }
+    std::string val = "";
+    if (reply->type == REDIS_REPLY_STRING && reply->str != nullptr) {
+        val = reply->str;
+    }
+    freeReplyObject(reply);
+    return val;
+}
+
+bool Redis::hdel(const std::string &key, const std::string &field) {
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "HDEL %s %s", key.c_str(), field.c_str());
+    if (nullptr == reply) {
+        std::cerr << "hdel command failed!" << std::endl;
+        return false;
+    }
+    freeReplyObject(reply);
+    return true;
+}
+
+bool Redis::cleanNodeRoutes(const std::string &key, const std::string &nodeVal) {
+    // 1. 获取 Hash 表中的所有键值对
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "HGETALL %s", key.c_str());
+    if (nullptr == reply) {
+        std::cerr << "hgetall failed in cleanNodeRoutes!" << std::endl;
+        return false;
+    }
+    
+    if (reply->type == REDIS_REPLY_ARRAY) {
+        std::vector<std::string> fields_to_del;
+        // HGETALL 返回的元素按 [field1, value1, field2, value2...] 排列
+        for (size_t i = 0; i < reply->elements; i += 2) {
+            if (reply->element[i] && reply->element[i+1] && reply->element[i+1]->str) {
+                std::string field = reply->element[i]->str;
+                std::string val = reply->element[i+1]->str;
+                if (val == nodeVal) {
+                    fields_to_del.push_back(field);
+                }
+            }
+        }
+        freeReplyObject(reply);
+
+        // 2. 批量删除属于当前宕机节点的字段
+        for (const auto &f : fields_to_del) {
+            redisReply *del_reply = (redisReply *)redisCommand(_publish_context, "HDEL %s %s", key.c_str(), f.c_str());
+            if (del_reply) {
+                freeReplyObject(del_reply);
+            }
+        }
+        return true;
+    }
+    freeReplyObject(reply);
+    return false;
 }
