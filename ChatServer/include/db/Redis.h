@@ -41,6 +41,12 @@ public:
     // 清理指定 Redis Key 中，所有 Value 匹配 nodeVal 的字段 (用于宕机自清理)
     bool cleanNodeRoutes(const std::string &key, const std::string &nodeVal);
 
+    // 向 Redis 集合中添加成员
+    bool sadd(const std::string &key, const std::string &member);
+
+    // 判断成员是否在 Redis 集合中
+    bool sismember(const std::string &key, const std::string &member);
+
 private:
     // hiredis同步上下文对象，负责reply
     redisContext *_publish_context;

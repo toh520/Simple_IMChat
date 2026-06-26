@@ -11,6 +11,8 @@
 #include "msg.pb.h"
 #include "server/model/UserModel.hpp"
 #include "server/model/offlinemessagemodel.hpp"
+#include "server/model/friendmodel.hpp"
+#include "server/model/friendrequestmodel.hpp"
 #include "net/TcpConnection.h"
 #include "server/ThreadPool.hpp"
 #include "db/Redis.h"
@@ -44,6 +46,12 @@ public:
     // 处理接收端确认接收业务
     void recvAck(const std::shared_ptr<TcpConnection>& conn, std::string& data);
 
+    // 处理添加好友申请业务
+    void sendApply(const std::shared_ptr<TcpConnection>& conn, std::string& data);
+
+    // 处理被申请方同意/拒绝好友申请业务
+    void processApply(const std::shared_ptr<TcpConnection>& conn, std::string& data);
+
     // [新增] 处理心跳业务
     void clientHeartBeat(const std::shared_ptr<TcpConnection>& conn, std::string& data);
 
@@ -74,6 +82,8 @@ private:
     // 数据操作对象
     UserModel _userModel;
     OfflineMsgModel _offlineMsgModel;
+    FriendModel _friendModel;
+    FriendRequestModel _friendRequestModel;
 
     // 存储在线用户的通信连接
     std::mutex _connMutex;

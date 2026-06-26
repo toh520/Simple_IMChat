@@ -9,10 +9,24 @@ message LoginRequest {
 }
 
 // 2. 登录响应
+message FriendInfo {
+    int32 id = 1;
+    string name = 2;
+    string state = 3; // "online" 或 "offline"
+}
+
+message FriendRequestNotify {
+    int32 apply_id = 1;
+    int32 from_id = 2;
+    string from_name = 3;
+}
+
 message LoginResponse {
     bool success = 1;    // 是否成功
     string msg = 2;      // 错误信息
     int32 uid = 3;       // 用户 ID
+    repeated FriendInfo friends = 4;              // 登录成功时带回的好友状态列表
+    repeated FriendRequestNotify pending_applies = 5; // 登录成功时带回的未处理好友申请
 }
 
 // 3. 注册请求 (新增)
@@ -48,4 +62,40 @@ message MsgRecvAck {
     int64 msg_id = 1;
     int32 from_id = 2;
     int32 to_id = 3;
+}
+
+// 8. 申请加好友 (from_id -> to_id)
+message AddFriendReq {
+    int32 from_id = 1;
+    int32 to_id = 2;
+}
+message AddFriendResp {
+    bool success = 1;
+    string msg = 2;
+}
+
+// 9. 处理好友申请 (同意/拒绝)
+message ProcessFriendReq {
+    int32 apply_id = 1;
+    int32 from_id = 2;
+    int32 to_id = 3;
+    bool accept = 4; // true 同意, false 拒绝
+}
+message ProcessFriendResp {
+    bool success = 1;
+    string msg = 2;
+    int32 apply_id = 3;
+    bool accept = 4;
+    FriendInfo friend_info = 5; // 同意成功后返回给被申请人的新好友信息
+}
+
+// 10. 用户上下线通知
+message UserStatusNotify {
+    int32 uid = 1;
+    string state = 2; // "online" 或 "offline"
+}
+
+// 11. 申请人收到好友申请被同意的通知 (服务端 -> from_id)
+message AddFriendSuccessNotify {
+    FriendInfo friend_info = 1; // 新建立好友的个人信息
 }

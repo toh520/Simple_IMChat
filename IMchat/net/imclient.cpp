@@ -66,9 +66,32 @@ void ImClient::reg(const QString &username, const QString &password)
 
 void ImClient::logout()
 {
-    if (isConnected()) {
-        socket_.disconnectFromHost();
-    }
+    myUid_ = -1;
+    socket_.disconnectFromHost();
+}
+
+void ImClient::addFriend(int friendId)
+{
+    chat::AddFriendReq req;
+    req.set_from_id(myUid_);
+    req.set_to_id(friendId);
+
+    std::string payload;
+    req.SerializeToString(&payload);
+    sendPacket(ADD_FRIEND_REQ, payload);
+}
+
+void ImClient::processFriend(int applyId, int fromId, bool accept)
+{
+    chat::ProcessFriendReq req;
+    req.set_apply_id(applyId);
+    req.set_from_id(fromId);
+    req.set_to_id(myUid_);
+    req.set_accept(accept);
+
+    std::string payload;
+    req.SerializeToString(&payload);
+    sendPacket(PROCESS_FRIEND_REQ, payload);
 }
 
 void ImClient::sendOneChat(int toId, const QString &msg, qint64 msgId)
@@ -153,7 +176,33 @@ void ImClient::handleMessage(int msgId, const QByteArray &payload)
             myUid_ = resp.uid();
         }
 
+        // 解析好友列表和状态
+        QList<QVariantMap> friendsList;
+        for (int i = 0; i < resp.friends_size(); ++i) {
+            const auto& frnd = resp.friends(i);
+            QVariantMap f;
+            f["id"] = frnd.id();
+            f["name"] = QString::fromStdString(frnd.name());
+            f["state"] = QString::fromStdString(frnd.state());
+            friendsList.append(f);
+        }
+
+        // 解析未处理好友申请
+        QList<QVariantMap> appliesList;
+        for (int i = 0; i < resp.pending_applies_size(); ++i) {
+            const auto& app = resp.pending_applies(i);
+            QVariantMap a;
+            a["apply_id"] = app.apply_id();
+            a["from_id"] = app.from_id();
+            a["from_name"] = QString::fromStdString(app.from_name());
+            appliesList.append(a);
+        }
+
         emit loginResult(resp.success(), resp.uid(), QString::fromStdString(resp.msg()));
+        
+        if (resp.success()) {
+            emit socialDataLoaded(friendsList, appliesList);
+        }
         return;
     }
 
@@ -207,6 +256,56 @@ void ImClient::handleMessage(int msgId, const QByteArray &payload)
 
         // 触发单聊消息接收信号，通知 UI 层 (带上 msgId)
         emit oneChatReceived(req.from_id(), req.to_id(), QString::fromStdString(req.msg()), req.msg_id());
+        return;
+    }
+
+    // [新增] 处理好友申请响应
+    if (msgId == ADD_FRIEND_RESP) {
+        chat::AddFriendResp resp;
+        if (resp.ParseFromString(data)) {
+            emit addFriendResult(resp.success(), QString::fromStdString(resp.msg()));
+        }
+        return;
+    }
+
+    // [新增] 收到好友申请实时通知
+    if (msgId == FRIEND_REQUEST_NOTIFY) {
+        chat::FriendRequestNotify notify;
+        if (notify.ParseFromString(data)) {
+            emit friendRequestReceived(notify.apply_id(), notify.from_id(), QString::fromStdString(notify.from_name()));
+        }
+        return;
+    }
+
+    // [新增] 收到处理好友申请响应 (同意/拒绝成功反馈)
+    if (msgId == PROCESS_FRIEND_RESP) {
+        chat::ProcessFriendResp resp;
+        if (resp.ParseFromString(data)) {
+            emit processFriendResult(resp.success(), resp.apply_id(), resp.accept(), 
+                                     resp.friend_info().id(), 
+                                     QString::fromStdString(resp.friend_info().name()), 
+                                     QString::fromStdString(resp.friend_info().state()));
+        }
+        return;
+    }
+
+    // [新增] 收到好友上线/下线实时状态通知
+    if (msgId == USER_STATUS_NOTIFY_MSG) {
+        chat::UserStatusNotify notify;
+        if (notify.ParseFromString(data)) {
+            emit friendStatusChanged(notify.uid(), QString::fromStdString(notify.state()));
+        }
+        return;
+    }
+
+    // [新增] 收到好友关系建立实时通知 (A收到B同意的事件)
+    if (msgId == ADD_FRIEND_SUCCESS_NOTIFY) {
+        chat::AddFriendSuccessNotify notify;
+        if (notify.ParseFromString(data)) {
+            emit friendBindSuccess(notify.friend_info().id(), 
+                                   QString::fromStdString(notify.friend_info().name()), 
+                                   QString::fromStdString(notify.friend_info().state()));
+        }
         return;
     }
 }

@@ -40,6 +40,12 @@ ChatService::ChatService() : _running(true) {
     // [新增] 注册接收确认消息处理
     _msgHandlerMap.insert({MSG_RECV_ACK, std::bind(&ChatService::recvAck, this, std::placeholders::_1, std::placeholders::_2)});
 
+    // [新增] 注册添加好友申请消息处理
+    _msgHandlerMap.insert({ADD_FRIEND_REQ, std::bind(&ChatService::sendApply, this, std::placeholders::_1, std::placeholders::_2)});
+
+    // [新增] 注册处理好友申请消息处理 (同意/拒绝)
+    _msgHandlerMap.insert({PROCESS_FRIEND_REQ, std::bind(&ChatService::processApply, this, std::placeholders::_1, std::placeholders::_2)});
+
     // [新增] 注册心跳消息处理
     _msgHandlerMap.insert({HEART_BEAT_MSG, std::bind(&ChatService::clientHeartBeat, this, std::placeholders::_1, std::placeholders::_2)});
 
@@ -183,11 +189,53 @@ void ChatService::login(const std::shared_ptr<TcpConnection>& conn, std::string&
                 user.setState("online");
                 _userModel.updateState(user);
 
+                // [新增] 3. 查询好友关系并缓存 Redis Set，同时带回其在线状态快照
+                vector<User> friendVec = _friendModel.query(id);
+                for (const auto& frnd : friendVec) {
+                    _redis.sadd("user:friends:" + to_string(id), to_string(frnd.getId()));
+                    
+                    FriendInfo* fi = resp.add_friends();
+                    fi->set_id(frnd.getId());
+                    fi->set_name(frnd.getName());
+                    
+                    // 比对路由网关以得出最新的在线状态
+                    string routeVal = _redis.hget("user:route", to_string(frnd.getId()));
+                    if (!routeVal.empty()) {
+                        fi->set_state("online");
+                    } else {
+                        fi->set_state("offline");
+                    }
+                }
+
+                // [新增] 4. 查询待处理的好友申请列表并塞入响应中
+                auto pendingApplies = _friendRequestModel.queryPending(id);
+                for (const auto& item : pendingApplies) {
+                    FriendRequestNotify* frn = resp.add_pending_applies();
+                    frn->set_apply_id(item.first.getId());
+                    frn->set_from_id(item.first.getFromId());
+                    frn->set_from_name(item.second);
+                }
+
                 // 3. 返回成功
                 resp.set_success(true);
                 resp.set_uid(user.getId());
                 resp.set_msg("登录成功");
                 LOG_INFO("用户登录成功: UID=" + std::to_string(user.getId()));
+
+                // [新增] 5. 广播自身上线通知给所有在线好友
+                for (const auto& frnd : friendVec) {
+                    string routeVal = _redis.hget("user:route", to_string(frnd.getId()));
+                    if (!routeVal.empty()) {
+                        UserStatusNotify statusNotify;
+                        statusNotify.set_uid(id);
+                        statusNotify.set_state("online");
+                        string notifyStr;
+                        statusNotify.SerializeToString(&notifyStr);
+                        
+                        _redis.publish(frnd.getId(), "NOTIFY:" + notifyStr);
+                        LOG_DEBUG("向在线好友广播上线通知: 发送方 UID=" + to_string(id) + " -> 接收方 UID=" + to_string(frnd.getId()));
+                    }
+                }
             }
         } else {
             // 登录失败：用户不存在 或 密码错误
@@ -241,6 +289,22 @@ void ChatService::clientCloseException(const std::shared_ptr<TcpConnection>& con
         _redis.hdel("user:route", std::to_string(user.getId()));
         LOG_INFO("用户已从 Redis 状态网关注销, UID=" + std::to_string(user.getId()));
 
+        // [新增] 向所有在线的好友广播自身下线通知
+        vector<User> friendVec = _friendModel.query(user.getId());
+        for (const auto& frnd : friendVec) {
+            string routeVal = _redis.hget("user:route", to_string(frnd.getId()));
+            if (!routeVal.empty()) {
+                UserStatusNotify statusNotify;
+                statusNotify.set_uid(user.getId());
+                statusNotify.set_state("offline");
+                string notifyStr;
+                statusNotify.SerializeToString(&notifyStr);
+                
+                _redis.publish(frnd.getId(), "NOTIFY:" + notifyStr);
+                LOG_DEBUG("向在线好友广播下线通知: 发送方 UID=" + to_string(user.getId()) + " -> 接收方 UID=" + to_string(frnd.getId()));
+            }
+        }
+
         // 清理该用户在重传队列中的所有待接收确认消息，并转存为离线消息
         {
             lock_guard<mutex> lock(_pendingMutex);
@@ -259,34 +323,56 @@ void ChatService::clientCloseException(const std::shared_ptr<TcpConnection>& con
 
 // 从 Redis 收到消息：说明有别的服务器发消息给本服务器上的用户了
 void ChatService::handleRedisSubscribeMessage(int userid, std::string msg) {
+    if (msg.size() < 4) {
+        LOG_ERROR("收到无效的跨服路由消息，长度不足 4 字节");
+        return;
+    }
+    std::string prefix = msg.substr(0, 4);
+    std::string payload = msg.substr(4);
+
     lock_guard<mutex> lock(_connMutex);
     auto it = _userConnMap.find(userid);
     if (it != _userConnMap.end()) {
-        it->second->send(ONE_CHAT_MSG, msg);
-        LOG_INFO("从 Redis 订阅通道收到跨服消息，本地直接转发给在线用户 UID=" + std::to_string(userid));
-        
-        // 反序列化取出 msg_id，以便加入本服务器的重传确认队列中
-        OneChatRequest req;
-        if (req.ParseFromString(msg)) {
-            PendingRecvMsg pMsg;
-            pMsg.msgId = req.msg_id();
-            pMsg.fromId = req.from_id();
-            pMsg.toId = userid;
-            pMsg.msgData = msg;
-            pMsg.lastSendTime = time(nullptr);
-            pMsg.retryCount = 0;
-            pMsg.conn = it->second;
+        if (prefix == "MSG:") {
+            it->second->send(ONE_CHAT_MSG, payload);
+            LOG_INFO("从 Redis 通道收到跨服单聊消息，转发给在线用户 UID=" + std::to_string(userid));
             
-            lock_guard<mutex> pLock(_pendingMutex);
-            _pendingRecvAckMap.insert({req.msg_id(), pMsg});
+            // 反序列化取出 msg_id，以便加入本服务器的重传确认队列中
+            OneChatRequest req;
+            if (req.ParseFromString(payload)) {
+                PendingRecvMsg pMsg;
+                pMsg.msgId = req.msg_id();
+                pMsg.fromId = req.from_id();
+                pMsg.toId = userid;
+                pMsg.msgData = payload;
+                pMsg.lastSendTime = time(nullptr);
+                pMsg.retryCount = 0;
+                pMsg.conn = it->second;
+                
+                lock_guard<mutex> pLock(_pendingMutex);
+                _pendingRecvAckMap.insert({req.msg_id(), pMsg});
+            }
+        }
+        else if (prefix == "NTF:") {
+            it->second->send(USER_STATUS_NOTIFY_MSG, payload);
+            LOG_INFO("从 Redis 通道收到跨服状态变更通知，转发给在线用户 UID=" + std::to_string(userid));
+        }
+        else if (prefix == "APY:") {
+            it->second->send(FRIEND_REQUEST_NOTIFY, payload);
+            LOG_INFO("从 Redis 通道收到跨服好友申请通知，转发给在线用户 UID=" + std::to_string(userid));
+        }
+        else if (prefix == "BND:") {
+            it->second->send(ADD_FRIEND_SUCCESS_NOTIFY, payload);
+            LOG_INFO("从 Redis 通道收到跨服好友成功绑定通知，转发给在线用户 UID=" + std::to_string(userid));
         }
         return;
     }
 
-    // 理论上如果订阅了该用户，意味着用户肯定在线。
-    // 但可能正好用户下线了，消息刚到，这时候可以选择存离线，或者丢弃
-    // 这里简单起见，存储离线消息
-    _offlineMsgModel.insert(userid, msg);
+    // 用户刚好下线，如果收到的是 MSG 单聊包，则需要落盘存入离线消息
+    if (prefix == "MSG:") {
+        _offlineMsgModel.insert(userid, payload);
+        LOG_INFO("跨服单聊目标用户已下线，消息转存为离线消息, UID=" + std::to_string(userid));
+    }
 }
 
 // 一对一聊天业务
@@ -299,6 +385,20 @@ void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::strin
         }
         int toid = req.to_id();
         int fromid = req.from_id();
+
+        // [新增] 好友关系鉴权 (防骚扰)：必须是好友才能发送消息
+        bool isFriend = _redis.sismember("user:friends:" + to_string(fromid), to_string(toid));
+        if (!isFriend) {
+            MsgSendAck ack;
+            ack.set_msg_id(req.msg_id());
+            ack.set_success(false);
+            ack.set_err_msg("对方还不是您的好友，请先添加好友");
+            std::string ackStr;
+            ack.SerializeToString(&ackStr);
+            conn->send(MSG_SEND_ACK, ackStr);
+            LOG_WARN("非好友单聊拦截: 发送方 UID=" + to_string(fromid) + " -> 接收方 UID=" + to_string(toid) + ", msgId=" + to_string(req.msg_id()));
+            return;
+        }
 
         LOG_INFO("收到单聊消息：发送方 UID=" + std::to_string(fromid) + " -> 接收方 UID=" + std::to_string(toid) + ", msgId=" + std::to_string(req.msg_id()));
 
@@ -338,8 +438,8 @@ void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::strin
         // 3. 本地不在线，查询 Redis 状态网关 (不需要查询 MySQL 关系表)
         std::string route = _redis.hget("user:route", std::to_string(toid));
         if (!route.empty()) {
-            // 用户在其他节点在线 -> 通过 Redis 发布订阅，完成分布式跨节点路由转发
-            _redis.publish(toid, data);
+            // 用户在其他节点在线 -> 通过 Redis 发布订阅，完成分布式跨节点路由转发，加 "MSG:" 前缀
+            _redis.publish(toid, "MSG:" + data);
             LOG_INFO("接收方在节点 [" + route + "] 在线，通过 Redis 状态网关完成跨服路由转发, msgId=" + std::to_string(req.msg_id()));
             return;
         }
@@ -405,4 +505,136 @@ void ChatService::clientHeartBeat(const std::shared_ptr<TcpConnection>& conn, st
     (void)conn;
     (void)data;
     LOG_DEBUG("收到客户端心跳包，刷新连接活性");
+}
+
+// 处理添加好友申请业务
+void ChatService::sendApply(const std::shared_ptr<TcpConnection>& conn, std::string& data) {
+    AddFriendReq req;
+    AddFriendResp resp;
+    string send_str;
+
+    if (req.ParseFromString(data)) {
+        int from_id = req.from_id();
+        int to_id = req.to_id();
+
+        LOG_INFO("收到加好友申请：发送方 UID=" + to_string(from_id) + " -> 接收方 UID=" + to_string(to_id));
+
+        if (from_id == to_id) {
+            resp.set_success(false);
+            resp.set_msg("不能添加自己为好友");
+        } else {
+            // 1. 校验目标用户是否存在
+            User target = _userModel.query(to_id);
+            if (target.getId() == -1) {
+                resp.set_success(false);
+                resp.set_msg("目标用户不存在");
+            } else {
+                // 2. 校验是否已经是好友
+                bool isFriend = _redis.sismember("user:friends:" + to_string(from_id), to_string(to_id));
+                if (isFriend) {
+                    resp.set_success(false);
+                    resp.set_msg("对方已在您的好友列表中");
+                } else {
+                    // 3. 暂存到数据库中，状态为 pending
+                    int apply_id = _friendRequestModel.insert(from_id, to_id);
+                    if (apply_id == -1) {
+                        resp.set_success(false);
+                        resp.set_msg("发送好友申请失败，数据库更新异常");
+                    } else {
+                        resp.set_success(true);
+                        resp.set_msg("好友申请已发送，等待对方同意");
+
+                        // 4. 若目标在线，跨服发送申请实时通知
+                        string routeVal = _redis.hget("user:route", to_string(to_id));
+                        if (!routeVal.empty()) {
+                            User fromUser = _userModel.query(from_id);
+                            FriendRequestNotify applyNotify;
+                            applyNotify.set_apply_id(apply_id);
+                            applyNotify.set_from_id(from_id);
+                            applyNotify.set_from_name(fromUser.getName());
+                            
+                            string notifyStr;
+                            applyNotify.SerializeToString(&notifyStr);
+                            
+                            _redis.publish(to_id, "APY:" + notifyStr);
+                            LOG_DEBUG("已跨服向目标用户实时推送好友申请: to_id=" + to_string(to_id));
+                        }
+                    }
+                }
+            }
+        }
+
+        resp.SerializeToString(&send_str);
+        conn->send(ADD_FRIEND_RESP, send_str);
+    }
+}
+
+// 处理同意/拒绝好友申请业务
+void ChatService::processApply(const std::shared_ptr<TcpConnection>& conn, std::string& data) {
+    ProcessFriendReq req;
+    ProcessFriendResp resp;
+    string send_str;
+
+    if (req.ParseFromString(data)) {
+        int apply_id = req.apply_id();
+        int from_id = req.from_id();
+        int to_id = req.to_id();
+        bool accept = req.accept();
+
+        LOG_INFO("收到处理好友申请：处理方 UID=" + to_string(to_id) + ", 申请方 UID=" + to_string(from_id) + ", 同意=" + (accept ? "是" : "否"));
+
+        // 1. 更新申请表的状态
+        string newStatus = accept ? "accepted" : "rejected";
+        bool updateOk = _friendRequestModel.updateStatus(apply_id, newStatus);
+        
+        if (!updateOk) {
+            resp.set_success(false);
+            resp.set_msg("处理好友申请失败，数据库写入异常");
+            resp.set_apply_id(apply_id);
+            resp.set_accept(accept);
+        } else {
+            resp.set_success(true);
+            resp.set_msg(accept ? "已同意好友申请" : "已拒绝好友申请");
+            resp.set_apply_id(apply_id);
+            resp.set_accept(accept);
+
+            if (accept) {
+                // 2. 关系双向落盘，写入 MySQL Friend 表
+                _friendModel.insert(from_id, to_id);
+
+                // 3. 缓存在线好友 Set 集合到 Redis 缓存中
+                _redis.sadd("user:friends:" + to_string(from_id), to_string(to_id));
+                _redis.sadd("user:friends:" + to_string(to_id), to_string(from_id));
+
+                // 4. 将新好友的信息塞回给处理人 (B)
+                User fromUser = _userModel.query(from_id);
+                FriendInfo* fi = resp.mutable_friend_info();
+                fi->set_id(fromUser.getId());
+                fi->set_name(fromUser.getName());
+                
+                string fromRoute = _redis.hget("user:route", to_string(from_id));
+                fi->set_state(!fromRoute.empty() ? "online" : "offline");
+
+                // 5. 判定申请人 A 是否在线。若在线，跨服发送成功通知以亮起好友
+                string A_route = _redis.hget("user:route", to_string(from_id));
+                if (!A_route.empty()) {
+                    User toUser = _userModel.query(to_id);
+                    AddFriendSuccessNotify successNotify;
+                    FriendInfo* sfi = successNotify.mutable_friend_info();
+                    sfi->set_id(toUser.getId());
+                    sfi->set_name(toUser.getName());
+                    sfi->set_state("online"); // 处理人 B 此时肯定是在线的
+                    
+                    string successNotifyStr;
+                    successNotify.SerializeToString(&successNotifyStr);
+
+                    _redis.publish(from_id, "BND:" + successNotifyStr);
+                    LOG_DEBUG("已跨服向申请人发送好友绑定成功通知: from_id=" + to_string(from_id));
+                }
+            }
+        }
+
+        resp.SerializeToString(&send_str);
+        conn->send(PROCESS_FRIEND_RESP, send_str);
+    }
 }

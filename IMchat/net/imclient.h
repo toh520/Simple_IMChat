@@ -33,6 +33,12 @@ public:
     // 设置服务端端口
     void setServerPort(quint16 port);
 
+    // 发送加好友申请
+    void addFriend(int friendId);
+    
+    // 处理好友申请 (同意/拒绝)
+    void processFriend(int applyId, int fromId, bool accept);
+
     // 获取当前登录用户自身的 ID
     int getMyUid() const { return myUid_; }
 
@@ -46,6 +52,24 @@ signals:
     // 发送确认接收信号
     void oneChatSendAck(qint64 msgId, bool success, const QString &errMsg);
     void networkError(const QString &msg);
+
+    // 登录初始化加载社交数据信号 (friends: QList<QVariantMap>, applies: QList<QVariantMap>)
+    void socialDataLoaded(const QList<QVariantMap> &friends, const QList<QVariantMap> &applies);
+
+    // 申请加好友返回结果
+    void addFriendResult(bool success, const QString &msg);
+
+    // 收到好友申请实时通知
+    void friendRequestReceived(int applyId, int fromId, const QString &fromName);
+
+    // 处理好友申请返回结果 (同意/拒绝成功)
+    void processFriendResult(bool success, int applyId, bool accept, int friendId, const QString &friendName, const QString &state);
+
+    // 收到好友状态变更通知 (上线/下线)
+    void friendStatusChanged(int uid, const QString &state);
+
+    // 申请人收到好友关系绑定成功通知
+    void friendBindSuccess(int friendId, const QString &friendName, const QString &state);
 
 private:
     explicit ImClient(QObject *parent = nullptr);

@@ -26,6 +26,34 @@ namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace chat {
 
+inline constexpr UserStatusNotify::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        state_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        uid_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR UserStatusNotify::UserStatusNotify(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(UserStatusNotify_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct UserStatusNotifyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR UserStatusNotifyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~UserStatusNotifyDefaultTypeInternal() {}
+  union {
+    UserStatusNotify _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 UserStatusNotifyDefaultTypeInternal _UserStatusNotify_default_instance_;
+
 inline constexpr RegResponse::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -84,6 +112,34 @@ struct RegRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RegRequestDefaultTypeInternal _RegRequest_default_instance_;
+
+inline constexpr ProcessFriendReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        apply_id_{0},
+        from_id_{0},
+        to_id_{0},
+        accept_{false} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ProcessFriendReq::ProcessFriendReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(ProcessFriendReq_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct ProcessFriendReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ProcessFriendReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ProcessFriendReqDefaultTypeInternal() {}
+  union {
+    ProcessFriendReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProcessFriendReqDefaultTypeInternal _ProcessFriendReq_default_instance_;
 
 inline constexpr OneChatRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -171,35 +227,6 @@ struct MsgRecvAckDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MsgRecvAckDefaultTypeInternal _MsgRecvAck_default_instance_;
 
-inline constexpr LoginResponse::Impl_::Impl_(
-    ::_pbi::ConstantInitialized) noexcept
-      : _cached_size_{0},
-        msg_(
-            &::google::protobuf::internal::fixed_address_empty_string,
-            ::_pbi::ConstantInitialized()),
-        success_{false},
-        uid_{0} {}
-
-template <typename>
-PROTOBUF_CONSTEXPR LoginResponse::LoginResponse(::_pbi::ConstantInitialized)
-#if defined(PROTOBUF_CUSTOM_VTABLE)
-    : ::google::protobuf::Message(LoginResponse_class_data_.base()),
-#else   // PROTOBUF_CUSTOM_VTABLE
-    : ::google::protobuf::Message(),
-#endif  // PROTOBUF_CUSTOM_VTABLE
-      _impl_(::_pbi::ConstantInitialized()) {
-}
-struct LoginResponseDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR LoginResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~LoginResponseDefaultTypeInternal() {}
-  union {
-    LoginResponse _instance;
-  };
-};
-
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoginResponseDefaultTypeInternal _LoginResponse_default_instance_;
-
 inline constexpr LoginRequest::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : _cached_size_{0},
@@ -229,6 +256,207 @@ struct LoginRequestDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoginRequestDefaultTypeInternal _LoginRequest_default_instance_;
+
+inline constexpr FriendRequestNotify::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        from_name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        apply_id_{0},
+        from_id_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FriendRequestNotify::FriendRequestNotify(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(FriendRequestNotify_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct FriendRequestNotifyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FriendRequestNotifyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FriendRequestNotifyDefaultTypeInternal() {}
+  union {
+    FriendRequestNotify _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FriendRequestNotifyDefaultTypeInternal _FriendRequestNotify_default_instance_;
+
+inline constexpr FriendInfo::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        name_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        state_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        id_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR FriendInfo::FriendInfo(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(FriendInfo_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct FriendInfoDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR FriendInfoDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~FriendInfoDefaultTypeInternal() {}
+  union {
+    FriendInfo _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 FriendInfoDefaultTypeInternal _FriendInfo_default_instance_;
+
+inline constexpr AddFriendResp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        msg_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        success_{false} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AddFriendResp::AddFriendResp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(AddFriendResp_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct AddFriendRespDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AddFriendRespDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AddFriendRespDefaultTypeInternal() {}
+  union {
+    AddFriendResp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AddFriendRespDefaultTypeInternal _AddFriendResp_default_instance_;
+
+inline constexpr AddFriendReq::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        from_id_{0},
+        to_id_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AddFriendReq::AddFriendReq(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(AddFriendReq_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct AddFriendReqDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AddFriendReqDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AddFriendReqDefaultTypeInternal() {}
+  union {
+    AddFriendReq _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AddFriendReqDefaultTypeInternal _AddFriendReq_default_instance_;
+
+inline constexpr ProcessFriendResp::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        msg_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        friend_info_{nullptr},
+        success_{false},
+        accept_{false},
+        apply_id_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR ProcessFriendResp::ProcessFriendResp(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(ProcessFriendResp_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct ProcessFriendRespDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR ProcessFriendRespDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~ProcessFriendRespDefaultTypeInternal() {}
+  union {
+    ProcessFriendResp _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ProcessFriendRespDefaultTypeInternal _ProcessFriendResp_default_instance_;
+
+inline constexpr LoginResponse::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        friends_{},
+        pending_applies_{},
+        msg_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        success_{false},
+        uid_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR LoginResponse::LoginResponse(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(LoginResponse_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct LoginResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR LoginResponseDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~LoginResponseDefaultTypeInternal() {}
+  union {
+    LoginResponse _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 LoginResponseDefaultTypeInternal _LoginResponse_default_instance_;
+
+inline constexpr AddFriendSuccessNotify::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        friend_info_{nullptr} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR AddFriendSuccessNotify::AddFriendSuccessNotify(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(AddFriendSuccessNotify_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct AddFriendSuccessNotifyDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR AddFriendSuccessNotifyDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~AddFriendSuccessNotifyDefaultTypeInternal() {}
+  union {
+    AddFriendSuccessNotify _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AddFriendSuccessNotifyDefaultTypeInternal _AddFriendSuccessNotify_default_instance_;
 }  // namespace chat
 static constexpr const ::_pb::EnumDescriptor* PROTOBUF_NONNULL* PROTOBUF_NULLABLE
     file_level_enum_descriptors_msg_2eproto = nullptr;
@@ -245,14 +473,36 @@ const ::uint32_t
         0,
         1,
         0x081, // bitmap
-        PROTOBUF_FIELD_OFFSET(::chat::LoginResponse, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::chat::FriendInfo, _impl_._has_bits_),
         6, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::chat::FriendInfo, _impl_.id_),
+        PROTOBUF_FIELD_OFFSET(::chat::FriendInfo, _impl_.name_),
+        PROTOBUF_FIELD_OFFSET(::chat::FriendInfo, _impl_.state_),
+        2,
+        0,
+        1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::chat::FriendRequestNotify, _impl_._has_bits_),
+        6, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::chat::FriendRequestNotify, _impl_.apply_id_),
+        PROTOBUF_FIELD_OFFSET(::chat::FriendRequestNotify, _impl_.from_id_),
+        PROTOBUF_FIELD_OFFSET(::chat::FriendRequestNotify, _impl_.from_name_),
+        1,
+        2,
+        0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::chat::LoginResponse, _impl_._has_bits_),
+        8, // hasbit index offset
         PROTOBUF_FIELD_OFFSET(::chat::LoginResponse, _impl_.success_),
         PROTOBUF_FIELD_OFFSET(::chat::LoginResponse, _impl_.msg_),
         PROTOBUF_FIELD_OFFSET(::chat::LoginResponse, _impl_.uid_),
-        1,
-        0,
+        PROTOBUF_FIELD_OFFSET(::chat::LoginResponse, _impl_.friends_),
+        PROTOBUF_FIELD_OFFSET(::chat::LoginResponse, _impl_.pending_applies_),
+        3,
         2,
+        4,
+        0,
+        1,
         0x081, // bitmap
         PROTOBUF_FIELD_OFFSET(::chat::RegRequest, _impl_._has_bits_),
         5, // hasbit index offset
@@ -298,53 +548,135 @@ const ::uint32_t
         0,
         1,
         2,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::chat::AddFriendReq, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::chat::AddFriendReq, _impl_.from_id_),
+        PROTOBUF_FIELD_OFFSET(::chat::AddFriendReq, _impl_.to_id_),
+        0,
+        1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::chat::AddFriendResp, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::chat::AddFriendResp, _impl_.success_),
+        PROTOBUF_FIELD_OFFSET(::chat::AddFriendResp, _impl_.msg_),
+        1,
+        0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendReq, _impl_._has_bits_),
+        7, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendReq, _impl_.apply_id_),
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendReq, _impl_.from_id_),
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendReq, _impl_.to_id_),
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendReq, _impl_.accept_),
+        0,
+        1,
+        2,
+        3,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendResp, _impl_._has_bits_),
+        8, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendResp, _impl_.success_),
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendResp, _impl_.msg_),
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendResp, _impl_.apply_id_),
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendResp, _impl_.accept_),
+        PROTOBUF_FIELD_OFFSET(::chat::ProcessFriendResp, _impl_.friend_info_),
+        2,
+        0,
+        4,
+        3,
+        1,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::chat::UserStatusNotify, _impl_._has_bits_),
+        5, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::chat::UserStatusNotify, _impl_.uid_),
+        PROTOBUF_FIELD_OFFSET(::chat::UserStatusNotify, _impl_.state_),
+        1,
+        0,
+        0x081, // bitmap
+        PROTOBUF_FIELD_OFFSET(::chat::AddFriendSuccessNotify, _impl_._has_bits_),
+        4, // hasbit index offset
+        PROTOBUF_FIELD_OFFSET(::chat::AddFriendSuccessNotify, _impl_.friend_info_),
+        0,
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, sizeof(::chat::LoginRequest)},
-        {7, sizeof(::chat::LoginResponse)},
-        {16, sizeof(::chat::RegRequest)},
-        {23, sizeof(::chat::RegResponse)},
-        {32, sizeof(::chat::OneChatRequest)},
-        {43, sizeof(::chat::MsgSendAck)},
-        {52, sizeof(::chat::MsgRecvAck)},
+        {7, sizeof(::chat::FriendInfo)},
+        {16, sizeof(::chat::FriendRequestNotify)},
+        {25, sizeof(::chat::LoginResponse)},
+        {38, sizeof(::chat::RegRequest)},
+        {45, sizeof(::chat::RegResponse)},
+        {54, sizeof(::chat::OneChatRequest)},
+        {65, sizeof(::chat::MsgSendAck)},
+        {74, sizeof(::chat::MsgRecvAck)},
+        {83, sizeof(::chat::AddFriendReq)},
+        {90, sizeof(::chat::AddFriendResp)},
+        {97, sizeof(::chat::ProcessFriendReq)},
+        {108, sizeof(::chat::ProcessFriendResp)},
+        {121, sizeof(::chat::UserStatusNotify)},
+        {128, sizeof(::chat::AddFriendSuccessNotify)},
 };
 static const ::_pb::Message* PROTOBUF_NONNULL const file_default_instances[] = {
     &::chat::_LoginRequest_default_instance_._instance,
+    &::chat::_FriendInfo_default_instance_._instance,
+    &::chat::_FriendRequestNotify_default_instance_._instance,
     &::chat::_LoginResponse_default_instance_._instance,
     &::chat::_RegRequest_default_instance_._instance,
     &::chat::_RegResponse_default_instance_._instance,
     &::chat::_OneChatRequest_default_instance_._instance,
     &::chat::_MsgSendAck_default_instance_._instance,
     &::chat::_MsgRecvAck_default_instance_._instance,
+    &::chat::_AddFriendReq_default_instance_._instance,
+    &::chat::_AddFriendResp_default_instance_._instance,
+    &::chat::_ProcessFriendReq_default_instance_._instance,
+    &::chat::_ProcessFriendResp_default_instance_._instance,
+    &::chat::_UserStatusNotify_default_instance_._instance,
+    &::chat::_AddFriendSuccessNotify_default_instance_._instance,
 };
 const char descriptor_table_protodef_msg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
     "\n\tmsg.proto\022\004chat\"2\n\014LoginRequest\022\020\n\010use"
-    "rname\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\":\n\rLoginRe"
-    "sponse\022\017\n\007success\030\001 \001(\010\022\013\n\003msg\030\002 \001(\t\022\013\n\003"
-    "uid\030\003 \001(\005\"0\n\nRegRequest\022\020\n\010username\030\001 \001("
-    "\t\022\020\n\010password\030\002 \001(\t\"8\n\013RegResponse\022\017\n\007su"
-    "ccess\030\001 \001(\010\022\013\n\003uid\030\002 \001(\005\022\013\n\003msg\030\003 \001(\t\"M\n"
-    "\016OneChatRequest\022\017\n\007from_id\030\001 \001(\005\022\r\n\005to_i"
-    "d\030\002 \001(\005\022\013\n\003msg\030\003 \001(\t\022\016\n\006msg_id\030\004 \001(\003\">\n\n"
-    "MsgSendAck\022\016\n\006msg_id\030\001 \001(\003\022\017\n\007success\030\002 "
-    "\001(\010\022\017\n\007err_msg\030\003 \001(\t\"<\n\nMsgRecvAck\022\016\n\006ms"
-    "g_id\030\001 \001(\003\022\017\n\007from_id\030\002 \001(\005\022\r\n\005to_id\030\003 \001"
-    "(\005b\006proto3"
+    "rname\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\"5\n\nFriendI"
+    "nfo\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\r\n\005state\030\003"
+    " \001(\t\"K\n\023FriendRequestNotify\022\020\n\010apply_id\030"
+    "\001 \001(\005\022\017\n\007from_id\030\002 \001(\005\022\021\n\tfrom_name\030\003 \001("
+    "\t\"\221\001\n\rLoginResponse\022\017\n\007success\030\001 \001(\010\022\013\n\003"
+    "msg\030\002 \001(\t\022\013\n\003uid\030\003 \001(\005\022!\n\007friends\030\004 \003(\0132"
+    "\020.chat.FriendInfo\0222\n\017pending_applies\030\005 \003"
+    "(\0132\031.chat.FriendRequestNotify\"0\n\nRegRequ"
+    "est\022\020\n\010username\030\001 \001(\t\022\020\n\010password\030\002 \001(\t\""
+    "8\n\013RegResponse\022\017\n\007success\030\001 \001(\010\022\013\n\003uid\030\002"
+    " \001(\005\022\013\n\003msg\030\003 \001(\t\"M\n\016OneChatRequest\022\017\n\007f"
+    "rom_id\030\001 \001(\005\022\r\n\005to_id\030\002 \001(\005\022\013\n\003msg\030\003 \001(\t"
+    "\022\016\n\006msg_id\030\004 \001(\003\">\n\nMsgSendAck\022\016\n\006msg_id"
+    "\030\001 \001(\003\022\017\n\007success\030\002 \001(\010\022\017\n\007err_msg\030\003 \001(\t"
+    "\"<\n\nMsgRecvAck\022\016\n\006msg_id\030\001 \001(\003\022\017\n\007from_i"
+    "d\030\002 \001(\005\022\r\n\005to_id\030\003 \001(\005\".\n\014AddFriendReq\022\017"
+    "\n\007from_id\030\001 \001(\005\022\r\n\005to_id\030\002 \001(\005\"-\n\rAddFri"
+    "endResp\022\017\n\007success\030\001 \001(\010\022\013\n\003msg\030\002 \001(\t\"T\n"
+    "\020ProcessFriendReq\022\020\n\010apply_id\030\001 \001(\005\022\017\n\007f"
+    "rom_id\030\002 \001(\005\022\r\n\005to_id\030\003 \001(\005\022\016\n\006accept\030\004 "
+    "\001(\010\"z\n\021ProcessFriendResp\022\017\n\007success\030\001 \001("
+    "\010\022\013\n\003msg\030\002 \001(\t\022\020\n\010apply_id\030\003 \001(\005\022\016\n\006acce"
+    "pt\030\004 \001(\010\022%\n\013friend_info\030\005 \001(\0132\020.chat.Fri"
+    "endInfo\".\n\020UserStatusNotify\022\013\n\003uid\030\001 \001(\005"
+    "\022\r\n\005state\030\002 \001(\t\"\?\n\026AddFriendSuccessNotif"
+    "y\022%\n\013friend_info\030\001 \001(\0132\020.chat.FriendInfo"
+    "b\006proto3"
 };
 static ::absl::once_flag descriptor_table_msg_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_msg_2eproto = {
     false,
     false,
-    450,
+    1088,
     descriptor_table_protodef_msg_2eproto,
     "msg.proto",
     &descriptor_table_msg_2eproto_once,
     nullptr,
     0,
-    7,
+    15,
     schemas,
     file_default_instances,
     TableStruct_msg_2eproto::offsets,
@@ -674,6 +1006,715 @@ void LoginRequest::InternalSwap(LoginRequest* PROTOBUF_RESTRICT PROTOBUF_NONNULL
 }
 // ===================================================================
 
+class FriendInfo::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<FriendInfo>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(FriendInfo, _impl_._has_bits_);
+};
+
+FriendInfo::FriendInfo(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, FriendInfo_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.FriendInfo)
+}
+PROTOBUF_NDEBUG_INLINE FriendInfo::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::chat::FriendInfo& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        name_(arena, from.name_),
+        state_(arena, from.state_) {}
+
+FriendInfo::FriendInfo(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const FriendInfo& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, FriendInfo_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  FriendInfo* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.id_ = from._impl_.id_;
+
+  // @@protoc_insertion_point(copy_constructor:chat.FriendInfo)
+}
+PROTOBUF_NDEBUG_INLINE FriendInfo::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        name_(arena),
+        state_(arena) {}
+
+inline void FriendInfo::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.id_ = {};
+}
+FriendInfo::~FriendInfo() {
+  // @@protoc_insertion_point(destructor:chat.FriendInfo)
+  SharedDtor(*this);
+}
+inline void FriendInfo::SharedDtor(MessageLite& self) {
+  FriendInfo& this_ = static_cast<FriendInfo&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.name_.Destroy();
+  this_._impl_.state_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL FriendInfo::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) FriendInfo(arena);
+}
+constexpr auto FriendInfo::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(FriendInfo),
+                                            alignof(FriendInfo));
+}
+constexpr auto FriendInfo::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_FriendInfo_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &FriendInfo::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<FriendInfo>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &FriendInfo::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<FriendInfo>(), &FriendInfo::ByteSizeLong,
+              &FriendInfo::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(FriendInfo, _impl_._cached_size_),
+          false,
+      },
+      &FriendInfo::kDescriptorMethods,
+      &descriptor_table_msg_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull FriendInfo_class_data_ =
+        FriendInfo::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+FriendInfo::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&FriendInfo_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(FriendInfo_class_data_.tc_table);
+  return FriendInfo_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 33, 2>
+FriendInfo::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(FriendInfo, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    FriendInfo_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::chat::FriendInfo>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // int32 id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FriendInfo, _impl_.id_), 2>(),
+     {8, 2, 0,
+      PROTOBUF_FIELD_OFFSET(FriendInfo, _impl_.id_)}},
+    // string name = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 0, 0,
+      PROTOBUF_FIELD_OFFSET(FriendInfo, _impl_.name_)}},
+    // string state = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 1, 0,
+      PROTOBUF_FIELD_OFFSET(FriendInfo, _impl_.state_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 id = 1;
+    {PROTOBUF_FIELD_OFFSET(FriendInfo, _impl_.id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // string name = 2;
+    {PROTOBUF_FIELD_OFFSET(FriendInfo, _impl_.name_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string state = 3;
+    {PROTOBUF_FIELD_OFFSET(FriendInfo, _impl_.state_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\17\0\4\5\0\0\0\0"
+    "chat.FriendInfo"
+    "name"
+    "state"
+  }},
+};
+PROTOBUF_NOINLINE void FriendInfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.FriendInfo)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _impl_.name_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      _impl_.state_.ClearNonDefaultToEmpty();
+    }
+  }
+  _impl_.id_ = 0;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL FriendInfo::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const FriendInfo& this_ = static_cast<const FriendInfo&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL FriendInfo::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const FriendInfo& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:chat.FriendInfo)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // int32 id = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (this_._internal_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_id(), target);
+    }
+  }
+
+  // string name = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_name().empty()) {
+      const ::std::string& _s = this_._internal_name();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "chat.FriendInfo.name");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  // string state = 3;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (!this_._internal_state().empty()) {
+      const ::std::string& _s = this_._internal_state();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "chat.FriendInfo.state");
+      target = stream->WriteStringMaybeAliased(3, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.FriendInfo)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t FriendInfo::ByteSizeLong(const MessageLite& base) {
+  const FriendInfo& this_ = static_cast<const FriendInfo&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t FriendInfo::ByteSizeLong() const {
+  const FriendInfo& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:chat.FriendInfo)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+    // string name = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_name().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_name());
+      }
+    }
+    // string state = 3;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!this_._internal_state().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_state());
+      }
+    }
+    // int32 id = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (this_._internal_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_id());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void FriendInfo::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<FriendInfo*>(&to_msg);
+  auto& from = static_cast<const FriendInfo&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:chat.FriendInfo)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_name().empty()) {
+        _this->_internal_set_name(from._internal_name());
+      } else {
+        if (_this->_impl_.name_.IsDefault()) {
+          _this->_internal_set_name("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (!from._internal_state().empty()) {
+        _this->_internal_set_state(from._internal_state());
+      } else {
+        if (_this->_impl_.state_.IsDefault()) {
+          _this->_internal_set_state("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (from._internal_id() != 0) {
+        _this->_impl_.id_ = from._impl_.id_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void FriendInfo::CopyFrom(const FriendInfo& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:chat.FriendInfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void FriendInfo::InternalSwap(FriendInfo* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.name_, &other->_impl_.name_, arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.state_, &other->_impl_.state_, arena);
+  swap(_impl_.id_, other->_impl_.id_);
+}
+
+::google::protobuf::Metadata FriendInfo::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class FriendRequestNotify::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<FriendRequestNotify>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_._has_bits_);
+};
+
+FriendRequestNotify::FriendRequestNotify(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, FriendRequestNotify_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.FriendRequestNotify)
+}
+PROTOBUF_NDEBUG_INLINE FriendRequestNotify::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::chat::FriendRequestNotify& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        from_name_(arena, from.from_name_) {}
+
+FriendRequestNotify::FriendRequestNotify(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const FriendRequestNotify& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, FriendRequestNotify_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  FriendRequestNotify* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, apply_id_),
+           reinterpret_cast<const char*>(&from._impl_) +
+               offsetof(Impl_, apply_id_),
+           offsetof(Impl_, from_id_) -
+               offsetof(Impl_, apply_id_) +
+               sizeof(Impl_::from_id_));
+
+  // @@protoc_insertion_point(copy_constructor:chat.FriendRequestNotify)
+}
+PROTOBUF_NDEBUG_INLINE FriendRequestNotify::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        from_name_(arena) {}
+
+inline void FriendRequestNotify::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, apply_id_),
+           0,
+           offsetof(Impl_, from_id_) -
+               offsetof(Impl_, apply_id_) +
+               sizeof(Impl_::from_id_));
+}
+FriendRequestNotify::~FriendRequestNotify() {
+  // @@protoc_insertion_point(destructor:chat.FriendRequestNotify)
+  SharedDtor(*this);
+}
+inline void FriendRequestNotify::SharedDtor(MessageLite& self) {
+  FriendRequestNotify& this_ = static_cast<FriendRequestNotify&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.from_name_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL FriendRequestNotify::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) FriendRequestNotify(arena);
+}
+constexpr auto FriendRequestNotify::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(FriendRequestNotify),
+                                            alignof(FriendRequestNotify));
+}
+constexpr auto FriendRequestNotify::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_FriendRequestNotify_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &FriendRequestNotify::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<FriendRequestNotify>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &FriendRequestNotify::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<FriendRequestNotify>(), &FriendRequestNotify::ByteSizeLong,
+              &FriendRequestNotify::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_._cached_size_),
+          false,
+      },
+      &FriendRequestNotify::kDescriptorMethods,
+      &descriptor_table_msg_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull FriendRequestNotify_class_data_ =
+        FriendRequestNotify::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+FriendRequestNotify::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&FriendRequestNotify_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(FriendRequestNotify_class_data_.tc_table);
+  return FriendRequestNotify_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 3, 0, 42, 2>
+FriendRequestNotify::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_._has_bits_),
+    0, // no _extensions_
+    3, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967288,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    3,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    FriendRequestNotify_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::chat::FriendRequestNotify>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // int32 apply_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FriendRequestNotify, _impl_.apply_id_), 1>(),
+     {8, 1, 0,
+      PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_.apply_id_)}},
+    // int32 from_id = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(FriendRequestNotify, _impl_.from_id_), 2>(),
+     {16, 2, 0,
+      PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_.from_id_)}},
+    // string from_name = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 0, 0,
+      PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_.from_name_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 apply_id = 1;
+    {PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_.apply_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 from_id = 2;
+    {PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_.from_id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // string from_name = 3;
+    {PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_.from_name_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\30\0\0\11\0\0\0\0"
+    "chat.FriendRequestNotify"
+    "from_name"
+  }},
+};
+PROTOBUF_NOINLINE void FriendRequestNotify::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.FriendRequestNotify)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    _impl_.from_name_.ClearNonDefaultToEmpty();
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x00000006U)) {
+    ::memset(&_impl_.apply_id_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.from_id_) -
+        reinterpret_cast<char*>(&_impl_.apply_id_)) + sizeof(_impl_.from_id_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL FriendRequestNotify::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const FriendRequestNotify& this_ = static_cast<const FriendRequestNotify&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL FriendRequestNotify::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const FriendRequestNotify& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:chat.FriendRequestNotify)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // int32 apply_id = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (this_._internal_apply_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_apply_id(), target);
+    }
+  }
+
+  // int32 from_id = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (this_._internal_from_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_from_id(), target);
+    }
+  }
+
+  // string from_name = 3;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_from_name().empty()) {
+      const ::std::string& _s = this_._internal_from_name();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "chat.FriendRequestNotify.from_name");
+      target = stream->WriteStringMaybeAliased(3, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.FriendRequestNotify)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t FriendRequestNotify::ByteSizeLong(const MessageLite& base) {
+  const FriendRequestNotify& this_ = static_cast<const FriendRequestNotify&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t FriendRequestNotify::ByteSizeLong() const {
+  const FriendRequestNotify& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:chat.FriendRequestNotify)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+    // string from_name = 3;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_from_name().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_from_name());
+      }
+    }
+    // int32 apply_id = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (this_._internal_apply_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_apply_id());
+      }
+    }
+    // int32 from_id = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (this_._internal_from_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_from_id());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void FriendRequestNotify::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<FriendRequestNotify*>(&to_msg);
+  auto& from = static_cast<const FriendRequestNotify&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:chat.FriendRequestNotify)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_from_name().empty()) {
+        _this->_internal_set_from_name(from._internal_from_name());
+      } else {
+        if (_this->_impl_.from_name_.IsDefault()) {
+          _this->_internal_set_from_name("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (from._internal_apply_id() != 0) {
+        _this->_impl_.apply_id_ = from._impl_.apply_id_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (from._internal_from_id() != 0) {
+        _this->_impl_.from_id_ = from._impl_.from_id_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void FriendRequestNotify::CopyFrom(const FriendRequestNotify& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:chat.FriendRequestNotify)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void FriendRequestNotify::InternalSwap(FriendRequestNotify* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.from_name_, &other->_impl_.from_name_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_.from_id_)
+      + sizeof(FriendRequestNotify::_impl_.from_id_)
+      - PROTOBUF_FIELD_OFFSET(FriendRequestNotify, _impl_.apply_id_)>(
+          reinterpret_cast<char*>(&_impl_.apply_id_),
+          reinterpret_cast<char*>(&other->_impl_.apply_id_));
+}
+
+::google::protobuf::Metadata FriendRequestNotify::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
 class LoginResponse::_Internal {
  public:
   using HasBits =
@@ -697,6 +1738,8 @@ PROTOBUF_NDEBUG_INLINE LoginResponse::Impl_::Impl_(
     [[maybe_unused]] const ::chat::LoginResponse& from_msg)
       : _has_bits_{from._has_bits_},
         _cached_size_{0},
+        friends_{visibility, arena, from.friends_},
+        pending_applies_{visibility, arena, from.pending_applies_},
         msg_(arena, from.msg_) {}
 
 LoginResponse::LoginResponse(
@@ -726,6 +1769,8 @@ PROTOBUF_NDEBUG_INLINE LoginResponse::Impl_::Impl_(
     [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
     [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
       : _cached_size_{0},
+        friends_{visibility, arena},
+        pending_applies_{visibility, arena},
         msg_(arena) {}
 
 inline void LoginResponse::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
@@ -758,8 +1803,24 @@ inline void* PROTOBUF_NONNULL LoginResponse::PlacementNew_(
   return ::new (mem) LoginResponse(arena);
 }
 constexpr auto LoginResponse::InternalNewImpl_() {
-  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(LoginResponse),
-                                            alignof(LoginResponse));
+  constexpr auto arena_bits = ::google::protobuf::internal::EncodePlacementArenaOffsets({
+      PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.friends_) +
+          decltype(LoginResponse::_impl_.friends_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+      PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.pending_applies_) +
+          decltype(LoginResponse::_impl_.pending_applies_)::
+              InternalGetArenaOffset(
+                  ::google::protobuf::Message::internal_visibility()),
+  });
+  if (arena_bits.has_value()) {
+    return ::google::protobuf::internal::MessageCreator::CopyInit(
+        sizeof(LoginResponse), alignof(LoginResponse), *arena_bits);
+  } else {
+    return ::google::protobuf::internal::MessageCreator(&LoginResponse::PlacementNew_,
+                                 sizeof(LoginResponse),
+                                 alignof(LoginResponse));
+  }
 }
 constexpr auto LoginResponse::InternalGenerateClassData_() {
   return ::google::protobuf::internal::ClassDataFull{
@@ -795,18 +1856,18 @@ LoginResponse::GetClassData() const {
   return LoginResponse_class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 0, 30, 2>
+const ::_pbi::TcParseTable<3, 5, 2, 30, 2>
 LoginResponse::_table_ = {
   {
     PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    5, 56,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967264,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    0,  // num_aux_entries
-    offsetof(decltype(_table_), field_names),  // no aux_entries
+    5,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
     LoginResponse_class_data_.base(),
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
@@ -816,28 +1877,45 @@ LoginResponse::_table_ = {
   }, {{
     {::_pbi::TcParser::MiniParse, {}},
     // bool success = 1;
-    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(LoginResponse, _impl_.success_), 1>(),
-     {8, 1, 0,
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(LoginResponse, _impl_.success_), 3>(),
+     {8, 3, 0,
       PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.success_)}},
     // string msg = 2;
     {::_pbi::TcParser::FastUS1,
-     {18, 0, 0,
+     {18, 2, 0,
       PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.msg_)}},
     // int32 uid = 3;
-    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(LoginResponse, _impl_.uid_), 2>(),
-     {24, 2, 0,
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(LoginResponse, _impl_.uid_), 4>(),
+     {24, 4, 0,
       PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.uid_)}},
+    // repeated .chat.FriendInfo friends = 4;
+    {::_pbi::TcParser::FastMtR1,
+     {34, 0, 0,
+      PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.friends_)}},
+    // repeated .chat.FriendRequestNotify pending_applies = 5;
+    {::_pbi::TcParser::FastMtR1,
+     {42, 1, 1,
+      PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.pending_applies_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
   }}, {{
     65535, 65535
   }}, {{
     // bool success = 1;
-    {PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.success_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    {PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.success_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
     // string msg = 2;
-    {PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.msg_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    {PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.msg_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
     // int32 uid = 3;
-    {PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.uid_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    {PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.uid_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // repeated .chat.FriendInfo friends = 4;
+    {PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.friends_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .chat.FriendRequestNotify pending_applies = 5;
+    {PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.pending_applies_), _Internal::kHasBitsOffset + 1, 1, (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }},
-  // no aux_entries
+  {{
+      {::_pbi::TcParser::GetTable<::chat::FriendInfo>()},
+      {::_pbi::TcParser::GetTable<::chat::FriendRequestNotify>()},
+  }},
   {{
     "\22\0\3\0\0\0\0\0"
     "chat.LoginResponse"
@@ -852,10 +1930,18 @@ PROTOBUF_NOINLINE void LoginResponse::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _impl_._has_bits_[0];
-  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
-    _impl_.msg_.ClearNonDefaultToEmpty();
+  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _impl_.friends_.Clear();
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _impl_.pending_applies_.Clear();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      _impl_.msg_.ClearNonDefaultToEmpty();
+    }
   }
-  if (BatchCheckHasBit(cached_has_bits, 0x00000006U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x00000018U)) {
     ::memset(&_impl_.success_, 0, static_cast<::size_t>(
         reinterpret_cast<char*>(&_impl_.uid_) -
         reinterpret_cast<char*>(&_impl_.success_)) + sizeof(_impl_.uid_));
@@ -884,7 +1970,7 @@ PROTOBUF_NOINLINE void LoginResponse::Clear() {
 
   cached_has_bits = this_._impl_._has_bits_[0];
   // bool success = 1;
-  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
     if (this_._internal_success() != 0) {
       target = stream->EnsureSpace(target);
       target = ::_pbi::WireFormatLite::WriteBoolToArray(
@@ -893,7 +1979,7 @@ PROTOBUF_NOINLINE void LoginResponse::Clear() {
   }
 
   // string msg = 2;
-  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
     if (!this_._internal_msg().empty()) {
       const ::std::string& _s = this_._internal_msg();
       ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
@@ -903,11 +1989,37 @@ PROTOBUF_NOINLINE void LoginResponse::Clear() {
   }
 
   // int32 uid = 3;
-  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
     if (this_._internal_uid() != 0) {
       target =
           ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
               stream, this_._internal_uid(), target);
+    }
+  }
+
+  // repeated .chat.FriendInfo friends = 4;
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_friends_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_friends().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              4, repfield, repfield.GetCachedSize(),
+              target, stream);
+    }
+  }
+
+  // repeated .chat.FriendRequestNotify pending_applies = 5;
+  if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+    for (unsigned i = 0, n = static_cast<unsigned>(
+                             this_._internal_pending_applies_size());
+         i < n; i++) {
+      const auto& repfield = this_._internal_pending_applies().Get(i);
+      target =
+          ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+              5, repfield, repfield.GetCachedSize(),
+              target, stream);
     }
   }
 
@@ -936,22 +2048,36 @@ PROTOBUF_NOINLINE void LoginResponse::Clear() {
 
   ::_pbi::Prefetch5LinesFrom7Lines(&this_);
   cached_has_bits = this_._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+    // repeated .chat.FriendInfo friends = 4;
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      total_size += 1UL * this_._internal_friends_size();
+      for (const auto& msg : this_._internal_friends()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
+    // repeated .chat.FriendRequestNotify pending_applies = 5;
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      total_size += 1UL * this_._internal_pending_applies_size();
+      for (const auto& msg : this_._internal_pending_applies()) {
+        total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+      }
+    }
     // string msg = 2;
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (!this_._internal_msg().empty()) {
         total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
                                         this_._internal_msg());
       }
     }
     // bool success = 1;
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (this_._internal_success() != 0) {
         total_size += 2;
       }
     }
     // int32 uid = 3;
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       if (this_._internal_uid() != 0) {
         total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
             this_._internal_uid());
@@ -970,14 +2096,25 @@ void LoginResponse::MergeImpl(::google::protobuf::MessageLite& to_msg,
   if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
     from.CheckHasBitConsistency();
   }
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:chat.LoginResponse)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void)cached_has_bits;
 
   cached_has_bits = from._impl_._has_bits_[0];
-  if (BatchCheckHasBit(cached_has_bits, 0x00000007U)) {
-    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000001U)) {
+      _this->_internal_mutable_friends()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_friends());
+    }
+    if (CheckHasBitForRepeated(cached_has_bits, 0x00000002U)) {
+      _this->_internal_mutable_pending_applies()->InternalMergeFromWithArena(
+          ::google::protobuf::MessageLite::internal_visibility(), arena,
+          from._internal_pending_applies());
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
       if (!from._internal_msg().empty()) {
         _this->_internal_set_msg(from._internal_msg());
       } else {
@@ -986,12 +2123,12 @@ void LoginResponse::MergeImpl(::google::protobuf::MessageLite& to_msg,
         }
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
       if (from._internal_success() != 0) {
         _this->_impl_.success_ = from._impl_.success_;
       }
     }
-    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
       if (from._internal_uid() != 0) {
         _this->_impl_.uid_ = from._impl_.uid_;
       }
@@ -1016,6 +2153,8 @@ void LoginResponse::InternalSwap(LoginResponse* PROTOBUF_RESTRICT PROTOBUF_NONNU
   ABSL_DCHECK_EQ(arena, other->GetArena());
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  _impl_.friends_.InternalSwap(&other->_impl_.friends_);
+  _impl_.pending_applies_.InternalSwap(&other->_impl_.pending_applies_);
   ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.msg_, &other->_impl_.msg_, arena);
   ::google::protobuf::internal::memswap<
       PROTOBUF_FIELD_OFFSET(LoginResponse, _impl_.uid_)
@@ -2762,6 +3901,1957 @@ void MsgRecvAck::InternalSwap(MsgRecvAck* PROTOBUF_RESTRICT PROTOBUF_NONNULL oth
 }
 
 ::google::protobuf::Metadata MsgRecvAck::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class AddFriendReq::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<AddFriendReq>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(AddFriendReq, _impl_._has_bits_);
+};
+
+AddFriendReq::AddFriendReq(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, AddFriendReq_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.AddFriendReq)
+}
+AddFriendReq::AddFriendReq(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const AddFriendReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, AddFriendReq_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE AddFriendReq::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void AddFriendReq::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, from_id_),
+           0,
+           offsetof(Impl_, to_id_) -
+               offsetof(Impl_, from_id_) +
+               sizeof(Impl_::to_id_));
+}
+AddFriendReq::~AddFriendReq() {
+  // @@protoc_insertion_point(destructor:chat.AddFriendReq)
+  SharedDtor(*this);
+}
+inline void AddFriendReq::SharedDtor(MessageLite& self) {
+  AddFriendReq& this_ = static_cast<AddFriendReq&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL AddFriendReq::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) AddFriendReq(arena);
+}
+constexpr auto AddFriendReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(AddFriendReq),
+                                            alignof(AddFriendReq));
+}
+constexpr auto AddFriendReq::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_AddFriendReq_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &AddFriendReq::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<AddFriendReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &AddFriendReq::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<AddFriendReq>(), &AddFriendReq::ByteSizeLong,
+              &AddFriendReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(AddFriendReq, _impl_._cached_size_),
+          false,
+      },
+      &AddFriendReq::kDescriptorMethods,
+      &descriptor_table_msg_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull AddFriendReq_class_data_ =
+        AddFriendReq::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+AddFriendReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&AddFriendReq_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(AddFriendReq_class_data_.tc_table);
+  return AddFriendReq_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 0, 2>
+AddFriendReq::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(AddFriendReq, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    AddFriendReq_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::chat::AddFriendReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 to_id = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddFriendReq, _impl_.to_id_), 1>(),
+     {16, 1, 0,
+      PROTOBUF_FIELD_OFFSET(AddFriendReq, _impl_.to_id_)}},
+    // int32 from_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(AddFriendReq, _impl_.from_id_), 0>(),
+     {8, 0, 0,
+      PROTOBUF_FIELD_OFFSET(AddFriendReq, _impl_.from_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 from_id = 1;
+    {PROTOBUF_FIELD_OFFSET(AddFriendReq, _impl_.from_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 to_id = 2;
+    {PROTOBUF_FIELD_OFFSET(AddFriendReq, _impl_.to_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void AddFriendReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.AddFriendReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    ::memset(&_impl_.from_id_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.to_id_) -
+        reinterpret_cast<char*>(&_impl_.from_id_)) + sizeof(_impl_.to_id_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL AddFriendReq::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const AddFriendReq& this_ = static_cast<const AddFriendReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL AddFriendReq::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const AddFriendReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:chat.AddFriendReq)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // int32 from_id = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (this_._internal_from_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_from_id(), target);
+    }
+  }
+
+  // int32 to_id = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (this_._internal_to_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_to_id(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.AddFriendReq)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t AddFriendReq::ByteSizeLong(const MessageLite& base) {
+  const AddFriendReq& this_ = static_cast<const AddFriendReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t AddFriendReq::ByteSizeLong() const {
+  const AddFriendReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:chat.AddFriendReq)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    // int32 from_id = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (this_._internal_from_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_from_id());
+      }
+    }
+    // int32 to_id = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (this_._internal_to_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_to_id());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void AddFriendReq::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<AddFriendReq*>(&to_msg);
+  auto& from = static_cast<const AddFriendReq&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:chat.AddFriendReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (from._internal_from_id() != 0) {
+        _this->_impl_.from_id_ = from._impl_.from_id_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (from._internal_to_id() != 0) {
+        _this->_impl_.to_id_ = from._impl_.to_id_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void AddFriendReq::CopyFrom(const AddFriendReq& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:chat.AddFriendReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void AddFriendReq::InternalSwap(AddFriendReq* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(AddFriendReq, _impl_.to_id_)
+      + sizeof(AddFriendReq::_impl_.to_id_)
+      - PROTOBUF_FIELD_OFFSET(AddFriendReq, _impl_.from_id_)>(
+          reinterpret_cast<char*>(&_impl_.from_id_),
+          reinterpret_cast<char*>(&other->_impl_.from_id_));
+}
+
+::google::protobuf::Metadata AddFriendReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class AddFriendResp::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<AddFriendResp>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(AddFriendResp, _impl_._has_bits_);
+};
+
+AddFriendResp::AddFriendResp(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, AddFriendResp_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.AddFriendResp)
+}
+PROTOBUF_NDEBUG_INLINE AddFriendResp::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::chat::AddFriendResp& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        msg_(arena, from.msg_) {}
+
+AddFriendResp::AddFriendResp(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const AddFriendResp& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, AddFriendResp_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  AddFriendResp* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.success_ = from._impl_.success_;
+
+  // @@protoc_insertion_point(copy_constructor:chat.AddFriendResp)
+}
+PROTOBUF_NDEBUG_INLINE AddFriendResp::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        msg_(arena) {}
+
+inline void AddFriendResp::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.success_ = {};
+}
+AddFriendResp::~AddFriendResp() {
+  // @@protoc_insertion_point(destructor:chat.AddFriendResp)
+  SharedDtor(*this);
+}
+inline void AddFriendResp::SharedDtor(MessageLite& self) {
+  AddFriendResp& this_ = static_cast<AddFriendResp&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.msg_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL AddFriendResp::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) AddFriendResp(arena);
+}
+constexpr auto AddFriendResp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(AddFriendResp),
+                                            alignof(AddFriendResp));
+}
+constexpr auto AddFriendResp::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_AddFriendResp_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &AddFriendResp::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<AddFriendResp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &AddFriendResp::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<AddFriendResp>(), &AddFriendResp::ByteSizeLong,
+              &AddFriendResp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(AddFriendResp, _impl_._cached_size_),
+          false,
+      },
+      &AddFriendResp::kDescriptorMethods,
+      &descriptor_table_msg_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull AddFriendResp_class_data_ =
+        AddFriendResp::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+AddFriendResp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&AddFriendResp_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(AddFriendResp_class_data_.tc_table);
+  return AddFriendResp_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 30, 2>
+AddFriendResp::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(AddFriendResp, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    AddFriendResp_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::chat::AddFriendResp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string msg = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 0, 0,
+      PROTOBUF_FIELD_OFFSET(AddFriendResp, _impl_.msg_)}},
+    // bool success = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(AddFriendResp, _impl_.success_), 1>(),
+     {8, 1, 0,
+      PROTOBUF_FIELD_OFFSET(AddFriendResp, _impl_.success_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // bool success = 1;
+    {PROTOBUF_FIELD_OFFSET(AddFriendResp, _impl_.success_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // string msg = 2;
+    {PROTOBUF_FIELD_OFFSET(AddFriendResp, _impl_.msg_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\22\0\3\0\0\0\0\0"
+    "chat.AddFriendResp"
+    "msg"
+  }},
+};
+PROTOBUF_NOINLINE void AddFriendResp::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.AddFriendResp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    _impl_.msg_.ClearNonDefaultToEmpty();
+  }
+  _impl_.success_ = false;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL AddFriendResp::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const AddFriendResp& this_ = static_cast<const AddFriendResp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL AddFriendResp::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const AddFriendResp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:chat.AddFriendResp)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // bool success = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (this_._internal_success() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          1, this_._internal_success(), target);
+    }
+  }
+
+  // string msg = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_msg().empty()) {
+      const ::std::string& _s = this_._internal_msg();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "chat.AddFriendResp.msg");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.AddFriendResp)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t AddFriendResp::ByteSizeLong(const MessageLite& base) {
+  const AddFriendResp& this_ = static_cast<const AddFriendResp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t AddFriendResp::ByteSizeLong() const {
+  const AddFriendResp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:chat.AddFriendResp)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    // string msg = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_msg().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_msg());
+      }
+    }
+    // bool success = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (this_._internal_success() != 0) {
+        total_size += 2;
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void AddFriendResp::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<AddFriendResp*>(&to_msg);
+  auto& from = static_cast<const AddFriendResp&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:chat.AddFriendResp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_msg().empty()) {
+        _this->_internal_set_msg(from._internal_msg());
+      } else {
+        if (_this->_impl_.msg_.IsDefault()) {
+          _this->_internal_set_msg("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (from._internal_success() != 0) {
+        _this->_impl_.success_ = from._impl_.success_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void AddFriendResp::CopyFrom(const AddFriendResp& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:chat.AddFriendResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void AddFriendResp::InternalSwap(AddFriendResp* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.msg_, &other->_impl_.msg_, arena);
+  swap(_impl_.success_, other->_impl_.success_);
+}
+
+::google::protobuf::Metadata AddFriendResp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class ProcessFriendReq::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<ProcessFriendReq>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_._has_bits_);
+};
+
+ProcessFriendReq::ProcessFriendReq(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, ProcessFriendReq_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.ProcessFriendReq)
+}
+ProcessFriendReq::ProcessFriendReq(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const ProcessFriendReq& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, ProcessFriendReq_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(from._impl_) {
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+PROTOBUF_NDEBUG_INLINE ProcessFriendReq::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void ProcessFriendReq::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, apply_id_),
+           0,
+           offsetof(Impl_, accept_) -
+               offsetof(Impl_, apply_id_) +
+               sizeof(Impl_::accept_));
+}
+ProcessFriendReq::~ProcessFriendReq() {
+  // @@protoc_insertion_point(destructor:chat.ProcessFriendReq)
+  SharedDtor(*this);
+}
+inline void ProcessFriendReq::SharedDtor(MessageLite& self) {
+  ProcessFriendReq& this_ = static_cast<ProcessFriendReq&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL ProcessFriendReq::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) ProcessFriendReq(arena);
+}
+constexpr auto ProcessFriendReq::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(ProcessFriendReq),
+                                            alignof(ProcessFriendReq));
+}
+constexpr auto ProcessFriendReq::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_ProcessFriendReq_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &ProcessFriendReq::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<ProcessFriendReq>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &ProcessFriendReq::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<ProcessFriendReq>(), &ProcessFriendReq::ByteSizeLong,
+              &ProcessFriendReq::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_._cached_size_),
+          false,
+      },
+      &ProcessFriendReq::kDescriptorMethods,
+      &descriptor_table_msg_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull ProcessFriendReq_class_data_ =
+        ProcessFriendReq::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+ProcessFriendReq::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&ProcessFriendReq_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(ProcessFriendReq_class_data_.tc_table);
+  return ProcessFriendReq_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 0, 2>
+ProcessFriendReq::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_._has_bits_),
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    ProcessFriendReq_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::chat::ProcessFriendReq>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // bool accept = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(ProcessFriendReq, _impl_.accept_), 3>(),
+     {32, 3, 0,
+      PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.accept_)}},
+    // int32 apply_id = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ProcessFriendReq, _impl_.apply_id_), 0>(),
+     {8, 0, 0,
+      PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.apply_id_)}},
+    // int32 from_id = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ProcessFriendReq, _impl_.from_id_), 1>(),
+     {16, 1, 0,
+      PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.from_id_)}},
+    // int32 to_id = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ProcessFriendReq, _impl_.to_id_), 2>(),
+     {24, 2, 0,
+      PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.to_id_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 apply_id = 1;
+    {PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.apply_id_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 from_id = 2;
+    {PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.from_id_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // int32 to_id = 3;
+    {PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.to_id_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // bool accept = 4;
+    {PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.accept_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void ProcessFriendReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.ProcessFriendReq)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    ::memset(&_impl_.apply_id_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.accept_) -
+        reinterpret_cast<char*>(&_impl_.apply_id_)) + sizeof(_impl_.accept_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL ProcessFriendReq::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const ProcessFriendReq& this_ = static_cast<const ProcessFriendReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL ProcessFriendReq::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const ProcessFriendReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:chat.ProcessFriendReq)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // int32 apply_id = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (this_._internal_apply_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_apply_id(), target);
+    }
+  }
+
+  // int32 from_id = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (this_._internal_from_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<2>(
+              stream, this_._internal_from_id(), target);
+    }
+  }
+
+  // int32 to_id = 3;
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (this_._internal_to_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
+              stream, this_._internal_to_id(), target);
+    }
+  }
+
+  // bool accept = 4;
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (this_._internal_accept() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          4, this_._internal_accept(), target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.ProcessFriendReq)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t ProcessFriendReq::ByteSizeLong(const MessageLite& base) {
+  const ProcessFriendReq& this_ = static_cast<const ProcessFriendReq&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t ProcessFriendReq::ByteSizeLong() const {
+  const ProcessFriendReq& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:chat.ProcessFriendReq)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    // int32 apply_id = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (this_._internal_apply_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_apply_id());
+      }
+    }
+    // int32 from_id = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (this_._internal_from_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_from_id());
+      }
+    }
+    // int32 to_id = 3;
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (this_._internal_to_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_to_id());
+      }
+    }
+    // bool accept = 4;
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (this_._internal_accept() != 0) {
+        total_size += 2;
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void ProcessFriendReq::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<ProcessFriendReq*>(&to_msg);
+  auto& from = static_cast<const ProcessFriendReq&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:chat.ProcessFriendReq)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000000fU)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (from._internal_apply_id() != 0) {
+        _this->_impl_.apply_id_ = from._impl_.apply_id_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (from._internal_from_id() != 0) {
+        _this->_impl_.from_id_ = from._impl_.from_id_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (from._internal_to_id() != 0) {
+        _this->_impl_.to_id_ = from._impl_.to_id_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (from._internal_accept() != 0) {
+        _this->_impl_.accept_ = from._impl_.accept_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void ProcessFriendReq::CopyFrom(const ProcessFriendReq& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:chat.ProcessFriendReq)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void ProcessFriendReq::InternalSwap(ProcessFriendReq* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.accept_)
+      + sizeof(ProcessFriendReq::_impl_.accept_)
+      - PROTOBUF_FIELD_OFFSET(ProcessFriendReq, _impl_.apply_id_)>(
+          reinterpret_cast<char*>(&_impl_.apply_id_),
+          reinterpret_cast<char*>(&other->_impl_.apply_id_));
+}
+
+::google::protobuf::Metadata ProcessFriendReq::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class ProcessFriendResp::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<ProcessFriendResp>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_._has_bits_);
+};
+
+ProcessFriendResp::ProcessFriendResp(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, ProcessFriendResp_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.ProcessFriendResp)
+}
+PROTOBUF_NDEBUG_INLINE ProcessFriendResp::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::chat::ProcessFriendResp& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        msg_(arena, from.msg_) {}
+
+ProcessFriendResp::ProcessFriendResp(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const ProcessFriendResp& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, ProcessFriendResp_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  ProcessFriendResp* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.friend_info_ = (CheckHasBit(cached_has_bits, 0x00000002U))
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.friend_info_)
+                : nullptr;
+  ::memcpy(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, success_),
+           reinterpret_cast<const char*>(&from._impl_) +
+               offsetof(Impl_, success_),
+           offsetof(Impl_, apply_id_) -
+               offsetof(Impl_, success_) +
+               sizeof(Impl_::apply_id_));
+
+  // @@protoc_insertion_point(copy_constructor:chat.ProcessFriendResp)
+}
+PROTOBUF_NDEBUG_INLINE ProcessFriendResp::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        msg_(arena) {}
+
+inline void ProcessFriendResp::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char*>(&_impl_) +
+               offsetof(Impl_, friend_info_),
+           0,
+           offsetof(Impl_, apply_id_) -
+               offsetof(Impl_, friend_info_) +
+               sizeof(Impl_::apply_id_));
+}
+ProcessFriendResp::~ProcessFriendResp() {
+  // @@protoc_insertion_point(destructor:chat.ProcessFriendResp)
+  SharedDtor(*this);
+}
+inline void ProcessFriendResp::SharedDtor(MessageLite& self) {
+  ProcessFriendResp& this_ = static_cast<ProcessFriendResp&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.msg_.Destroy();
+  delete this_._impl_.friend_info_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL ProcessFriendResp::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) ProcessFriendResp(arena);
+}
+constexpr auto ProcessFriendResp::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(ProcessFriendResp),
+                                            alignof(ProcessFriendResp));
+}
+constexpr auto ProcessFriendResp::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_ProcessFriendResp_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &ProcessFriendResp::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<ProcessFriendResp>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &ProcessFriendResp::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<ProcessFriendResp>(), &ProcessFriendResp::ByteSizeLong,
+              &ProcessFriendResp::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_._cached_size_),
+          false,
+      },
+      &ProcessFriendResp::kDescriptorMethods,
+      &descriptor_table_msg_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull ProcessFriendResp_class_data_ =
+        ProcessFriendResp::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+ProcessFriendResp::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&ProcessFriendResp_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(ProcessFriendResp_class_data_.tc_table);
+  return ProcessFriendResp_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<3, 5, 1, 34, 2>
+ProcessFriendResp::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_._has_bits_),
+    0, // no _extensions_
+    5, 56,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    ProcessFriendResp_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::chat::ProcessFriendResp>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+    // bool success = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(ProcessFriendResp, _impl_.success_), 2>(),
+     {8, 2, 0,
+      PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.success_)}},
+    // string msg = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 0, 0,
+      PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.msg_)}},
+    // int32 apply_id = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(ProcessFriendResp, _impl_.apply_id_), 4>(),
+     {24, 4, 0,
+      PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.apply_id_)}},
+    // bool accept = 4;
+    {::_pbi::TcParser::SingularVarintNoZag1<bool, offsetof(ProcessFriendResp, _impl_.accept_), 3>(),
+     {32, 3, 0,
+      PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.accept_)}},
+    // .chat.FriendInfo friend_info = 5;
+    {::_pbi::TcParser::FastMtS1,
+     {42, 1, 0,
+      PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.friend_info_)}},
+    {::_pbi::TcParser::MiniParse, {}},
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // bool success = 1;
+    {PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.success_), _Internal::kHasBitsOffset + 2, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // string msg = 2;
+    {PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.msg_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 apply_id = 3;
+    {PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.apply_id_), _Internal::kHasBitsOffset + 4, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // bool accept = 4;
+    {PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.accept_), _Internal::kHasBitsOffset + 3, 0, (0 | ::_fl::kFcOptional | ::_fl::kBool)},
+    // .chat.FriendInfo friend_info = 5;
+    {PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.friend_info_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::chat::FriendInfo>()},
+  }},
+  {{
+    "\26\0\3\0\0\0\0\0"
+    "chat.ProcessFriendResp"
+    "msg"
+  }},
+};
+PROTOBUF_NOINLINE void ProcessFriendResp::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.ProcessFriendResp)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      _impl_.msg_.ClearNonDefaultToEmpty();
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      ABSL_DCHECK(_impl_.friend_info_ != nullptr);
+      _impl_.friend_info_->Clear();
+    }
+  }
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001cU)) {
+    ::memset(&_impl_.success_, 0, static_cast<::size_t>(
+        reinterpret_cast<char*>(&_impl_.apply_id_) -
+        reinterpret_cast<char*>(&_impl_.success_)) + sizeof(_impl_.apply_id_));
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL ProcessFriendResp::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const ProcessFriendResp& this_ = static_cast<const ProcessFriendResp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL ProcessFriendResp::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const ProcessFriendResp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:chat.ProcessFriendResp)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // bool success = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+    if (this_._internal_success() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          1, this_._internal_success(), target);
+    }
+  }
+
+  // string msg = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_msg().empty()) {
+      const ::std::string& _s = this_._internal_msg();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "chat.ProcessFriendResp.msg");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  // int32 apply_id = 3;
+  if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+    if (this_._internal_apply_id() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<3>(
+              stream, this_._internal_apply_id(), target);
+    }
+  }
+
+  // bool accept = 4;
+  if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+    if (this_._internal_accept() != 0) {
+      target = stream->EnsureSpace(target);
+      target = ::_pbi::WireFormatLite::WriteBoolToArray(
+          4, this_._internal_accept(), target);
+    }
+  }
+
+  // .chat.FriendInfo friend_info = 5;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        5, *this_._impl_.friend_info_, this_._impl_.friend_info_->GetCachedSize(), target,
+        stream);
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.ProcessFriendResp)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t ProcessFriendResp::ByteSizeLong(const MessageLite& base) {
+  const ProcessFriendResp& this_ = static_cast<const ProcessFriendResp&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t ProcessFriendResp::ByteSizeLong() const {
+  const ProcessFriendResp& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:chat.ProcessFriendResp)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+    // string msg = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_msg().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_msg());
+      }
+    }
+    // .chat.FriendInfo friend_info = 5;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.friend_info_);
+    }
+    // bool success = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (this_._internal_success() != 0) {
+        total_size += 2;
+      }
+    }
+    // bool accept = 4;
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (this_._internal_accept() != 0) {
+        total_size += 2;
+      }
+    }
+    // int32 apply_id = 3;
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (this_._internal_apply_id() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_apply_id());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void ProcessFriendResp::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<ProcessFriendResp*>(&to_msg);
+  auto& from = static_cast<const ProcessFriendResp&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:chat.ProcessFriendResp)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x0000001fU)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_msg().empty()) {
+        _this->_internal_set_msg(from._internal_msg());
+      } else {
+        if (_this->_impl_.msg_.IsDefault()) {
+          _this->_internal_set_msg("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      ABSL_DCHECK(from._impl_.friend_info_ != nullptr);
+      if (_this->_impl_.friend_info_ == nullptr) {
+        _this->_impl_.friend_info_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.friend_info_);
+      } else {
+        _this->_impl_.friend_info_->MergeFrom(*from._impl_.friend_info_);
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000004U)) {
+      if (from._internal_success() != 0) {
+        _this->_impl_.success_ = from._impl_.success_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000008U)) {
+      if (from._internal_accept() != 0) {
+        _this->_impl_.accept_ = from._impl_.accept_;
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000010U)) {
+      if (from._internal_apply_id() != 0) {
+        _this->_impl_.apply_id_ = from._impl_.apply_id_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void ProcessFriendResp::CopyFrom(const ProcessFriendResp& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:chat.ProcessFriendResp)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void ProcessFriendResp::InternalSwap(ProcessFriendResp* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.msg_, &other->_impl_.msg_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.apply_id_)
+      + sizeof(ProcessFriendResp::_impl_.apply_id_)
+      - PROTOBUF_FIELD_OFFSET(ProcessFriendResp, _impl_.friend_info_)>(
+          reinterpret_cast<char*>(&_impl_.friend_info_),
+          reinterpret_cast<char*>(&other->_impl_.friend_info_));
+}
+
+::google::protobuf::Metadata ProcessFriendResp::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class UserStatusNotify::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<UserStatusNotify>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(UserStatusNotify, _impl_._has_bits_);
+};
+
+UserStatusNotify::UserStatusNotify(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, UserStatusNotify_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.UserStatusNotify)
+}
+PROTOBUF_NDEBUG_INLINE UserStatusNotify::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::chat::UserStatusNotify& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        state_(arena, from.state_) {}
+
+UserStatusNotify::UserStatusNotify(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const UserStatusNotify& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, UserStatusNotify_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  UserStatusNotify* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.uid_ = from._impl_.uid_;
+
+  // @@protoc_insertion_point(copy_constructor:chat.UserStatusNotify)
+}
+PROTOBUF_NDEBUG_INLINE UserStatusNotify::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0},
+        state_(arena) {}
+
+inline void UserStatusNotify::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.uid_ = {};
+}
+UserStatusNotify::~UserStatusNotify() {
+  // @@protoc_insertion_point(destructor:chat.UserStatusNotify)
+  SharedDtor(*this);
+}
+inline void UserStatusNotify::SharedDtor(MessageLite& self) {
+  UserStatusNotify& this_ = static_cast<UserStatusNotify&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  this_._impl_.state_.Destroy();
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL UserStatusNotify::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) UserStatusNotify(arena);
+}
+constexpr auto UserStatusNotify::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::CopyInit(sizeof(UserStatusNotify),
+                                            alignof(UserStatusNotify));
+}
+constexpr auto UserStatusNotify::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_UserStatusNotify_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &UserStatusNotify::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<UserStatusNotify>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &UserStatusNotify::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<UserStatusNotify>(), &UserStatusNotify::ByteSizeLong,
+              &UserStatusNotify::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(UserStatusNotify, _impl_._cached_size_),
+          false,
+      },
+      &UserStatusNotify::kDescriptorMethods,
+      &descriptor_table_msg_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull UserStatusNotify_class_data_ =
+        UserStatusNotify::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+UserStatusNotify::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&UserStatusNotify_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(UserStatusNotify_class_data_.tc_table);
+  return UserStatusNotify_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 0, 35, 2>
+UserStatusNotify::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(UserStatusNotify, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    UserStatusNotify_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::chat::UserStatusNotify>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string state = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 0, 0,
+      PROTOBUF_FIELD_OFFSET(UserStatusNotify, _impl_.state_)}},
+    // int32 uid = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(UserStatusNotify, _impl_.uid_), 1>(),
+     {8, 1, 0,
+      PROTOBUF_FIELD_OFFSET(UserStatusNotify, _impl_.uid_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 uid = 1;
+    {PROTOBUF_FIELD_OFFSET(UserStatusNotify, _impl_.uid_), _Internal::kHasBitsOffset + 1, 0, (0 | ::_fl::kFcOptional | ::_fl::kInt32)},
+    // string state = 2;
+    {PROTOBUF_FIELD_OFFSET(UserStatusNotify, _impl_.state_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\25\0\5\0\0\0\0\0"
+    "chat.UserStatusNotify"
+    "state"
+  }},
+};
+PROTOBUF_NOINLINE void UserStatusNotify::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.UserStatusNotify)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    _impl_.state_.ClearNonDefaultToEmpty();
+  }
+  _impl_.uid_ = 0;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL UserStatusNotify::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const UserStatusNotify& this_ = static_cast<const UserStatusNotify&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL UserStatusNotify::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const UserStatusNotify& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:chat.UserStatusNotify)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // int32 uid = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+    if (this_._internal_uid() != 0) {
+      target =
+          ::google::protobuf::internal::WireFormatLite::WriteInt32ToArrayWithField<1>(
+              stream, this_._internal_uid(), target);
+    }
+  }
+
+  // string state = 2;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    if (!this_._internal_state().empty()) {
+      const ::std::string& _s = this_._internal_state();
+      ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+          _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "chat.UserStatusNotify.state");
+      target = stream->WriteStringMaybeAliased(2, _s, target);
+    }
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.UserStatusNotify)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t UserStatusNotify::ByteSizeLong(const MessageLite& base) {
+  const UserStatusNotify& this_ = static_cast<const UserStatusNotify&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t UserStatusNotify::ByteSizeLong() const {
+  const UserStatusNotify& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:chat.UserStatusNotify)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+  ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+  cached_has_bits = this_._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    // string state = 2;
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!this_._internal_state().empty()) {
+        total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                        this_._internal_state());
+      }
+    }
+    // int32 uid = 1;
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (this_._internal_uid() != 0) {
+        total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+            this_._internal_uid());
+      }
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void UserStatusNotify::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<UserStatusNotify*>(&to_msg);
+  auto& from = static_cast<const UserStatusNotify&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(class_specific_merge_from_start:chat.UserStatusNotify)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (BatchCheckHasBit(cached_has_bits, 0x00000003U)) {
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      if (!from._internal_state().empty()) {
+        _this->_internal_set_state(from._internal_state());
+      } else {
+        if (_this->_impl_.state_.IsDefault()) {
+          _this->_internal_set_state("");
+        }
+      }
+    }
+    if (CheckHasBit(cached_has_bits, 0x00000002U)) {
+      if (from._internal_uid() != 0) {
+        _this->_impl_.uid_ = from._impl_.uid_;
+      }
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void UserStatusNotify::CopyFrom(const UserStatusNotify& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:chat.UserStatusNotify)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void UserStatusNotify::InternalSwap(UserStatusNotify* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.state_, &other->_impl_.state_, arena);
+  swap(_impl_.uid_, other->_impl_.uid_);
+}
+
+::google::protobuf::Metadata UserStatusNotify::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class AddFriendSuccessNotify::_Internal {
+ public:
+  using HasBits =
+      decltype(::std::declval<AddFriendSuccessNotify>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(AddFriendSuccessNotify, _impl_._has_bits_);
+};
+
+AddFriendSuccessNotify::AddFriendSuccessNotify(::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, AddFriendSuccessNotify_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:chat.AddFriendSuccessNotify)
+}
+PROTOBUF_NDEBUG_INLINE AddFriendSuccessNotify::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena, const Impl_& from,
+    [[maybe_unused]] const ::chat::AddFriendSuccessNotify& from_msg)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+AddFriendSuccessNotify::AddFriendSuccessNotify(
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena,
+    const AddFriendSuccessNotify& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, AddFriendSuccessNotify_class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  AddFriendSuccessNotify* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.friend_info_ = (CheckHasBit(cached_has_bits, 0x00000001U))
+                ? ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.friend_info_)
+                : nullptr;
+
+  // @@protoc_insertion_point(copy_constructor:chat.AddFriendSuccessNotify)
+}
+PROTOBUF_NDEBUG_INLINE AddFriendSuccessNotify::Impl_::Impl_(
+    [[maybe_unused]] ::google::protobuf::internal::InternalVisibility visibility,
+    [[maybe_unused]] ::google::protobuf::Arena* PROTOBUF_NULLABLE arena)
+      : _cached_size_{0} {}
+
+inline void AddFriendSuccessNotify::SharedCtor(::_pb::Arena* PROTOBUF_NULLABLE arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.friend_info_ = {};
+}
+AddFriendSuccessNotify::~AddFriendSuccessNotify() {
+  // @@protoc_insertion_point(destructor:chat.AddFriendSuccessNotify)
+  SharedDtor(*this);
+}
+inline void AddFriendSuccessNotify::SharedDtor(MessageLite& self) {
+  AddFriendSuccessNotify& this_ = static_cast<AddFriendSuccessNotify&>(self);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  this_._internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  ABSL_DCHECK(this_.GetArena() == nullptr);
+  delete this_._impl_.friend_info_;
+  this_._impl_.~Impl_();
+}
+
+inline void* PROTOBUF_NONNULL AddFriendSuccessNotify::PlacementNew_(
+    const void* PROTOBUF_NONNULL, void* PROTOBUF_NONNULL mem,
+    ::google::protobuf::Arena* PROTOBUF_NULLABLE arena) {
+  return ::new (mem) AddFriendSuccessNotify(arena);
+}
+constexpr auto AddFriendSuccessNotify::InternalNewImpl_() {
+  return ::google::protobuf::internal::MessageCreator::ZeroInit(sizeof(AddFriendSuccessNotify),
+                                            alignof(AddFriendSuccessNotify));
+}
+constexpr auto AddFriendSuccessNotify::InternalGenerateClassData_() {
+  return ::google::protobuf::internal::ClassDataFull{
+      ::google::protobuf::internal::ClassData{
+          &_AddFriendSuccessNotify_default_instance_._instance,
+          &_table_.header,
+          nullptr,  // OnDemandRegisterArenaDtor
+          nullptr,  // IsInitialized
+          &AddFriendSuccessNotify::MergeImpl,
+          ::google::protobuf::Message::GetNewImpl<AddFriendSuccessNotify>(),
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+          &AddFriendSuccessNotify::SharedDtor,
+          ::google::protobuf::Message::GetClearImpl<AddFriendSuccessNotify>(), &AddFriendSuccessNotify::ByteSizeLong,
+              &AddFriendSuccessNotify::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          PROTOBUF_FIELD_OFFSET(AddFriendSuccessNotify, _impl_._cached_size_),
+          false,
+      },
+      &AddFriendSuccessNotify::kDescriptorMethods,
+      &descriptor_table_msg_2eproto,
+      nullptr,  // tracker
+  };
+}
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const
+    ::google::protobuf::internal::ClassDataFull AddFriendSuccessNotify_class_data_ =
+        AddFriendSuccessNotify::InternalGenerateClassData_();
+
+PROTOBUF_ATTRIBUTE_WEAK const ::google::protobuf::internal::ClassData* PROTOBUF_NONNULL
+AddFriendSuccessNotify::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&AddFriendSuccessNotify_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(AddFriendSuccessNotify_class_data_.tc_table);
+  return AddFriendSuccessNotify_class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2>
+AddFriendSuccessNotify::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(AddFriendSuccessNotify, _impl_._has_bits_),
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    AddFriendSuccessNotify_class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::chat::AddFriendSuccessNotify>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .chat.FriendInfo friend_info = 1;
+    {::_pbi::TcParser::FastMtS1,
+     {10, 0, 0,
+      PROTOBUF_FIELD_OFFSET(AddFriendSuccessNotify, _impl_.friend_info_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .chat.FriendInfo friend_info = 1;
+    {PROTOBUF_FIELD_OFFSET(AddFriendSuccessNotify, _impl_.friend_info_), _Internal::kHasBitsOffset + 0, 0, (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }},
+  {{
+      {::_pbi::TcParser::GetTable<::chat::FriendInfo>()},
+  }},
+  {{
+  }},
+};
+PROTOBUF_NOINLINE void AddFriendSuccessNotify::Clear() {
+// @@protoc_insertion_point(message_clear_start:chat.AddFriendSuccessNotify)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    ABSL_DCHECK(_impl_.friend_info_ != nullptr);
+    _impl_.friend_info_->Clear();
+  }
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::uint8_t* PROTOBUF_NONNULL AddFriendSuccessNotify::_InternalSerialize(
+    const ::google::protobuf::MessageLite& base, ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) {
+  const AddFriendSuccessNotify& this_ = static_cast<const AddFriendSuccessNotify&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::uint8_t* PROTOBUF_NONNULL AddFriendSuccessNotify::_InternalSerialize(
+    ::uint8_t* PROTOBUF_NONNULL target,
+    ::google::protobuf::io::EpsCopyOutputStream* PROTOBUF_NONNULL stream) const {
+  const AddFriendSuccessNotify& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    this_.CheckHasBitConsistency();
+  }
+  // @@protoc_insertion_point(serialize_to_array_start:chat.AddFriendSuccessNotify)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = this_._impl_._has_bits_[0];
+  // .chat.FriendInfo friend_info = 1;
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        1, *this_._impl_.friend_info_, this_._impl_.friend_info_->GetCachedSize(), target,
+        stream);
+  }
+
+  if (ABSL_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:chat.AddFriendSuccessNotify)
+  return target;
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+::size_t AddFriendSuccessNotify::ByteSizeLong(const MessageLite& base) {
+  const AddFriendSuccessNotify& this_ = static_cast<const AddFriendSuccessNotify&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+::size_t AddFriendSuccessNotify::ByteSizeLong() const {
+  const AddFriendSuccessNotify& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  // @@protoc_insertion_point(message_byte_size_start:chat.AddFriendSuccessNotify)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void)cached_has_bits;
+
+   {
+    // .chat.FriendInfo friend_info = 1;
+    cached_has_bits = this_._impl_._has_bits_[0];
+    if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+      total_size += 1 +
+                    ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.friend_info_);
+    }
+  }
+  return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                             &this_._impl_._cached_size_);
+}
+
+void AddFriendSuccessNotify::MergeImpl(::google::protobuf::MessageLite& to_msg,
+                            const ::google::protobuf::MessageLite& from_msg) {
+   auto* const _this =
+      static_cast<AddFriendSuccessNotify*>(&to_msg);
+  auto& from = static_cast<const AddFriendSuccessNotify&>(from_msg);
+  if constexpr (::_pbi::DebugHardenCheckHasBitConsistency()) {
+    from.CheckHasBitConsistency();
+  }
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:chat.AddFriendSuccessNotify)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (CheckHasBit(cached_has_bits, 0x00000001U)) {
+    ABSL_DCHECK(from._impl_.friend_info_ != nullptr);
+    if (_this->_impl_.friend_info_ == nullptr) {
+      _this->_impl_.friend_info_ = ::google::protobuf::Message::CopyConstruct(arena, *from._impl_.friend_info_);
+    } else {
+      _this->_impl_.friend_info_->MergeFrom(*from._impl_.friend_info_);
+    }
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+}
+
+void AddFriendSuccessNotify::CopyFrom(const AddFriendSuccessNotify& from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:chat.AddFriendSuccessNotify)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void AddFriendSuccessNotify::InternalSwap(AddFriendSuccessNotify* PROTOBUF_RESTRICT PROTOBUF_NONNULL other) {
+  using ::std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  swap(_impl_.friend_info_, other->_impl_.friend_info_);
+}
+
+::google::protobuf::Metadata AddFriendSuccessNotify::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)

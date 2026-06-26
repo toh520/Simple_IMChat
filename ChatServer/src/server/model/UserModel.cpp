@@ -71,10 +71,17 @@ bool UserModel::updateState(User user) {
 }
 
 void UserModel::resetState() {
-    char sql[1024] = "UPDATE User SET state = 'offline' WHERE state = 'online'";
     ConnectionPool* cp = ConnectionPool::getInstance();
     shared_ptr<Connection> sp = cp->getConnection();
     if (sp) {
+        // 启动自检：如果不存在，自动创建 Friend 关系表
+        sp->update("CREATE TABLE IF NOT EXISTS Friend (userid INT NOT NULL, friendid INT NOT NULL, PRIMARY KEY (userid, friendid))");
+        
+        // 启动自检：如果不存在，自动创建 FriendRequest 申请暂存表
+        sp->update("CREATE TABLE IF NOT EXISTS FriendRequest (id INT AUTO_INCREMENT PRIMARY KEY, from_id INT NOT NULL, to_id INT NOT NULL, status VARCHAR(20) DEFAULT 'pending', create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, KEY idx_to_status (to_id, status))");
+
+        // 重置所有在线状态为离线
+        char sql[1024] = "UPDATE User SET state = 'offline' WHERE state = 'online'";
         sp->update(sql);
     }
 }

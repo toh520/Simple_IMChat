@@ -173,3 +173,27 @@ bool Redis::cleanNodeRoutes(const std::string &key, const std::string &nodeVal) 
     freeReplyObject(reply);
     return false;
 }
+
+bool Redis::sadd(const std::string &key, const std::string &member) {
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "SADD %s %s", key.c_str(), member.c_str());
+    if (nullptr == reply) {
+        std::cerr << "sadd command failed!" << std::endl;
+        return false;
+    }
+    freeReplyObject(reply);
+    return true;
+}
+
+bool Redis::sismember(const std::string &key, const std::string &member) {
+    redisReply *reply = (redisReply *)redisCommand(_publish_context, "SISMEMBER %s %s", key.c_str(), member.c_str());
+    if (nullptr == reply) {
+        std::cerr << "sismember command failed!" << std::endl;
+        return false;
+    }
+    bool is_member = false;
+    if (reply->type == REDIS_REPLY_INTEGER && reply->integer == 1) {
+        is_member = true;
+    }
+    freeReplyObject(reply);
+    return is_member;
+}

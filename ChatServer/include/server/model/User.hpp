@@ -18,10 +18,10 @@ public:
     void setState(std::string state) { this->state = state; }
 
     // Getters
-    int getId() { return this->id; }
-    std::string getName() { return this->name; }
-    std::string getPwd() { return this->password; }
-    std::string getState() { return this->state; }
+    int getId() const { return this->id; }
+    std::string getName() const { return this->name; }
+    std::string getPwd() const { return this->password; }
+    std::string getState() const { return this->state; }
 
 private:
     int id;
