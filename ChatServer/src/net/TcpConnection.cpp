@@ -244,3 +244,14 @@ void TcpConnection::send(std::string msg) {
         }
     }
 }
+
+// 主动物理断开并注销套接字
+void TcpConnection::shutdown() {
+    if (!closed_.exchange(true)) {
+        std::cout << "[DEBUG] TcpConnection::shutdown() fd=" << socket_->getFd() << std::endl;
+        epoll_->updateChannel(socket_->getFd(), EPOLL_CTL_DEL, 0);
+        if (closeCallback_) {
+            closeCallback_(socket_->getFd());
+        }
+    }
+}

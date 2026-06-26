@@ -5,6 +5,8 @@
 #include <mutex>
 #include <string>
 #include <memory>
+#include <thread>
+#include <atomic>
 
 #include "msg.pb.h"
 #include "server/model/UserModel.hpp"
@@ -25,6 +27,8 @@ public:
     // 获取单例对象的接口
     static ChatService* instance();
 
+    ~ChatService();
+
     // 处理登录业务
     void login(const std::shared_ptr<TcpConnection>& conn, std::string& data);
 
@@ -33,6 +37,9 @@ public:
 
     // 处理一对一聊天业务
     void oneChat(const std::shared_ptr<TcpConnection>& conn, std::string& data);
+
+    // 处理接收端确认接收业务
+    void recvAck(const std::shared_ptr<TcpConnection>& conn, std::string& data);
 
     // [新增] 处理心跳业务
     void clientHeartBeat(const std::shared_ptr<TcpConnection>& conn, std::string& data);
@@ -48,6 +55,9 @@ public:
 
 private:
     ChatService();
+
+    // 守护重传循环函数
+    void retransmitLoop();
 
     // 存储消息id和其对应的业务处理方法
     std::unordered_map<int, MsgHandler> _msgHandlerMap;
@@ -65,4 +75,20 @@ private:
     // 存储在线用户的通信连接
     std::mutex _connMutex;
     std::unordered_map<int, std::shared_ptr<TcpConnection>> _userConnMap;
+
+    // --- 服务端可靠重传组件 ---
+    struct PendingRecvMsg {
+        int64_t msgId;
+        int fromId;
+        int toId;
+        std::string msgData; // OneChatRequest 序列化包体
+        time_t lastSendTime;
+        int retryCount;
+        std::shared_ptr<TcpConnection> conn;
+    };
+
+    std::atomic_bool _running;
+    std::thread _retransmitThread;
+    std::mutex _pendingMutex;
+    std::unordered_map<int64_t, PendingRecvMsg> _pendingRecvAckMap;
 };

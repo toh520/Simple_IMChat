@@ -33,4 +33,19 @@ message OneChatRequest {
     int32 from_id = 1;   // 发送者ID
     int32 to_id = 2;     // 接收者ID
     string msg = 3;      // 消息内容
+    int64 msg_id = 4;    // 消息唯一ID (Snowflake)
+}
+
+// 6. 发送确认 (服务端 -> 发送端)
+message MsgSendAck {
+    int64 msg_id = 1;
+    bool success = 2;
+    string err_msg = 3;
+}
+
+// 7. 接收确认 (接收端 -> 服务端)
+message MsgRecvAck {
+    int64 msg_id = 1;
+    int32 from_id = 2;
+    int32 to_id = 3;
 }

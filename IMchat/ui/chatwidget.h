@@ -10,12 +10,21 @@ namespace Ui {
 class ChatWidget;
 }
 
+// 消息状态枚举
+enum MessageStatus {
+    MSG_STATUS_SENDING, // 发送中
+    MSG_STATUS_SUCCESS, // 发送成功
+    MSG_STATUS_FAILED   // 发送失败
+};
+
 // 聊天消息实体结构
 struct ChatMessage {
+    qint64 msgId;        // 消息ID
     int fromId;          // 发送者 UID
     int toId;            // 接收者 UID
     QString content;     // 消息内容
     QDateTime timestamp; // 发送时间戳
+    MessageStatus status; // 消息状态
 };
 
 class ChatWidget : public QWidget
@@ -31,8 +40,11 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 private slots:
-    // 处理收到单聊消息的网络回调信号
-    void onOneChatReceived(int fromId, int toId, const QString &msg);
+    // 处理收到单聊消息的网络回调信号 (包含 msgId)
+    void onOneChatReceived(int fromId, int toId, const QString &msg, qint64 msgId);
+
+    // 处理收到消息发送确认的信号
+    void onOneChatSendAck(qint64 msgId, bool success, const QString &errMsg);
 
     // 界面按钮与列表的槽函数 (配合 Qt 自带的自动关联机制)
     void on_btn_add_session_clicked();

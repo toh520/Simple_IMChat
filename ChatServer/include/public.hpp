@@ -15,4 +15,7 @@ enum EnMsgType {
 
     // [新增] 
     HEART_BEAT_MSG, // 心跳消息
+
+    MSG_SEND_ACK,   // 发送端发送确认消息 (服务端 -> 发送端)
+    MSG_RECV_ACK,   // 接收端接收确认消息 (接收端 -> 服务端)
 };

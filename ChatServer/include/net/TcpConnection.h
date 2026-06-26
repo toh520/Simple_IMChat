@@ -34,6 +34,9 @@ public:
 
     void setCloseCallback(const CloseCallback& cb) { closeCallback_ = cb; }
 
+    // 主动断开连接物理套接字并从 Epoll 中清理的接口
+    void shutdown();
+
 private:
     // 保护发送操作的互斥锁（因为多线程业务可能同时调用 send）
     std::mutex sendMutex_;

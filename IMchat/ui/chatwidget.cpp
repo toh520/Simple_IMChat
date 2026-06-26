@@ -1,6 +1,7 @@
 #include "chatwidget.h"
 #include "ui_chatwidget.h"
 #include "imclient.h"
+#include "snowflake.h"
 
 #include <QInputDialog>
 #include <QMessageBox>
@@ -25,8 +26,10 @@ ChatWidget::ChatWidget(QWidget *parent)
     // 给输入编辑框安装事件过滤器，拦截并实现 Enter 键快捷发送
     ui->edit_input->installEventFilter(this);
 
-    // 绑定网络库收到单聊消息的信号
+    // 绑定网络库收到单聊消息的信号 (包括 msgId)
     connect(&ImClient::instance(), &ImClient::oneChatReceived, this, &ChatWidget::onOneChatReceived);
+    // 绑定网络库收到消息发送确认的信号
+    connect(&ImClient::instance(), &ImClient::oneChatSendAck, this, &ChatWidget::onOneChatSendAck);
 }
 
 ChatWidget::~ChatWidget()
@@ -51,16 +54,18 @@ bool ChatWidget::eventFilter(QObject *watched, QEvent *event)
 }
 
 // 接收单聊消息槽函数
-void ChatWidget::onOneChatReceived(int fromId, int toId, const QString &msg)
+void ChatWidget::onOneChatReceived(int fromId, int toId, const QString &msg, qint64 msgId)
 {
     Q_UNUSED(toId);
 
     // 构造聊天消息结构
     ChatMessage chatMsg;
+    chatMsg.msgId = msgId;
     chatMsg.fromId = fromId;
     chatMsg.toId = ImClient::instance().getMyUid(); // 接收者即为当前用户自己
     chatMsg.content = msg;
     chatMsg.timestamp = QDateTime::currentDateTime();
+    chatMsg.status = MSG_STATUS_SUCCESS; // 接收到的消息默认为成功
 
     // 存入当前会话的历史数据队列中
     chatHistory_[fromId].append(chatMsg);
@@ -94,7 +99,7 @@ void ChatWidget::onOneChatReceived(int fromId, int toId, const QString &msg)
         }
     }
 
-    // 如果当前打开的会话窗口正是发信人，则直接将其呈现在界面消息列表，并滚动至底部
+    // 如果当前打开 of 会话窗口正是发信人，则直接将其呈现在界面消息列表，并滚动至底部
     if (activeUserId_ == fromId) {
         appendMessageToView(chatMsg);
         ui->list_messages->scrollToBottom();
@@ -145,21 +150,49 @@ void ChatWidget::on_btn_send_clicked()
     QString text = ui->edit_input->toPlainText().trimmed();
     if (text.isEmpty()) return;
 
-    // 1. 调用网络组件发送数据包
-    ImClient::instance().sendOneChat(activeUserId_, text);
+    // 1. 生成雪花 ID
+    qint64 msgId = Snowflake::instance().nextId();
 
-    // 2. 将消息构造并追加到本地缓存的历史聊天记录中
+    // 2. 调用网络组件发送数据包 (传入 msgId)
+    ImClient::instance().sendOneChat(activeUserId_, text, msgId);
+
+    // 3. 将消息构造并追加到本地缓存的历史聊天记录中 (初始状态为发送中)
     ChatMessage chatMsg;
+    chatMsg.msgId = msgId;
     chatMsg.fromId = ImClient::instance().getMyUid(); // 发送方是自己
     chatMsg.toId = activeUserId_;                     // 接收方是对方
     chatMsg.content = text;
     chatMsg.timestamp = QDateTime::currentDateTime();
+    chatMsg.status = MSG_STATUS_SENDING;
     chatHistory_[activeUserId_].append(chatMsg);
 
-    // 3. 将消息渲染到界面的消息列表中并清空输入区
+    // 4. 将消息渲染到界面的消息列表中并清空输入区
     appendMessageToView(chatMsg);
     ui->edit_input->clear();
     ui->list_messages->scrollToBottom();
+}
+
+// 处理收到消息发送确认的信号
+void ChatWidget::onOneChatSendAck(qint64 msgId, bool success, const QString &errMsg)
+{
+    Q_UNUSED(errMsg);
+    bool found = false;
+    for (auto it = chatHistory_.begin(); it != chatHistory_.end(); ++it) {
+        for (int i = 0; i < it->size(); ++i) {
+            if (it->at(i).msgId == msgId) {
+                (*it)[i].status = success ? MSG_STATUS_SUCCESS : MSG_STATUS_FAILED;
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            // 如果更新的消息正是当前打开的会话，重新加载渲染界面
+            if (it.key() == activeUserId_) {
+                loadChatHistory(activeUserId_);
+            }
+            break;
+        }
+    }
 }
 
 // 选中会话列表某行发生变更的槽函数
@@ -216,19 +249,30 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
 {
     QString timeStr = msg.timestamp.toString("yyyy-MM-dd hh:mm:ss");
     QString displayHtml;
+    
+    QString statusStr;
+    if (msg.fromId == ImClient::instance().getMyUid()) {
+        if (msg.status == MSG_STATUS_SENDING) {
+            statusStr = " <span style='color: #e37400; font-size: 8pt; font-weight: bold;'>[发送中...]</span>";
+        } else if (msg.status == MSG_STATUS_FAILED) {
+            statusStr = " <span style='color: #d93025; font-size: 8pt; font-weight: bold;'>[发送失败 ⚠️]</span>";
+        } else {
+            statusStr = " <span style='color: #188038; font-size: 8pt;'>[已送达]</span>";
+        }
+    }
 
     // 判断发送者是否为自己，选择靠右或靠左的消息气泡排版
     if (msg.fromId == ImClient::instance().getMyUid()) {
         displayHtml = QString(
             "<div align='right' style='margin-bottom: 8px;'>"
-            "  <span style='color: #666666; font-size: 9pt;'>我  (%1)</span><br/>"
+            "  <span style='color: #666666; font-size: 9pt;'>我  (%1)%2</span><br/>"
             "  <span style='display: inline-block; background-color: #d2e3fc; color: #1a0dab; "
             "               padding: 6px 12px; border-radius: 8px; font-size: 11pt; "
             "               margin-top: 3px; max-width: 70%; word-wrap: break-word; text-align: left;'>"
-            "    %2"
+            "    %3"
             "  </span>"
             "</div>"
-        ).arg(timeStr).arg(msg.content.toHtmlEscaped().replace("\n", "<br/>"));
+        ).arg(timeStr).arg(statusStr).arg(msg.content.toHtmlEscaped().replace("\n", "<br/>"));
     } else {
         displayHtml = QString(
             "<div align='left' style='margin-bottom: 8px;'>"

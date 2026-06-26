@@ -12,7 +12,7 @@ ChatService* ChatService::instance() {
 }
 
 // 注册消息以及对应的Handler回调操作
-ChatService::ChatService() {
+ChatService::ChatService() : _running(true) {
     // 启动线程池 (例如 4 个 worker 线程)
     // 根据机器 CPU 核心数或者业务负载调整，这里默认给 4 个
     _threadPool = std::make_unique<ThreadPool>(4);
@@ -28,6 +28,9 @@ ChatService::ChatService() {
     // 一对一聊天业务管理
     _msgHandlerMap.insert({ONE_CHAT_MSG, std::bind(&ChatService::oneChat, this, std::placeholders::_1, std::placeholders::_2)});
 
+    // [新增] 注册接收确认消息处理
+    _msgHandlerMap.insert({MSG_RECV_ACK, std::bind(&ChatService::recvAck, this, std::placeholders::_1, std::placeholders::_2)});
+
     // [新增] 注册心跳消息处理
     _msgHandlerMap.insert({HEART_BEAT_MSG, std::bind(&ChatService::clientHeartBeat, this, std::placeholders::_1, std::placeholders::_2)});
 
@@ -39,6 +42,16 @@ ChatService::ChatService() {
     if (_redis.connect()) {
         // 设置上报消息的回调
         _redis.init_notify_handler(std::bind(&ChatService::handleRedisSubscribeMessage, this, std::placeholders::_1, std::placeholders::_2));
+    }
+
+    // 启动重传扫描守护线程
+    _retransmitThread = std::thread(&ChatService::retransmitLoop, this);
+}
+
+ChatService::~ChatService() {
+    _running = false;
+    if (_retransmitThread.joinable()) {
+        _retransmitThread.join();
     }
 }
 
@@ -199,12 +212,26 @@ void ChatService::clientCloseException(const std::shared_ptr<TcpConnection>& con
     }
 
     // 更新数据库状态
-    if (user.getId() != -1) { // 默认 id 是 -1, User 构造函数里没写，这里最好去 model 看看 User 初始化
+    if (user.getId() != -1) { 
         user.setState("offline");
         _userModel.updateState(user);
         
-        // [新增] 用户下线，取消订阅
+        // 用户下线，取消订阅
         _redis.unsubscribe(user.getId());
+
+        // 清理该用户在重传队列中的所有待接收确认消息，并转存为离线消息
+        {
+            lock_guard<mutex> lock(_pendingMutex);
+            for (auto it = _pendingRecvAckMap.begin(); it != _pendingRecvAckMap.end(); ) {
+                if (it->second.toId == user.getId()) {
+                    std::cout << "[DEBUG] 用户下线，转存待确认消息为离线消息, msgId=" << it->second.msgId << std::endl;
+                    _offlineMsgModel.insert(user.getId(), it->second.msgData);
+                    it = _pendingRecvAckMap.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+        }
     }
 }
 
@@ -214,6 +241,22 @@ void ChatService::handleRedisSubscribeMessage(int userid, std::string msg) {
     auto it = _userConnMap.find(userid);
     if (it != _userConnMap.end()) {
         it->second->send(ONE_CHAT_MSG, msg);
+        
+        // 反序列化取出 msg_id，以便加入本服务器的重传确认队列中
+        OneChatRequest req;
+        if (req.ParseFromString(msg)) {
+            PendingRecvMsg pMsg;
+            pMsg.msgId = req.msg_id();
+            pMsg.fromId = req.from_id();
+            pMsg.toId = userid;
+            pMsg.msgData = msg;
+            pMsg.lastSendTime = time(nullptr);
+            pMsg.retryCount = 0;
+            pMsg.conn = it->second;
+            
+            lock_guard<mutex> pLock(_pendingMutex);
+            _pendingRecvAckMap.insert({req.msg_id(), pMsg});
+        }
         return;
     }
 
@@ -229,14 +272,35 @@ void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::strin
     if (req.ParseFromString(data)) {
         int toid = req.to_id();
         int fromid = req.from_id();
-        string msg = req.msg();
 
+        // 1. 立即给发送端回发 MSG_SEND_ACK 告诉发送方服务器已接管该消息
+        MsgSendAck ack;
+        ack.set_msg_id(req.msg_id());
+        ack.set_success(true);
+        std::string ackStr;
+        ack.SerializeToString(&ackStr);
+        conn->send(MSG_SEND_ACK, ackStr);
+
+        // 2. 查找接收端是否在线
         {
             lock_guard<mutex> lock(_connMutex);
             auto it = _userConnMap.find(toid);
             if (it != _userConnMap.end()) {
                 // 用户在线，转发消息
                 it->second->send(ONE_CHAT_MSG, data);
+
+                // 加入待接收确认队列
+                PendingRecvMsg pMsg;
+                pMsg.msgId = req.msg_id();
+                pMsg.fromId = fromid;
+                pMsg.toId = toid;
+                pMsg.msgData = data;
+                pMsg.lastSendTime = time(nullptr);
+                pMsg.retryCount = 0;
+                pMsg.conn = it->second;
+
+                lock_guard<mutex> pLock(_pendingMutex);
+                _pendingRecvAckMap.insert({req.msg_id(), pMsg});
                 return;
             } 
         } // 锁在这里释放
@@ -253,6 +317,54 @@ void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::strin
 
         // 用户不在线 -> 存储离线消息
         _offlineMsgModel.insert(toid, data);
+    }
+}
+
+// 处理接收端确认接收业务
+void ChatService::recvAck(const std::shared_ptr<TcpConnection>& conn, std::string& data) {
+    (void)conn;
+    MsgRecvAck ack;
+    if (ack.ParseFromString(data)) {
+        int64_t msgId = ack.msg_id();
+        lock_guard<mutex> lock(_pendingMutex);
+        _pendingRecvAckMap.erase(msgId);
+    }
+}
+
+// 守护重传循环函数
+void ChatService::retransmitLoop() {
+    while (_running) {
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+
+        lock_guard<mutex> lock(_pendingMutex);
+        for (auto it = _pendingRecvAckMap.begin(); it != _pendingRecvAckMap.end(); ) {
+            time_t now = time(nullptr);
+            if (now - it->second.lastSendTime >= 3) { // 3秒超时重传
+                if (it->second.retryCount < 3) {
+                    it->second.retryCount++;
+                    it->second.lastSendTime = now;
+                    std::cout << "[DEBUG] 重传消息给用户 " << it->second.toId 
+                              << ", msgId=" << it->second.msgId 
+                              << ", 重试次数=" << it->second.retryCount << std::endl;
+                    it->second.conn->send(ONE_CHAT_MSG, it->second.msgData);
+                    ++it;
+                } else {
+                    // 重传达上限，说明对方假死/断网，转为离线并强退连接
+                    std::cout << "[WARNING] 消息投递超时，强制断开接收端用户 " << it->second.toId 
+                              << ", msgId=" << it->second.msgId << std::endl;
+
+                    _offlineMsgModel.insert(it->second.toId, it->second.msgData);
+
+                    // 强断套接字
+                    clientCloseException(it->second.conn);
+                    it->second.conn->shutdown();
+
+                    it = _pendingRecvAckMap.erase(it);
+                }
+            } else {
+                ++it;
+            }
+        }
     }
 }
 
