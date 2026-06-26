@@ -32,6 +32,7 @@ include_directories(
 )
 
 # 新增：收集 ui 目录源文件 (注意 GLOB 最好不要包含 .ui，.ui 单独加比较稳妥)
+# Trigger CMake reload: 2026-06-26
 file(GLOB UI_SOURCES
     "${CMAKE_SOURCE_DIR}/ui/*.h"
     "${CMAKE_SOURCE_DIR}/ui/*.cpp"
