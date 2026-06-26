@@ -413,7 +413,7 @@ void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::strin
     LOG_DEBUG("已向发送方 UID=" + std::to_string(fromid) + " 回发接管确认 ACK, msgId=" + std::to_string(req.msg_id()));
 
     // [新增] 2. 写入全局异步批量存盘队列，由后台线程批量合并 Insert
-    MessageHistory histMsg(req.msg_id(), fromid, toid, data, "");
+    MessageHistory histMsg(req.msg_id(), fromid, toid, req.msg(), "");
     {
         lock_guard<mutex> lock(_queueMutex);
         _saveMsgQueue.push(histMsg);
