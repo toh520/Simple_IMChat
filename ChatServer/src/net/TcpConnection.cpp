@@ -3,6 +3,7 @@
 // [修正] 因为 CMake 包含了 proto 目录，所以直接引用文件名即可，不要加 proto/ 前缀
 #include "msg.pb.h" 
 #include "server/chatservice.hpp"
+#include "public.hpp"
 #include <iostream>
 #include <unistd.h>
 #include <cerrno>
@@ -25,7 +26,7 @@ void TcpConnection::refreshAliveTime() {
 }
 
 TcpConnection::~TcpConnection() {
-    std::cout << "TcpConnection 资源释放，关闭 fd=" << socket_->getFd() << std::endl;
+    LOG_INFO("释放 TcpConnection 资源，关闭套接字描述符 fd=" + std::to_string(socket_->getFd()));
 }
 
 void TcpConnection::onRead() {
@@ -39,15 +40,15 @@ void TcpConnection::onRead() {
             // [新增] 只要读到数据，就更新活跃时间
             refreshAliveTime();
 
-            // [DEBUG] 打印接收到的数据长度
-            std::cout << "[DEBUG] Received " << n << " bytes. Buffer readable: " << readBuffer_.readableBytes() << std::endl;
+            // 打印接收到的数据长度
+            LOG_DEBUG("读取套接字字节数: " + std::to_string(n) + ", 读缓冲区剩余可读: " + std::to_string(readBuffer_.readableBytes()));
 
             // [核心逻辑] 循环处理 Buffer 中的数据，解决粘包
             while (true) {
                 // 第一步：检查 Buffer 里的数据够不够解析出一个包头 (4字节)
                 // 包头存放整个包的长度
                 if (readBuffer_.readableBytes() < 4) {
-                    std::cout << "[DEBUG] Buffer data < 4 bytes, waiting..." << std::endl;
+                    LOG_DEBUG("当前可读字节数小于 4 字节包头，等待继续接收...");
                     break; // 数据不够，等待下次读取
                 }
 
@@ -60,15 +61,12 @@ void TcpConnection::onRead() {
                 int32_t net_len = len; // 保存网络序以便调试
                 len = ntohl(len);
 
-                // [DEBUG] 打印头部信息
-                std::cout << "[DEBUG] Header raw: " << std::hex << net_len << std::dec
-                          << ", Parsed len: " << len
-                          << ", Needed total: " << (4 + len)
-                          << ", Readable: " << readBuffer_.readableBytes() << std::endl;
+                // 打印头部信息
+                LOG_DEBUG("解析数据包包头 -> 预期体长度: " + std::to_string(len) + ", 整个包需要: " + std::to_string(4 + len) + ", 当前缓冲区可读: " + std::to_string(readBuffer_.readableBytes()));
 
                 // 安全检查：如果长度非常离谱（比如过大），可能是恶意攻击
                 if (len < 4 || len > 65536) { // 最小长度是4 (只有MsgID，没有包体)
-                    std::cout << "错误：非法的数据包长度 " << len << "，关闭连接" << std::endl;
+                    LOG_ERROR("收到非法的数据包长度: " + std::to_string(len) + "，强制切断并关闭连接");
                     closed_.store(true);
                     epoll_->updateChannel(socket_->getFd(), EPOLL_CTL_DEL, 0);
                     if (closeCallback_) closeCallback_(socket_->getFd());
@@ -96,7 +94,7 @@ void TcpConnection::onRead() {
                 // 包体总长度 len - 4 (MsgID占用的长度)
                 std::string data = readBuffer_.retrieveAsString(len - 4);
 
-                std::cout << "收到数据: MsgID=" << msgid << " DataLen=" << data.size() << std::endl;
+                LOG_INFO("成功解析出完整数据包: MsgID=" + std::to_string(msgid) + ", 数据长度=" + std::to_string(data.size()));
 
                 // 4. [关键] 调用业务层进行分发处理
                 // 获取对应消息id的处理器
@@ -109,7 +107,7 @@ void TcpConnection::onRead() {
         }
 
         if (n == 0) {
-            std::cout << "客户端断开连接 fd=" << socket_->getFd() << std::endl;
+            LOG_INFO("客户端主动断开 TCP 连接，fd=" + std::to_string(socket_->getFd()));
             closed_.store(true);
             epoll_->updateChannel(socket_->getFd(), EPOLL_CTL_DEL, 0);
             if (closeCallback_) {
@@ -125,7 +123,7 @@ void TcpConnection::onRead() {
             continue; // 被信号打断，重试读取
         }
 
-        std::cout << "TcpConnection 读取数据出错！errno=" << saveErrno << std::endl;
+        LOG_ERROR("读取套接字数据时出错，fd=" + std::to_string(socket_->getFd()) + ", errno=" + std::to_string(saveErrno));
         closed_.store(true);
         epoll_->updateChannel(socket_->getFd(), EPOLL_CTL_DEL, 0);
         if (closeCallback_) {
@@ -157,7 +155,7 @@ void TcpConnection::onWrite() {
             return; // 当前不可写，等待下一次 EPOLLOUT
         }
 
-        std::cout << "TcpConnection onWrite 发送失败 errno=" << errno << std::endl;
+        LOG_ERROR("写入套接字（onWrite）时出错，errno=" + std::to_string(errno));
         return;
     }
 
@@ -231,7 +229,7 @@ void TcpConnection::send(std::string msg) {
             break;
         }
 
-        std::cout << "TcpConnection 发送数据失败 errno=" << errno << std::endl;
+        LOG_ERROR("同步写入套接字发送失败，errno=" + std::to_string(errno));
         return;
     }
 
@@ -248,7 +246,7 @@ void TcpConnection::send(std::string msg) {
 // 主动物理断开并注销套接字
 void TcpConnection::shutdown() {
     if (!closed_.exchange(true)) {
-        std::cout << "[DEBUG] TcpConnection::shutdown() fd=" << socket_->getFd() << std::endl;
+        LOG_DEBUG("触发 TcpConnection::shutdown() 主动物理切断连接，fd=" + std::to_string(socket_->getFd()));
         epoll_->updateChannel(socket_->getFd(), EPOLL_CTL_DEL, 0);
         if (closeCallback_) {
             closeCallback_(socket_->getFd());

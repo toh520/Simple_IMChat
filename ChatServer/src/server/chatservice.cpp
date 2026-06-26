@@ -61,7 +61,9 @@ MsgHandler ChatService::getHandler(int msgid) {
     if (it == _msgHandlerMap.end()) {
         // 返回一个默认的空处理器，防止崩溃，并打印错误日志
         return [=](const std::shared_ptr<TcpConnection>& conn, std::string& data) {
-            cout << "msgid:" << msgid << " can not find handler!" << endl;
+            (void)conn;
+            (void)data;
+            LOG_ERROR("未找到消息类型对应的业务处理器: msgid=" + std::to_string(msgid));
         };
     } else {
         // [新增] 异步解耦核心：
@@ -102,12 +104,12 @@ void ChatService::reg(const std::shared_ptr<TcpConnection>& conn, std::string& d
             resp.set_success(true);
             resp.set_uid(user.getId()); // 这是一个亮点，注册成功直接返回ID
             resp.set_msg("注册成功");
-            cout << "用户注册成功: " << name << " ID: " << user.getId() << endl;
+            LOG_INFO("用户注册成功: 用户名=" + name + ", 分配的 UID=" + std::to_string(user.getId()));
         } else {
             // 注册失败
             resp.set_success(false);
             resp.set_msg("注册失败，用户名可能已存在");
-            cout << "用户注册失败: " << name << endl;
+            LOG_WARN("用户注册失败: 用户名=" + name + " (可能已存在)");
         }
 
         // 4. 序列化并发送回去
@@ -171,11 +173,13 @@ void ChatService::login(const std::shared_ptr<TcpConnection>& conn, std::string&
                 resp.set_success(true);
                 resp.set_uid(user.getId());
                 resp.set_msg("登录成功");
+                LOG_INFO("用户登录成功: UID=" + std::to_string(user.getId()));
             }
         } else {
             // 登录失败：用户不存在 或 密码错误
             resp.set_success(false);
             resp.set_msg("用户名或密码错误");
+            LOG_WARN("用户登录失败: 输入 ID=" + std::to_string(id) + " (密码错误或用户不存在)");
         }
         
         resp.SerializeToString(&send_str);
@@ -224,7 +228,7 @@ void ChatService::clientCloseException(const std::shared_ptr<TcpConnection>& con
             lock_guard<mutex> lock(_pendingMutex);
             for (auto it = _pendingRecvAckMap.begin(); it != _pendingRecvAckMap.end(); ) {
                 if (it->second.toId == user.getId()) {
-                    std::cout << "[DEBUG] 用户下线，转存待确认消息为离线消息, msgId=" << it->second.msgId << std::endl;
+                    LOG_DEBUG("用户下线，转存待确认消息为离线消息, msgId=" + std::to_string(it->second.msgId));
                     _offlineMsgModel.insert(user.getId(), it->second.msgData);
                     it = _pendingRecvAckMap.erase(it);
                 } else {
@@ -343,15 +347,15 @@ void ChatService::retransmitLoop() {
                 if (it->second.retryCount < 3) {
                     it->second.retryCount++;
                     it->second.lastSendTime = now;
-                    std::cout << "[DEBUG] 重传消息给用户 " << it->second.toId 
-                              << ", msgId=" << it->second.msgId 
-                              << ", 重试次数=" << it->second.retryCount << std::endl;
+                    LOG_WARN("消息接收超时，重传给用户 " + std::to_string(it->second.toId) 
+                             + ", msgId=" + std::to_string(it->second.msgId) 
+                             + " (重试次数: " + std::to_string(it->second.retryCount) + ")");
                     it->second.conn->send(ONE_CHAT_MSG, it->second.msgData);
                     ++it;
                 } else {
                     // 重传达上限，说明对方假死/断网，转为离线并强退连接
-                    std::cout << "[WARNING] 消息投递超时，强制断开接收端用户 " << it->second.toId 
-                              << ", msgId=" << it->second.msgId << std::endl;
+                    LOG_ERROR("消息投递最终超时失效：目标用户 UID=" + std::to_string(it->second.toId) 
+                              + " 假死或断开，强切其长连接并转离线，msgId=" + std::to_string(it->second.msgId));
 
                     _offlineMsgModel.insert(it->second.toId, it->second.msgData);
 
