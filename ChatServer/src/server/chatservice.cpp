@@ -245,6 +245,7 @@ void ChatService::handleRedisSubscribeMessage(int userid, std::string msg) {
     auto it = _userConnMap.find(userid);
     if (it != _userConnMap.end()) {
         it->second->send(ONE_CHAT_MSG, msg);
+        LOG_INFO("从 Redis 订阅通道收到跨服消息，本地直接转发给在线用户 UID=" + std::to_string(userid));
         
         // 反序列化取出 msg_id，以便加入本服务器的重传确认队列中
         OneChatRequest req;
@@ -272,18 +273,24 @@ void ChatService::handleRedisSubscribeMessage(int userid, std::string msg) {
 
 // 一对一聊天业务
 void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::string& data) {
-    OneChatRequest req;
-    if (req.ParseFromString(data)) {
+        // 1. 立即给发送端回发 MSG_SEND_ACK 告诉发送方服务器已接管该消息
+        OneChatRequest req;
+        if (!req.ParseFromString(data)) {
+            LOG_ERROR("反序列化 OneChatRequest 失败");
+            return;
+        }
         int toid = req.to_id();
         int fromid = req.from_id();
 
-        // 1. 立即给发送端回发 MSG_SEND_ACK 告诉发送方服务器已接管该消息
+        LOG_INFO("收到单聊消息：发送方 UID=" + std::to_string(fromid) + " -> 接收方 UID=" + std::to_string(toid) + ", msgId=" + std::to_string(req.msg_id()));
+
         MsgSendAck ack;
         ack.set_msg_id(req.msg_id());
         ack.set_success(true);
         std::string ackStr;
         ack.SerializeToString(&ackStr);
         conn->send(MSG_SEND_ACK, ackStr);
+        LOG_DEBUG("已向发送方 UID=" + std::to_string(fromid) + " 回发接管确认 ACK, msgId=" + std::to_string(req.msg_id()));
 
         // 2. 查找接收端是否在线
         {
@@ -305,6 +312,7 @@ void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::strin
 
                 lock_guard<mutex> pLock(_pendingMutex);
                 _pendingRecvAckMap.insert({req.msg_id(), pMsg});
+                LOG_INFO("接收方在线，本地直接转发消息，并将该消息加入待接收重传队列, msgId=" + std::to_string(req.msg_id()));
                 return;
             } 
         } // 锁在这里释放
@@ -316,12 +324,13 @@ void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::strin
             // 用户状态是 online，但不在我的 _userConnMap 里
             // 说明用户在别的服务器上 -> 发布消息到 Redis
             _redis.publish(toid, data);
+            LOG_INFO("接收方在其他节点在线，通过 Redis 发布完成分布式路由路由转发, msgId=" + std::to_string(req.msg_id()));
             return;
         }
 
         // 用户不在线 -> 存储离线消息
         _offlineMsgModel.insert(toid, data);
-    }
+        LOG_INFO("接收方不在线，消息已转存为离线消息存入数据库, msgId=" + std::to_string(req.msg_id()));
 }
 
 // 处理接收端确认接收业务
@@ -332,6 +341,7 @@ void ChatService::recvAck(const std::shared_ptr<TcpConnection>& conn, std::strin
         int64_t msgId = ack.msg_id();
         lock_guard<mutex> lock(_pendingMutex);
         _pendingRecvAckMap.erase(msgId);
+        LOG_INFO("收到接收方回复的已送达 ACK，中止重传并从队列移出该消息, msgId=" + std::to_string(msgId));
     }
 }
 
@@ -376,6 +386,7 @@ void ChatService::retransmitLoop() {
 // 实际上这里不需要做太多业务逻辑，因为 TcpConnection::onRead 每次读到数据都会刷新 lastActiveTime
 // 这里只是为了响应 MSGID，避免 "can not find handler" 报错
 void ChatService::clientHeartBeat(const std::shared_ptr<TcpConnection>& conn, std::string& data) {
-    // printf("Heartbeat from fd=%d\n", conn->fd());
-    // 可以在这里回复一个 HEART_BEAT_ACK，也可以不回复（单向心跳）
+    (void)conn;
+    (void)data;
+    LOG_DEBUG("收到客户端心跳包，刷新连接活性");
 }
