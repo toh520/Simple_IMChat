@@ -40,15 +40,14 @@ void TcpConnection::onRead() {
             // [新增] 只要读到数据，就更新活跃时间
             refreshAliveTime();
 
-            // 打印接收到的数据长度
-            LOG_DEBUG("读取套接字字节数: " + std::to_string(n) + ", 读缓冲区剩余可读: " + std::to_string(readBuffer_.readableBytes()));
+            // (已静默低级别读取字节数日志，仅保留核心功能输出)
 
             // [核心逻辑] 循环处理 Buffer 中的数据，解决粘包
             while (true) {
                 // 第一步：检查 Buffer 里的数据够不够解析出一个包头 (4字节)
                 // 包头存放整个包的长度
                 if (readBuffer_.readableBytes() < 4) {
-                    LOG_DEBUG("当前可读字节数小于 4 字节包头，等待继续接收...");
+                    // (已静默包头接收不足日志)
                     break; // 数据不够，等待下次读取
                 }
 
@@ -61,8 +60,7 @@ void TcpConnection::onRead() {
                 int32_t net_len = len; // 保存网络序以便调试
                 len = ntohl(len);
 
-                // 打印头部信息
-                LOG_DEBUG("解析数据包包头 -> 预期体长度: " + std::to_string(len) + ", 整个包需要: " + std::to_string(4 + len) + ", 当前缓冲区可读: " + std::to_string(readBuffer_.readableBytes()));
+                // (已静默包头解析日志)
 
                 // 安全检查：如果长度非常离谱（比如过大），可能是恶意攻击
                 if (len < 4 || len > 65536) { // 最小长度是4 (只有MsgID，没有包体)
@@ -94,7 +92,7 @@ void TcpConnection::onRead() {
                 // 包体总长度 len - 4 (MsgID占用的长度)
                 std::string data = readBuffer_.retrieveAsString(len - 4);
 
-                LOG_INFO("成功解析出完整数据包: MsgID=" + std::to_string(msgid) + ", 数据长度=" + std::to_string(data.size()));
+                // (已静默解析完整数据包日志，由业务层进行具体功能打印)
 
                 // 4. [关键] 调用业务层进行分发处理
                 // 获取对应消息id的处理器

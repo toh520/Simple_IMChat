@@ -1,5 +1,6 @@
 #include "server/ChatServer.h"
 #include "server/chatservice.hpp" // [修复] 引入业务类头文件
+#include "public.hpp"
 #include <iostream>
 #include <cstring>
 #include <cerrno>
@@ -21,7 +22,7 @@ ChatServer::ChatServer(int port) : port_(port) {
     // EPOLLIN: 读事件, EPOLLET: 边缘触发
     epoll_->updateChannel(listener_->getFd(), EPOLL_CTL_ADD, EPOLLIN | EPOLLET);
 
-    std::cout << "ChatServer 初始化完成，监听端口: " << port_ << std::endl;
+    LOG_INFO("ChatServer 初始化完成，监听端口: " + std::to_string(port_));
 }
 
 ChatServer::~ChatServer() {
@@ -29,7 +30,7 @@ ChatServer::~ChatServer() {
 }
 
 void ChatServer::start() {
-    std::cout << "ChatServer 服务已启动..." << std::endl;
+    LOG_INFO("ChatServer 服务已成功启动...");
 
     // [新增] 启动后台心跳检测线程
     std::thread checkThread(std::bind(&ChatServer::checkConnectionTask, this));
@@ -163,7 +164,7 @@ void ChatServer::checkConnectionTask() {
         } // 释放锁
         
         for (int fd : timeout_fds) {
-             std::cout << "[Heartbeat] Connection timeout fd=" << fd << ", kicking out..." << std::endl;
+             LOG_WARN("心跳检测：连接超时 fd=" + std::to_string(fd) + "，正在强行清理并清退长连接...");
              // shutdown 会触发主 loop 的 onRead -> read 0 -> handleClientDisconnect
              shutdown(fd, SHUT_RDWR);
         }
