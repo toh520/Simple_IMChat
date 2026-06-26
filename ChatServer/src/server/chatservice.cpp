@@ -232,7 +232,7 @@ void ChatService::login(const std::shared_ptr<TcpConnection>& conn, std::string&
                         string notifyStr;
                         statusNotify.SerializeToString(&notifyStr);
                         
-                        _redis.publish(frnd.getId(), "NOTIFY:" + notifyStr);
+                        _redis.publish(frnd.getId(), "NTF:" + notifyStr);
                         LOG_DEBUG("向在线好友广播上线通知: 发送方 UID=" + to_string(id) + " -> 接收方 UID=" + to_string(frnd.getId()));
                     }
                 }
@@ -300,7 +300,7 @@ void ChatService::clientCloseException(const std::shared_ptr<TcpConnection>& con
                 string notifyStr;
                 statusNotify.SerializeToString(&notifyStr);
                 
-                _redis.publish(frnd.getId(), "NOTIFY:" + notifyStr);
+                _redis.publish(frnd.getId(), "NTF:" + notifyStr);
                 LOG_DEBUG("向在线好友广播下线通知: 发送方 UID=" + to_string(user.getId()) + " -> 接收方 UID=" + to_string(frnd.getId()));
             }
         }
