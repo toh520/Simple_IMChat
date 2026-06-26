@@ -37,6 +37,11 @@ bool ImClient::isConnected() const
     return socket_.state() == QAbstractSocket::ConnectedState;
 }
 
+void ImClient::setServerPort(quint16 port)
+{
+    serverPort_ = port;
+}
+
 void ImClient::login(const QString &userId, const QString &password)
 {
     chat::LoginRequest req;
@@ -96,7 +101,7 @@ void ImClient::ensureConnected()
         return;
     }
 
-    socket_.connectToHost(QString::fromUtf8(kServerHost), kServerPort);
+    socket_.connectToHost(QString::fromUtf8(kServerHost), serverPort_);
 }
 
 void ImClient::sendPacket(int msgId, const std::string &payload)

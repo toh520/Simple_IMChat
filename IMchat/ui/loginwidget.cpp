@@ -59,6 +59,14 @@ LoginWidget::~LoginWidget()
 
 void LoginWidget::on_btn_register_clicked()
 {
+    // 同步当前端口给 ImClient，防止注册时连错端口
+    QString portStr = ui->port->text();
+    bool portOk = false;
+    int port = portStr.toInt(&portOk);
+    if (portOk && port > 0 && port < 65536) {
+        ImClient::instance().setServerPort(static_cast<quint16>(port));
+    }
+
     if (registerWidget_ == nullptr) {
         registerWidget_ = new RegisterWidget(nullptr);
         registerWidget_->setAttribute(Qt::WA_DeleteOnClose);
@@ -80,6 +88,7 @@ void LoginWidget::on_pushButton_clicked()
 {
     QString username = ui->id->text();
     QString password = ui->pwd->text();
+    QString portStr = ui->port->text();
 
     if (username.isEmpty() || password.isEmpty()) {
         QMessageBox::warning(this, "登录失败", "请输入用户ID和密码");
@@ -93,7 +102,15 @@ void LoginWidget::on_pushButton_clicked()
         return;
     }
 
+    bool portOk = false;
+    int port = portStr.toInt(&portOk);
+    if (!portOk || port <= 0 || port > 65535) {
+        QMessageBox::warning(this, "登录失败", "请输入合法的端口号 (1-65535)");
+        return;
+    }
+
     ui->pushButton->setEnabled(false);
+    ImClient::instance().setServerPort(static_cast<quint16>(port));
     ImClient::instance().login(username, password);
 
 }

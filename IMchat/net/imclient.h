@@ -30,6 +30,9 @@ public:
     // 发送单聊消息的接口
     void sendOneChat(int toId, const QString &msg, qint64 msgId);
 
+    // 设置服务端端口
+    void setServerPort(quint16 port);
+
     // 获取当前登录用户自身的 ID
     int getMyUid() const { return myUid_; }
 
@@ -85,7 +88,7 @@ private:
     int myUid_{-1};
 
     static constexpr const char *kServerHost = "127.0.0.1";
-    static constexpr quint16 kServerPort = 8888;
+    quint16 serverPort_{8888};
     static constexpr quint32 kMaxPacketSize = 64 * 1024;
 };
 
