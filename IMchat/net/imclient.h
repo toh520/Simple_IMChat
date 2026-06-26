@@ -26,6 +26,7 @@ public:
 
     void login(const QString &userId, const QString &password);
     void reg(const QString &username, const QString &password);
+    void logout();
     // 发送单聊消息的接口
     void sendOneChat(int toId, const QString &msg, qint64 msgId);
 

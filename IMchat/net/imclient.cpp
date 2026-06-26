@@ -59,6 +59,13 @@ void ImClient::reg(const QString &username, const QString &password)
     sendPacket(REG_MSG, payload);
 }
 
+void ImClient::logout()
+{
+    if (isConnected()) {
+        socket_.disconnectFromHost();
+    }
+}
+
 void ImClient::sendOneChat(int toId, const QString &msg, qint64 msgId)
 {
     chat::OneChatRequest req;

@@ -33,6 +33,7 @@ LoginWidget::LoginWidget(QWidget *parent)
 
                     connect(chatWidget_, &QObject::destroyed, this, [this]() {
                         chatWidget_ = nullptr;
+                        ImClient::instance().logout(); // 主动断开连接，下线用户
                         this->show();
                         this->activateWindow();
                     });

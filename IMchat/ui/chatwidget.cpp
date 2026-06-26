@@ -195,6 +195,12 @@ void ChatWidget::onOneChatSendAck(qint64 msgId, bool success, const QString &err
     }
 }
 
+// “退出登录” 按钮点击槽函数
+void ChatWidget::on_btn_logout_clicked()
+{
+    this->close();
+}
+
 // 选中会话列表某行发生变更的槽函数
 void ChatWidget::on_list_sessions_currentRowChanged(int currentRow)
 {

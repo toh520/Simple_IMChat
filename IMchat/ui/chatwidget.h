@@ -49,6 +49,7 @@ private slots:
     // 界面按钮与列表的槽函数 (配合 Qt 自带的自动关联机制)
     void on_btn_add_session_clicked();
     void on_btn_send_clicked();
+    void on_btn_logout_clicked();
     void on_list_sessions_currentRowChanged(int currentRow);
 
 private:
