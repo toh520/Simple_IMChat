@@ -11,7 +11,7 @@ services:
       - "3307:3307" # 映射宿主机 3307 到容器内 3307
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./数据库/init.sql:/docker-entrypoint-initdb.d/init.sql:ro # 挂载初始化建表脚本
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro # 挂载初始化建表脚本
     command: --port=3307 --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     restart: always
 
