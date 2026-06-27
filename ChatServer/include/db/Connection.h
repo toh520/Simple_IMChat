@@ -25,7 +25,17 @@ public:
     // 返回存活的时间
     clock_t getAliveTime() const { return clock() - alivetime_; }
 
+    // 检查连接活性，如果失效则自动重连
+    bool ping();
+
 private:
     MYSQL* conn_; // MySQL 原生句柄
     clock_t alivetime_; // 记录进入空闲状态后的起始时间
+
+    // 缓存参数以便自动重连
+    std::string ip_;
+    unsigned short port_;
+    std::string user_;
+    std::string password_;
+    std::string dbname_;
 };
