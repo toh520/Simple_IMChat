@@ -16,17 +16,31 @@ Redis::~Redis() {
 
 bool Redis::connect() {
     // 负责publish发布消息的上下文连接
-    _publish_context = redisConnect("127.0.0.1", 6379);
-    if (_publish_context == nullptr) {
-        std::cerr << "connect redis failed!" << std::endl;
-        return false;
+    _publish_context = redisConnect("redis", 6379);
+    if (_publish_context == nullptr || _publish_context->err) {
+        if (_publish_context != nullptr) {
+            redisFree(_publish_context);
+        }
+        // Fallback to local connection
+        _publish_context = redisConnect("127.0.0.1", 6379);
+        if (_publish_context == nullptr || _publish_context->err) {
+            std::cerr << "connect redis failed!" << std::endl;
+            return false;
+        }
     }
 
     // 负责subscribe订阅消息的上下文连接
-    _subcribe_context = redisConnect("127.0.0.1", 6379);
-    if (_subcribe_context == nullptr) {
-        std::cerr << "connect redis failed!" << std::endl;
-        return false;
+    _subcribe_context = redisConnect("redis", 6379);
+    if (_subcribe_context == nullptr || _subcribe_context->err) {
+        if (_subcribe_context != nullptr) {
+            redisFree(_subcribe_context);
+        }
+        // Fallback to local connection
+        _subcribe_context = redisConnect("127.0.0.1", 6379);
+        if (_subcribe_context == nullptr || _subcribe_context->err) {
+            std::cerr << "connect redis failed!" << std::endl;
+            return false;
+        }
     }
 
     // 在单独的线程中，监听通道上的事件，有消息给业务层进行上报

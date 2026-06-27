@@ -117,8 +117,8 @@ private:
     // 本地持久化的同步消息 Key
     qint64 lastSyncKey_{0};
 
-    static constexpr const char *kServerHost = "127.0.0.1";
-    quint16 serverPort_{8888};
+    static constexpr const char *kServerHost = "47.112.219.157";
+    quint16 serverPort_{8000};
     static constexpr quint32 kMaxPacketSize = 64 * 1024;
 };
 
