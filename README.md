@@ -10,21 +10,21 @@
 
 ```mermaid
 graph TD
-    subgraph 客户端 (Windows Qt 6)
+    subgraph "客户端 (Windows Qt 6)"
         C1["Qt 客户端 1 (UID: 1001)"]
         C2["Qt 客户端 2 (UID: 1002)"]
     end
 
-    subgraph 网关层 (L4 TCP 负载均衡)
+    subgraph "网关层 (L4 TCP 负载均衡)"
         Nginx["Nginx 代理网关 (Port: 8000)"]
     end
 
-    subgraph 业务集群 (C++ Epoll 节点)
+    subgraph "业务集群 (C++ Epoll 节点)"
         S1["ChatServer 1 (Port: 8888)"]
         S2["ChatServer 2 (Port: 8889)"]
     end
 
-    subgraph 存储与中间件 (Docker 容器)
+    subgraph "存储与中间件 (Docker 容器)"
         Redis["Redis 缓存/消息总线<br>(路由网关 user:route / Pub-Sub)"]
         MySQL["MySQL 8.0<br>(用户关系 / Timeline 消息历史)"]
     end
