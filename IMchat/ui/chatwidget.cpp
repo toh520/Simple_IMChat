@@ -499,13 +499,15 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
         
         // 计算系统消息的精确宽高
         // 左右 padding 共 20px (10px * 2)
-        // 关键修复：预留 10px 宽度缓冲和 6px 高度缓冲，防止由于字形微调导致最后一个字换行被截断
+        // 极重要修复：将宽度安全缓冲提高至 24px，高度缓冲提高至 8px。
+        // 这是因为系统消息包含特殊字符（如“●”和“○”），这类字符在不同系统和字型下会被渲染得非常宽（触发字体回退机制），
+        // 必须留出足够的横向余量，否则最后一个字/符号必定会被挤压折行导致显示不全。
         QFontMetrics fm(sysFont);
-        int textWidthLimit = maxW - 20 - 10; 
+        int textWidthLimit = maxW - 20 - 24; 
         QRect rect = fm.boundingRect(0, 0, textWidthLimit, 10000, Qt::TextWordWrap, msg.content);
         
-        int contentHeight = rect.height() + 8 + 6; // 上下 padding (8px) + 高度安全缓冲 (6px)
-        int contentWidth = rect.width() + 20 + 10; // 左右 padding (20px) + 宽度安全缓冲 (10px)
+        int contentHeight = rect.height() + 8 + 8; // 上下 padding (8px) + 高度安全缓冲 (8px)
+        int contentWidth = rect.width() + 20 + 24; // 左右 padding (20px) + 宽度安全缓冲 (24px)
         if (contentWidth > maxW) contentWidth = maxW;
         
         contentLabel->setFixedSize(contentWidth, contentHeight);
@@ -532,13 +534,13 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
 
         // 计算用户消息的精确宽高
         // 左右 padding 共 28px (14px * 2)
-        // 关键修复：预留 12px 宽度缓冲和 6px 高度缓冲，确保在任何 DPI 或字形渲染下，文本都有足够的横向空间，绝不提前折行
+        // 极重要修复：同样将宽度安全缓冲提高至 24px，高度缓冲提高至 8px，以兼容用户发送表情符号（Emoji）或特殊标点时的回退渲染。
         QFontMetrics fm(font);
-        int textWidthLimit = maxW - 28 - 12; 
+        int textWidthLimit = maxW - 28 - 24; 
         QRect rect = fm.boundingRect(0, 0, textWidthLimit, 10000, Qt::TextWordWrap, msg.content);
         
-        int contentHeight = rect.height() + 16 + 6; // 上下 padding (16px) + 高度安全缓冲 (6px)
-        int contentWidth = rect.width() + 28 + 12;  // 左右 padding (28px) + 宽度安全缓冲 (12px)
+        int contentHeight = rect.height() + 16 + 8; // 上下 padding (16px) + 高度安全缓冲 (8px)
+        int contentWidth = rect.width() + 28 + 24;  // 左右 padding (28px) + 宽度安全缓冲 (24px)
         if (contentWidth > maxW) contentWidth = maxW;
         
         // 显式固定 Label 大小，防止 Qt 布局引擎在未完全显示前将其压缩
