@@ -9,6 +9,9 @@
 #include <QKeyEvent>
 #include <QLabel>
 #include <QDateTime>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QSpacerItem>
 
 ChatWidget::ChatWidget(QWidget *parent)
     : QWidget(parent)
@@ -456,75 +459,122 @@ void ChatWidget::loadChatHistory(int uid)
     ui->list_messages->scrollToBottom();
 }
 
-// 私有辅助方法：渲染现代高质感气泡样式的聊天消息富文本
+// 私有辅助方法：使用独立的 QWidget 容器与布局动态构建气泡，彻底解决富文本高度计算不准导致的文字遮挡问题
 void ChatWidget::appendMessageToView(const ChatMessage &msg)
 {
+    // 1. 创建消息条目的主容器 Widget
+    QWidget *container = new QWidget(ui->list_messages);
+    QVBoxLayout *layout = new QVBoxLayout(container);
+    layout->setContentsMargins(10, 5, 10, 5); // 设置上下左右边距
+    layout->setSpacing(4);                   // 头部信息与聊天气泡之间的间距
+
+    // 2. 创建头部信息 Label (显示发送者、时间及状态)
+    QLabel *headerLabel = new QLabel(container);
     QString timeStr = msg.timestamp.toString("yyyy-MM-dd hh:mm:ss");
-    QString displayHtml;
-    
-    // 处理发送状态的视觉展示
-    QString statusStr;
-    if (msg.fromId == ImClient::instance().getMyUid()) {
-        if (msg.status == MSG_STATUS_SENDING) {
-            statusStr = " <span style='color: #f59e0b; font-size: 8pt; font-weight: bold;'>[发送中...]</span>";
-        } else if (msg.status == MSG_STATUS_FAILED) {
-            statusStr = " <span style='color: #ef4444; font-size: 8pt; font-weight: bold;'>[失败 ⚠️]</span>";
+
+    // 3. 创建消息内容气泡 Label
+    QLabel *contentLabel = new QLabel(container);
+    contentLabel->setText(msg.content);
+    contentLabel->setWordWrap(true);
+    contentLabel->setTextInteractionFlags(Qt::TextSelectableByMouse); // 支持鼠标选中复制文本
+
+    // 限制气泡最大宽度为聊天列表宽度的 70%，保证长文本自动折行
+    int maxW = ui->list_messages->width() * 0.7;
+    if (maxW < 250) maxW = 380; // 设置保底最大宽度
+    contentLabel->setMaximumWidth(maxW);
+
+    // 4. 创建气泡水平布局以实现靠左或靠右对齐
+    QHBoxLayout *bubbleLayout = new QHBoxLayout();
+    bubbleLayout->setContentsMargins(0, 0, 0, 0);
+
+    if (msg.fromId == 0) {
+        // 系统通知消息：居中展示，灰色小字卡片样式
+        headerLabel->hide();
+        contentLabel->setAlignment(Qt::AlignCenter);
+        contentLabel->setStyleSheet(
+            "QLabel {"
+            "  background-color: #f8fafc;"
+            "  color: #64748b;"
+            "  border: 1px solid #e2e8f0;"
+            "  border-radius: 10px;"
+            "  padding: 4px 10px;"
+            "  font-size: 8.5pt;"
+            "}"
+        );
+        bubbleLayout->addStretch();
+        bubbleLayout->addWidget(contentLabel);
+        bubbleLayout->addStretch();
+        
+        layout->addLayout(bubbleLayout);
+    } else {
+        // 用户消息
+        QString statusStr;
+        if (msg.fromId == ImClient::instance().getMyUid()) {
+            // 我发送的消息：右对齐，蓝色气泡，右上角为微直角
+            if (msg.status == MSG_STATUS_SENDING) {
+                statusStr = " <span style='color: #f59e0b;'>[发送中...]</span>";
+            } else if (msg.status == MSG_STATUS_FAILED) {
+                statusStr = " <span style='color: #ef4444;'>[失败 ⚠️]</span>";
+            } else {
+                statusStr = " <span style='color: #10b981; font-weight: bold;'>✓</span>";
+            }
+
+            headerLabel->setText(QString("我  (%1)%2").arg(timeStr).arg(statusStr));
+            headerLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+            headerLabel->setStyleSheet("color: #94a3b8; font-size: 8.5pt; background: transparent;");
+
+            contentLabel->setStyleSheet(
+                "QLabel {"
+                "  background-color: #6366f1;"
+                "  color: #ffffff;"
+                "  border-radius: 12px;"
+                "  border-top-right-radius: 2px;"
+                "  padding: 8px 14px;"
+                "  font-size: 10pt;"
+                "}"
+            );
+
+            bubbleLayout->addStretch();
+            bubbleLayout->addWidget(contentLabel);
+            
+            layout->addWidget(headerLabel);
+            layout->addLayout(bubbleLayout);
         } else {
-            statusStr = " <span style='color: #10b981; font-size: 9pt; font-weight: bold;'>✓</span>"; // 现代简约的已送达勾选标记
+            // 对方发送的消息：左对齐，灰白色气泡，左上角为微直角
+            QString name = friendsMap_.contains(msg.fromId) ? friendsMap_[msg.fromId]["name"].toString() : QString::number(msg.fromId);
+            headerLabel->setText(QString("%1  (UID: %2)  %3").arg(name).arg(msg.fromId).arg(timeStr));
+            headerLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+            headerLabel->setStyleSheet("color: #64748b; font-size: 8.5pt; background: transparent;");
+
+            contentLabel->setStyleSheet(
+                "QLabel {"
+                "  background-color: #f1f5f9;"
+                "  color: #0f172a;"
+                "  border-radius: 12px;"
+                "  border-top-left-radius: 2px;"
+                "  padding: 8px 14px;"
+                "  font-size: 10pt;"
+                "}"
+            );
+
+            bubbleLayout->addWidget(contentLabel);
+            bubbleLayout->addStretch();
+
+            layout->addWidget(headerLabel);
+            layout->addLayout(bubbleLayout);
         }
     }
 
-    // 根据发送者身份（自己、系统通知、好友）渲染不同风格的高级气泡
-    if (msg.fromId == ImClient::instance().getMyUid()) {
-        // “我”的消息：靛蓝色背景，白色文字，右上角为直角，右对齐
-        displayHtml = QString(
-            "<div align='right' style='margin-bottom: 10px; font-family: \"Microsoft YaHei\", sans-serif;'>"
-            "  <span style='color: #94a3b8; font-size: 8.5pt;'>我  (%1)%2</span><br/>"
-            "  <span style='display: inline-block; background-color: #6366f1; color: #ffffff; "
-            "               padding: 8px 14px; border-radius: 12px; border-top-right-radius: 2px; "
-            "               font-size: 10pt; line-height: 1.4; margin-top: 4px; "
-            "               max-width: 70%; word-wrap: break-word; text-align: left;'>"
-            "    %3"
-            "  </span>"
-            "</div>"
-        ).arg(timeStr).arg(statusStr).arg(msg.content.toHtmlEscaped().replace("\n", "<br/>"));
-    } else if (msg.fromId == 0) {
-        // 系统通知消息：灰色小字，居中卡片样式
-        displayHtml = QString(
-            "<div align='center' style='margin-top: 6px; margin-bottom: 12px; font-family: \"Microsoft YaHei\", sans-serif;'>"
-            "  <span style='display: inline-block; background-color: #f8fafc; color: #64748b; "
-            "               padding: 5px 12px; border-radius: 12px; font-size: 8.5pt; "
-            "               border: 1px solid #e2e8f0; max-width: 85%; word-wrap: break-word;'>"
-            "    %1"
-            "  </span>"
-            "</div>"
-        ).arg(msg.content.toHtmlEscaped());
-    } else {
-        // 对方的消息：浅灰蓝色背景，深色文字，左上角为直角，左对齐
-        QString name = friendsMap_.contains(msg.fromId) ? friendsMap_[msg.fromId]["name"].toString() : QString::number(msg.fromId);
-        displayHtml = QString(
-            "<div align='left' style='margin-bottom: 10px; font-family: \"Microsoft YaHei\", sans-serif;'>"
-            "  <span style='color: #64748b; font-size: 8.5pt;'>%1  (UID: %2)  %3</span><br/>"
-            "  <span style='display: inline-block; background-color: #f1f5f9; color: #0f172a; "
-            "               padding: 8px 14px; border-radius: 12px; border-top-left-radius: 2px; "
-            "               font-size: 10pt; line-height: 1.4; margin-top: 4px; "
-            "               max-width: 70%; word-wrap: break-word; text-align: left;'>"
-            "    %4"
-            "  </span>"
-            "</div>"
-        ).arg(name).arg(msg.fromId).arg(timeStr).arg(msg.content.toHtmlEscaped().replace("\n", "<br/>"));
-    }
+    container->setLayout(layout);
+    container->setStyleSheet("background: transparent;");
 
+    // 5. 激活布局并刷新尺寸计算
+    layout->activate();
+
+    // 6. 将容器设置到 QListWidget 中并动态计算 Item 高度
     QListWidgetItem *item = new QListWidgetItem(ui->list_messages);
+    ui->list_messages->setItemWidget(item, container);
     
-    // 通过关联 QLabel 控件支持富文本 HTML 换行与气泡填充
-    QLabel *label = new QLabel(this);
-    label->setText(displayHtml);
-    label->setTextFormat(Qt::RichText);
-    label->setWordWrap(true);
-    label->setStyleSheet("background: transparent;");
-
-    ui->list_messages->setItemWidget(item, label);
-    // 高度增加一些安全内衬值，防止文字重叠
-    item->setSizeHint(QSize(0, label->sizeHint().height() + 10));
+    // 设置安全高度，防止底部文字被截断
+    item->setSizeHint(QSize(0, container->sizeHint().height() + 4));
 }
