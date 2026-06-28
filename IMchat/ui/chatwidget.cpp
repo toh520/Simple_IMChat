@@ -476,6 +476,7 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
     QLabel *contentLabel = new QLabel(container);
     contentLabel->setText(msg.content);
     contentLabel->setWordWrap(true);
+    contentLabel->setMargin(0); // 关键：消除 QLabel 默认的内边距，确保像素计算完全由我们掌控
     contentLabel->setTextInteractionFlags(Qt::TextSelectableByMouse); // 支持鼠标选中复制文本
 
     // 限制气泡最大宽度为聊天列表宽度的 70%
@@ -496,12 +497,16 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
         sysFont.setPointSizeF(8.5);
         contentLabel->setFont(sysFont);
         
-        // 计算系统消息的精确宽高（考虑左右 padding: 10px * 2 = 20px）
+        // 计算系统消息的精确宽高
+        // 左右 padding 共 20px (10px * 2)
+        // 关键修复：预留 10px 宽度缓冲和 6px 高度缓冲，防止由于字形微调导致最后一个字换行被截断
         QFontMetrics fm(sysFont);
-        int textWidthLimit = maxW - 20;
+        int textWidthLimit = maxW - 20 - 10; 
         QRect rect = fm.boundingRect(0, 0, textWidthLimit, 10000, Qt::TextWordWrap, msg.content);
-        int contentHeight = rect.height() + 8; // 上下 padding: 4px * 2 = 8px
-        int contentWidth = qMin(rect.width() + 20, maxW);
+        
+        int contentHeight = rect.height() + 8 + 6; // 上下 padding (8px) + 高度安全缓冲 (6px)
+        int contentWidth = rect.width() + 20 + 10; // 左右 padding (20px) + 宽度安全缓冲 (10px)
+        if (contentWidth > maxW) contentWidth = maxW;
         
         contentLabel->setFixedSize(contentWidth, contentHeight);
 
@@ -525,16 +530,18 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
         font.setPointSize(10);
         contentLabel->setFont(font);
 
-        // 计算用户消息的精确宽高（考虑左右 padding: 14px * 2 = 28px）
+        // 计算用户消息的精确宽高
+        // 左右 padding 共 28px (14px * 2)
+        // 关键修复：预留 12px 宽度缓冲和 6px 高度缓冲，确保在任何 DPI 或字形渲染下，文本都有足够的横向空间，绝不提前折行
         QFontMetrics fm(font);
-        int textWidthLimit = maxW - 28;
+        int textWidthLimit = maxW - 28 - 12; 
         QRect rect = fm.boundingRect(0, 0, textWidthLimit, 10000, Qt::TextWordWrap, msg.content);
         
-        int contentHeight = rect.height() + 16; // 上下 padding: 8px * 2 = 16px
-        int contentWidth = rect.width() + 28;
+        int contentHeight = rect.height() + 16 + 6; // 上下 padding (16px) + 高度安全缓冲 (6px)
+        int contentWidth = rect.width() + 28 + 12;  // 左右 padding (28px) + 宽度安全缓冲 (12px)
         if (contentWidth > maxW) contentWidth = maxW;
         
-        // 关键修复：显式固定 Label 大小，防止 Qt 布局引擎在未完全显示前将其压缩导致文字变成省略号或折叠
+        // 显式固定 Label 大小，防止 Qt 布局引擎在未完全显示前将其压缩
         contentLabel->setFixedSize(contentWidth, contentHeight);
 
         if (msg.fromId == ImClient::instance().getMyUid()) {
