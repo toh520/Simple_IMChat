@@ -456,54 +456,59 @@ void ChatWidget::loadChatHistory(int uid)
     ui->list_messages->scrollToBottom();
 }
 
-// 私有辅助方法：渲染气泡样式的聊天消息富文本
+// 私有辅助方法：渲染现代高质感气泡样式的聊天消息富文本
 void ChatWidget::appendMessageToView(const ChatMessage &msg)
 {
     QString timeStr = msg.timestamp.toString("yyyy-MM-dd hh:mm:ss");
     QString displayHtml;
     
+    // 处理发送状态的视觉展示
     QString statusStr;
     if (msg.fromId == ImClient::instance().getMyUid()) {
         if (msg.status == MSG_STATUS_SENDING) {
-            statusStr = " <span style='color: #e37400; font-size: 8pt; font-weight: bold;'>[发送中...]</span>";
+            statusStr = " <span style='color: #f59e0b; font-size: 8pt; font-weight: bold;'>[发送中...]</span>";
         } else if (msg.status == MSG_STATUS_FAILED) {
-            statusStr = " <span style='color: #d93025; font-size: 8pt; font-weight: bold;'>[发送失败 ⚠️]</span>";
+            statusStr = " <span style='color: #ef4444; font-size: 8pt; font-weight: bold;'>[失败 ⚠️]</span>";
         } else {
-            statusStr = " <span style='color: #188038; font-size: 8pt;'>[已送达]</span>";
+            statusStr = " <span style='color: #10b981; font-size: 9pt; font-weight: bold;'>✓</span>"; // 现代简约的已送达勾选标记
         }
     }
 
-    // 判断发送者类型：自己、系统、对方
+    // 根据发送者身份（自己、系统通知、好友）渲染不同风格的高级气泡
     if (msg.fromId == ImClient::instance().getMyUid()) {
+        // “我”的消息：靛蓝色背景，白色文字，右上角为直角，右对齐
         displayHtml = QString(
-            "<div align='right' style='margin-bottom: 8px;'>"
-            "  <span style='color: #666666; font-size: 9pt;'>我  (%1)%2</span><br/>"
-            "  <span style='display: inline-block; background-color: #d2e3fc; color: #1a0dab; "
-            "               padding: 6px 12px; border-radius: 8px; font-size: 11pt; "
-            "               margin-top: 3px; max-width: 70%; word-wrap: break-word; text-align: left;'>"
+            "<div align='right' style='margin-bottom: 10px; font-family: \"Microsoft YaHei\", sans-serif;'>"
+            "  <span style='color: #94a3b8; font-size: 8.5pt;'>我  (%1)%2</span><br/>"
+            "  <span style='display: inline-block; background-color: #6366f1; color: #ffffff; "
+            "               padding: 8px 14px; border-radius: 12px; border-top-right-radius: 2px; "
+            "               font-size: 10pt; line-height: 1.4; margin-top: 4px; "
+            "               max-width: 70%; word-wrap: break-word; text-align: left;'>"
             "    %3"
             "  </span>"
             "</div>"
         ).arg(timeStr).arg(statusStr).arg(msg.content.toHtmlEscaped().replace("\n", "<br/>"));
-    } else if (msg.fromId == 0) { // 系统通知消息气泡
+    } else if (msg.fromId == 0) {
+        // 系统通知消息：灰色小字，居中卡片样式
         displayHtml = QString(
-            "<div align='center' style='margin-top: 4px; margin-bottom: 12px;'>"
-            "  <span style='display: inline-block; background-color: #f1f3f4; color: #5f6368; "
-            "               padding: 4px 10px; border-radius: 12px; font-size: 9pt; "
-            "               border: 1px solid #dadce0; max-width: 80%; word-wrap: break-word;'>"
+            "<div align='center' style='margin-top: 6px; margin-bottom: 12px; font-family: \"Microsoft YaHei\", sans-serif;'>"
+            "  <span style='display: inline-block; background-color: #f8fafc; color: #64748b; "
+            "               padding: 5px 12px; border-radius: 12px; font-size: 8.5pt; "
+            "               border: 1px solid #e2e8f0; max-width: 85%; word-wrap: break-word;'>"
             "    %1"
             "  </span>"
             "</div>"
         ).arg(msg.content.toHtmlEscaped());
     } else {
-        // 获取对方名字
+        // 对方的消息：浅灰蓝色背景，深色文字，左上角为直角，左对齐
         QString name = friendsMap_.contains(msg.fromId) ? friendsMap_[msg.fromId]["name"].toString() : QString::number(msg.fromId);
         displayHtml = QString(
-            "<div align='left' style='margin-bottom: 8px;'>"
-            "  <span style='color: #666666; font-size: 9pt;'>%1  (UID: %2)  (%3)</span><br/>"
-            "  <span style='display: inline-block; background-color: #f1f3f4; color: #202124; "
-            "               padding: 6px 12px; border-radius: 8px; font-size: 11pt; "
-            "               margin-top: 3px; max-width: 70%; word-wrap: break-word; text-align: left;'>"
+            "<div align='left' style='margin-bottom: 10px; font-family: \"Microsoft YaHei\", sans-serif;'>"
+            "  <span style='color: #64748b; font-size: 8.5pt;'>%1  (UID: %2)  %3</span><br/>"
+            "  <span style='display: inline-block; background-color: #f1f5f9; color: #0f172a; "
+            "               padding: 8px 14px; border-radius: 12px; border-top-left-radius: 2px; "
+            "               font-size: 10pt; line-height: 1.4; margin-top: 4px; "
+            "               max-width: 70%; word-wrap: break-word; text-align: left;'>"
             "    %4"
             "  </span>"
             "</div>"

@@ -50,6 +50,7 @@ set(PROJECT_SOURCES
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    resources.qrc
     ${UI_SOURCES}
     ${NET_SOURCES}
     proto/msg.pb.cc

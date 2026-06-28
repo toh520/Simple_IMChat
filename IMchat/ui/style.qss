@@ -1,0 +1,187 @@
+/* Global Font and Text Color */
+QWidget {
+    font-family: "Microsoft YaHei", "Segoe UI", -apple-system, sans-serif;
+    font-size: 10pt;
+    color: #1e293b; /* Slate 800 */
+}
+
+/* Backgrounds for widgets */
+QWidget#LoginWidget, QWidget#RegisterWidget, QDialog#FriendRequestDialog {
+    background-color: #f8fafc; /* Slate 50 */
+}
+
+/* Form Container Card (if any) */
+QFrame#cardFrame {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+/* Headings */
+QLabel#lbl_title, QLabel#label_title {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #0f172a; /* Slate 900 */
+}
+
+/* Inputs (QLineEdit, QTextEdit) */
+QLineEdit, QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1; /* Slate 300 */
+    border-radius: 6px;
+    padding: 6px 10px;
+    selection-background-color: #818cf8; /* Indigo 400 */
+    selection-color: #ffffff;
+}
+
+QLineEdit:hover, QTextEdit:hover {
+    border: 1px solid #94a3b8; /* Slate 400 */
+}
+
+QLineEdit:focus, QTextEdit:focus {
+    border: 2px solid #6366f1; /* Indigo 500 */
+}
+
+QLineEdit:disabled, QTextEdit:disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    border: 1px solid #e2e8f0;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #6366f1; /* Indigo 500 */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #4f46e5; /* Indigo 600 */
+}
+
+QPushButton:pressed {
+    background-color: #3730a3; /* Indigo 800 */
+}
+
+QPushButton:disabled {
+    background-color: #cbd5e1;
+    color: #94a3b8;
+}
+
+/* Secondary / Cancel / Back Buttons */
+QPushButton#btn_logout, QPushButton#btn_back, QPushButton#btn_reject {
+    background-color: #f1f5f9; /* Slate 100 */
+    color: #475569; /* Slate 600 */
+    border: 1px solid #cbd5e1;
+}
+
+QPushButton#btn_logout:hover, QPushButton#btn_back:hover, QPushButton#btn_reject:hover {
+    background-color: #e2e8f0; /* Slate 200 */
+    color: #334155; /* Slate 700 */
+    border: 1px solid #94a3b8;
+}
+
+QPushButton#btn_logout:pressed, QPushButton#btn_back:pressed, QPushButton#btn_reject:pressed {
+    background-color: #cbd5e1;
+}
+
+/* List Widgets (Sessions, Messages) */
+QListWidget {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 4px;
+    outline: 0;
+}
+
+QListWidget::item {
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin-bottom: 2px;
+}
+
+QListWidget::item:hover {
+    background-color: #f1f5f9; /* Slate 100 */
+}
+
+QListWidget::item:selected {
+    background-color: #e0e7ff; /* Indigo 100 */
+    color: #4f46e5; /* Indigo 600 */
+}
+
+/* Custom styles for specific widgets */
+QWidget#leftWidget {
+    background-color: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+}
+
+QWidget#rightWidget {
+    background-color: #ffffff;
+}
+
+/* Splitter Handle */
+QSplitter::handle {
+    background-color: #e2e8f0;
+}
+
+QSplitter::handle:horizontal {
+    width: 1px;
+}
+
+/* ScrollBars */
+QScrollBar:vertical {
+    border: none;
+    background: transparent;
+    width: 6px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #cbd5e1;
+    min-height: 20px;
+    border-radius: 3px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #94a3b8;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar:horizontal {
+    border: none;
+    background: transparent;
+    height: 6px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #cbd5e1;
+    min-width: 20px;
+    border-radius: 3px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #94a3b8;
+}
+
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    border: none;
+    background: none;
+    width: 0px;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}
