@@ -33,6 +33,9 @@ services:
       dockerfile: Dockerfile
     container_name: chatserver1
     command: ["8888", "chatserver1"] # 传入参数：监听端口 8888，注册路由 IP/主机名为容器名 chatserver1
+    environment:
+      - MYSQL_HOST=mysql-chat
+      - REDIS_HOST=redis
     depends_on:
       - mysql-chat
       - redis
@@ -45,6 +48,9 @@ services:
       dockerfile: Dockerfile
     container_name: chatserver2
     command: ["8889", "chatserver2"] # 传入参数：监听端口 8889，注册路由 IP/主机名为容器名 chatserver2
+    environment:
+      - MYSQL_HOST=mysql-chat
+      - REDIS_HOST=redis
     depends_on:
       - mysql-chat
       - redis

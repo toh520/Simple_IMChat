@@ -1,5 +1,7 @@
 #include "db/Connection.h"
 #include <iostream>
+#include <cstdlib>
+#include <cstring>
 
 Connection::Connection() {
     // 初始化数据库句柄
@@ -14,6 +16,12 @@ Connection::~Connection() {
 }
 
 bool Connection::connect(std::string ip, unsigned short port, std::string user, std::string password, std::string dbname) {
+    // 工业级多环境适配：优先读取环境变量 MYSQL_HOST 覆盖配置文件中的 IP
+    char* env_host = getenv("MYSQL_HOST");
+    if (env_host != nullptr && strlen(env_host) > 0) {
+        ip = env_host;
+    }
+
     // 缓存参数以便自动重连
     ip_ = ip;
     port_ = port;
