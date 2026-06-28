@@ -459,7 +459,7 @@ void ChatWidget::loadChatHistory(int uid)
     ui->list_messages->scrollToBottom();
 }
 
-// 私有辅助方法：使用独立的 QWidget 容器与布局动态构建气泡，彻底解决富文本高度计算不准导致的文字遮挡问题
+// 私有辅助方法：使用独立的 QWidget 容器与布局动态构建气泡，并通过 QFontMetrics 精确计算文本宽高，彻底解决折叠与省略号问题
 void ChatWidget::appendMessageToView(const ChatMessage &msg)
 {
     // 1. 创建消息条目的主容器 Widget
@@ -478,10 +478,9 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
     contentLabel->setWordWrap(true);
     contentLabel->setTextInteractionFlags(Qt::TextSelectableByMouse); // 支持鼠标选中复制文本
 
-    // 限制气泡最大宽度为聊天列表宽度的 70%，保证长文本自动折行
+    // 限制气泡最大宽度为聊天列表宽度的 70%
     int maxW = ui->list_messages->width() * 0.7;
     if (maxW < 250) maxW = 380; // 设置保底最大宽度
-    contentLabel->setMaximumWidth(maxW);
 
     // 4. 创建气泡水平布局以实现靠左或靠右对齐
     QHBoxLayout *bubbleLayout = new QHBoxLayout();
@@ -491,6 +490,21 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
         // 系统通知消息：居中展示，灰色小字卡片样式
         headerLabel->hide();
         contentLabel->setAlignment(Qt::AlignCenter);
+        
+        // 设置精确的系统字体与大小
+        QFont sysFont("Microsoft YaHei");
+        sysFont.setPointSizeF(8.5);
+        contentLabel->setFont(sysFont);
+        
+        // 计算系统消息的精确宽高（考虑左右 padding: 10px * 2 = 20px）
+        QFontMetrics fm(sysFont);
+        int textWidthLimit = maxW - 20;
+        QRect rect = fm.boundingRect(0, 0, textWidthLimit, 10000, Qt::TextWordWrap, msg.content);
+        int contentHeight = rect.height() + 8; // 上下 padding: 4px * 2 = 8px
+        int contentWidth = qMin(rect.width() + 20, maxW);
+        
+        contentLabel->setFixedSize(contentWidth, contentHeight);
+
         contentLabel->setStyleSheet(
             "QLabel {"
             "  background-color: #f8fafc;"
@@ -498,7 +512,6 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
             "  border: 1px solid #e2e8f0;"
             "  border-radius: 10px;"
             "  padding: 4px 10px;"
-            "  font-size: 8.5pt;"
             "}"
         );
         bubbleLayout->addStretch();
@@ -507,10 +520,26 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
         
         layout->addLayout(bubbleLayout);
     } else {
-        // 用户消息
-        QString statusStr;
+        // 用户消息：设置与 QSS 匹配的字体大小（10pt）进行精确高度计算
+        QFont font("Microsoft YaHei");
+        font.setPointSize(10);
+        contentLabel->setFont(font);
+
+        // 计算用户消息的精确宽高（考虑左右 padding: 14px * 2 = 28px）
+        QFontMetrics fm(font);
+        int textWidthLimit = maxW - 28;
+        QRect rect = fm.boundingRect(0, 0, textWidthLimit, 10000, Qt::TextWordWrap, msg.content);
+        
+        int contentHeight = rect.height() + 16; // 上下 padding: 8px * 2 = 16px
+        int contentWidth = rect.width() + 28;
+        if (contentWidth > maxW) contentWidth = maxW;
+        
+        // 关键修复：显式固定 Label 大小，防止 Qt 布局引擎在未完全显示前将其压缩导致文字变成省略号或折叠
+        contentLabel->setFixedSize(contentWidth, contentHeight);
+
         if (msg.fromId == ImClient::instance().getMyUid()) {
             // 我发送的消息：右对齐，蓝色气泡，右上角为微直角
+            QString statusStr;
             if (msg.status == MSG_STATUS_SENDING) {
                 statusStr = " <span style='color: #f59e0b;'>[发送中...]</span>";
             } else if (msg.status == MSG_STATUS_FAILED) {
@@ -530,7 +559,6 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
                 "  border-radius: 12px;"
                 "  border-top-right-radius: 2px;"
                 "  padding: 8px 14px;"
-                "  font-size: 10pt;"
                 "}"
             );
 
@@ -553,7 +581,6 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
                 "  border-radius: 12px;"
                 "  border-top-left-radius: 2px;"
                 "  padding: 8px 14px;"
-                "  font-size: 10pt;"
                 "}"
             );
 
@@ -568,13 +595,13 @@ void ChatWidget::appendMessageToView(const ChatMessage &msg)
     container->setLayout(layout);
     container->setStyleSheet("background: transparent;");
 
-    // 5. 激活布局并刷新尺寸计算
+    // 5. 激活布局并计算主容器的精确大小
     layout->activate();
 
-    // 6. 将容器设置到 QListWidget 中并动态计算 Item 高度
+    // 6. 将容器设置到 QListWidget 中并动态设置项高度
     QListWidgetItem *item = new QListWidgetItem(ui->list_messages);
     ui->list_messages->setItemWidget(item, container);
     
-    // 设置安全高度，防止底部文字被截断
+    // 设置安全高度，留出外边距，防止底部被截断
     item->setSizeHint(QSize(0, container->sizeHint().height() + 4));
 }
