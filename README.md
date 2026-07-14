@@ -46,19 +46,20 @@ graph TD
 ## 🌟 核心技术特性
 
 1.  **应用层双向 ACK 与可靠消息投递**：
-    *   引入客户端发送待确认队列（`pendingSendAckMap_`）与心跳重传定时器。
-    *   实现服务端接收确认待发队列与滑动去重窗口，采用消息序列号机制规避 TCP 连接瞬断引发的丢包和乱序，达成应用层 **At-Least-Once (至少一次)** 投递保证。
+    *   **指数退避重传**：客户端引入待确认队列（`pendingSendAckMap_`）与心跳检测重传定时器。
+    *   **滑动窗口去重**：服务端实现接收确认队列与滑动去重窗口，结合消息序列号机制规避 TCP 连接瞬断、假死引发的丢包与乱序，确保应用层 **At-Least-Once（至少一次）** 投递。
 2.  **增量 Timeline (时间线) 离线同步**：
-    *   弃用传统的拉取式离线消息，采用增量 Timeline 架构。通过单调递增的 `msg_id` 作为同步 Key。
-    *   采用 **Redis ZSet 缓存最新 100 条热消息** + **C++ 异步存盘线程池落盘 MySQL 历史表**的双层存储设计，实现客户端上线毫秒级按需增量拉取。
+    *   **按需增量拉取**：摒弃传统离线消息拉取方案，采用 Timeline 架构，以单调递增的 `msg_id` 为同步 Key。
+    *   **读写冷热分离**：使用 **Redis ZSet 缓存最新 100 条热消息**（保障上线即时拉取），配合 **C++ 异步存盘线程池**将历史消息落盘至 MySQL 历史表，实现高并发下的秒级同步。
 3.  **基于 Redis 的在线状态网关与分布式路由**：
-    *   各 `ChatServer` 节点启动时自动向 Redis 哈希表 `user:route` 注册自身实例 IP 与端口。
-    *   节点间通过 **Redis 发布/订阅 (Pub/Sub)** 机制中转跨服单聊消息，抹平节点差异，实现平滑的横向扩展能力。
-4.  **高可用数据库连接池 (Lazy Reconnect 自愈)**：
-    *   在 C++ 自研连接池中实现“懒重连检测”。执行任何 `update/query` 前置拦截执行 `mysql_ping()`。
-    *   若遇 Docker 一键冷启动时依赖项未就绪，或者网络断连情况，连接池将自动执行 **“毫秒级按需自愈重连”**，无需人工重启服务端。
-5.  **一键容器化微服务编排**：
-    *   提供多阶段构建（Multi-stage Build）的 `Dockerfile`，体积更小，并配套一键拉起 MySQL、Redis、Nginx、双服务节点的 `docker-compose.yml` 脚本。
+    *   **状态与路由发现**：`ChatServer` 节点启动时自动向 Redis 哈希表 `user:route` 注册自身实例 IP 与端口，提供在线状态感知。
+    *   **跨服路由转发**：节点间利用 **Redis 发布/订阅（Pub/Sub）** 机制动态中转跨服单聊消息，抹平集群节点差异，支持水平横向扩展。
+4.  **连接池故障拦截与 Lazy Reconnect 自愈**：
+    *   **前置拦截感知**：在自研 C++ 连接池中设计“惰性重连”机制，执行任何 `update/query` 前置拦截并调用 `mysql_ping()`。
+    *   **级联退避重连**：妥善处理 Docker 一键冷启动时依赖项未就绪或因网络瞬断导致的数据库失联，实现**毫秒级自愈重连**，保证系统的高可用性。
+5.  **多阶段构建与容器化微服务编排**：
+    *   **镜像体积优化**：编写基于 **Multi-stage Build（多阶段构建）** 的 `Dockerfile`，剔除编译依赖，使生产运行镜像体积精简 80%+。
+    *   **一键服务编排**：提供配套的 `docker-compose.yml` 脚本，一键拉起 MySQL、Redis、Nginx 负载均衡网关以及双服务节点集群。
 
 ---
 
@@ -74,7 +75,7 @@ Simple_IMChat/
 ├── IMchat/                   # Qt 6 客户端源码目录
 │   ├── net/                  # TCP 套接字包装与可靠投递逻辑 (imclient)
 │   ├── ui/                   # 登录、注册、主界面聊天窗口界面组件
-│   └── IMchat.pro            # Qt 编译工程文件
+│   └── CMakeLists.txt        # CMake 客户端构建脚本
 ├── 数据库/
 │   └── 数据库设计.md          # 详细的物理表及索引初衷权衡说明
 ├── 项目优化内容/               # 针对各大面试高含金量亮点的原理性技术文档
@@ -104,15 +105,17 @@ systemctl restart docker
 docker-compose up -d --build
 ```
 
-### 2. 本地 Windows 客户端编译 (Qt 6)
+### 2. 本地 Windows 客户端编译 (Qt 6 + CMake)
 
-1.  使用 **Qt Creator** 打开项目下的 `IMchat/IMchat.pro`。
-2.  定位至 `net/imclient.h`，将默认服务器连接参数更新为您的云服务器公网 IP：
+1.  **环境准备**：
+    *   确保本地已配置好 **CMake**、**vcpkg** (用于管理第三方依赖如 Protobuf) 以及 **Qt 6.10.1 (MSVC 2022 64-bit)** 构建套件。
+2.  使用 **Qt Creator** 或 **Visual Studio 2022** 打开项目下的 `IMchat/CMakeLists.txt`。
+3.  定位至 `net/imclient.h`，将默认服务器连接参数更新为您的云服务器公网 IP：
     ```cpp
     static constexpr const char *kServerHost = "您的云服务器IP";
     quint16 serverPort_{8000}; // Nginx 负载均衡端口
     ```
-3.  点击左下角 **“运行” (Ctrl + R)** 按钮完成 Windows 端编译与登录测试。
+4.  执行 CMake 配置并点击 **“运行” (Ctrl + R)** 按钮完成 Windows 端编译与登录测试。
 
 ---
 
