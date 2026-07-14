@@ -5,6 +5,8 @@
 #include <thread>
 #include <functional>
 #include <string>
+#include <vector>
+#include <mutex>
 
 class Redis {
 public:
@@ -59,6 +61,9 @@ private:
 
     // hiredis同步上下文对象，负责subscribe
     redisContext *_subcribe_context;
+
+    // 保护 _publish_context 的互斥锁，确保并发指令调用安全
+    std::mutex _mutex;
 
     // 回调操作，拿到订阅的消息后，给service层上报
     std::function<void(int, std::string)> _notify_message_handler;

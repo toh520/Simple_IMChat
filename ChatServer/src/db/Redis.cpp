@@ -56,6 +56,7 @@ bool Redis::connect() {
 
 // 向redis指定的通道channel发布消息
 bool Redis::publish(int channel, std::string message) {
+    std::lock_guard<std::mutex> lock(_mutex);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "PUBLISH %d %s", channel, message.c_str());
     if (nullptr == reply) {
         std::cerr << "publish command failed!" << std::endl;
@@ -121,6 +122,7 @@ void Redis::init_notify_handler(std::function<void(int, std::string)> fn) {
 }
 
 bool Redis::hset(const std::string &key, const std::string &field, const std::string &value) {
+    std::lock_guard<std::mutex> lock(_mutex);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "HSET %s %s %s", key.c_str(), field.c_str(), value.c_str());
     if (nullptr == reply) {
         std::cerr << "hset command failed!" << std::endl;
@@ -131,6 +133,7 @@ bool Redis::hset(const std::string &key, const std::string &field, const std::st
 }
 
 std::string Redis::hget(const std::string &key, const std::string &field) {
+    std::lock_guard<std::mutex> lock(_mutex);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "HGET %s %s", key.c_str(), field.c_str());
     if (nullptr == reply) {
         std::cerr << "hget command failed!" << std::endl;
@@ -145,6 +148,7 @@ std::string Redis::hget(const std::string &key, const std::string &field) {
 }
 
 bool Redis::hdel(const std::string &key, const std::string &field) {
+    std::lock_guard<std::mutex> lock(_mutex);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "HDEL %s %s", key.c_str(), field.c_str());
     if (nullptr == reply) {
         std::cerr << "hdel command failed!" << std::endl;
@@ -155,6 +159,7 @@ bool Redis::hdel(const std::string &key, const std::string &field) {
 }
 
 bool Redis::cleanNodeRoutes(const std::string &key, const std::string &nodeVal) {
+    std::lock_guard<std::mutex> lock(_mutex);
     // 1. 获取 Hash 表中的所有键值对
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "HGETALL %s", key.c_str());
     if (nullptr == reply) {
@@ -190,6 +195,7 @@ bool Redis::cleanNodeRoutes(const std::string &key, const std::string &nodeVal) 
 }
 
 bool Redis::sadd(const std::string &key, const std::string &member) {
+    std::lock_guard<std::mutex> lock(_mutex);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "SADD %s %s", key.c_str(), member.c_str());
     if (nullptr == reply) {
         std::cerr << "sadd command failed!" << std::endl;
@@ -200,6 +206,7 @@ bool Redis::sadd(const std::string &key, const std::string &member) {
 }
 
 bool Redis::sismember(const std::string &key, const std::string &member) {
+    std::lock_guard<std::mutex> lock(_mutex);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "SISMEMBER %s %s", key.c_str(), member.c_str());
     if (nullptr == reply) {
         std::cerr << "sismember command failed!" << std::endl;
@@ -214,6 +221,7 @@ bool Redis::sismember(const std::string &key, const std::string &member) {
 }
 
 bool Redis::zadd(const std::string &key, long long score, const std::string &member) {
+    std::lock_guard<std::mutex> lock(_mutex);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "ZADD %s %lld %b", key.c_str(), score, member.data(), member.size());
     if (nullptr == reply) {
         std::cerr << "zadd command failed!" << std::endl;
@@ -224,6 +232,7 @@ bool Redis::zadd(const std::string &key, long long score, const std::string &mem
 }
 
 bool Redis::zremrangebyrank(const std::string &key, int start, int stop) {
+    std::lock_guard<std::mutex> lock(_mutex);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "ZREMRANGEBYRANK %s %d %d", key.c_str(), start, stop);
     if (nullptr == reply) {
         std::cerr << "zremrangebyrank command failed!" << std::endl;
@@ -234,6 +243,7 @@ bool Redis::zremrangebyrank(const std::string &key, int start, int stop) {
 }
 
 long long Redis::zminscore(const std::string &key) {
+    std::lock_guard<std::mutex> lock(_mutex);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "ZRANGE %s 0 0 WITHSCORES", key.c_str());
     if (nullptr == reply) {
         std::cerr << "zminscore command failed!" << std::endl;
@@ -251,6 +261,7 @@ long long Redis::zminscore(const std::string &key) {
 }
 
 std::vector<std::string> Redis::zrangebyscore(const std::string &key, long long minScore) {
+    std::lock_guard<std::mutex> lock(_mutex);
     std::string minScoreStr = "(" + std::to_string(minScore);
     redisReply *reply = (redisReply *)redisCommand(_publish_context, "ZRANGEBYSCORE %s %s +inf", key.c_str(), minScoreStr.c_str());
     

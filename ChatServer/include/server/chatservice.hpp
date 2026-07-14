@@ -76,6 +76,11 @@ private:
     // 守护重传循环函数
     void retransmitLoop();
 
+    // --- 压测与基准对比测试组件 ---
+    bool _benchmarkMode;
+    bool _forceSyncWrite;
+    void loadBenchmarkConfigFile();
+
     // 存储消息id和其对应的业务处理方法
     std::unordered_map<int, MsgHandler> _msgHandlerMap;
 

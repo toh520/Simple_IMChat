@@ -21,7 +21,15 @@ void ChatService::setHostInfo(std::string ip, int port) {
 }
 
 // 注册消息以及对应的Handler回调操作
-ChatService::ChatService() : _running(true), _saveThreadRunning(true) {
+ChatService::ChatService() 
+    : _running(true), 
+      _saveThreadRunning(true),
+      _benchmarkMode(false),
+      _forceSyncWrite(false) 
+{
+    // 加载压测配置文件 (若有)
+    loadBenchmarkConfigFile();
+
     // 启动线程池 (例如 4 个 worker 线程)
     // 根据机器 CPU 核心数或者业务负载调整，这里默认给 4 个
     _threadPool = std::make_unique<ThreadPool>(4);
@@ -404,26 +412,44 @@ void ChatService::oneChat(const std::shared_ptr<TcpConnection>& conn, std::strin
 
     LOG_INFO("收到单聊消息：发送方 UID=" + std::to_string(fromid) + " -> 接收方 UID=" + std::to_string(toid) + ", msgId=" + std::to_string(req.msg_id()));
 
-    MsgSendAck ack;
-    ack.set_msg_id(req.msg_id());
-    ack.set_success(true);
-    std::string ackStr;
-    ack.SerializeToString(&ackStr);
-    conn->send(MSG_SEND_ACK, ackStr);
-    LOG_DEBUG("已向发送方 UID=" + std::to_string(fromid) + " 回发接管确认 ACK, msgId=" + std::to_string(req.msg_id()));
-
-    // [新增] 2. 写入全局异步批量存盘队列，由后台线程批量合并 Insert
+    // 2. 决定是同步写库还是走异步存盘队列
     MessageHistory histMsg(req.msg_id(), fromid, toid, req.msg(), "");
-    {
-        lock_guard<mutex> lock(_queueMutex);
-        _saveMsgQueue.push(histMsg);
-    }
-    _queueCond.notify_one();
+    if (_benchmarkMode && _forceSyncWrite) {
+        // 同步单条写库模式 (对照组)
+        bool dbOk = _messageHistoryModel.insertBatch({histMsg});
+        
+        MsgSendAck ack;
+        ack.set_msg_id(req.msg_id());
+        ack.set_success(dbOk);
+        if (!dbOk) {
+            ack.set_err_msg("MySQL 同步写入失败");
+        }
+        std::string ackStr;
+        ack.SerializeToString(&ackStr);
+        conn->send(MSG_SEND_ACK, ackStr);
+        LOG_DEBUG("已向发送方 UID=" + std::to_string(fromid) + " 回发同步写库 ACK, msgId=" + std::to_string(req.msg_id()));
+    } else {
+        // 正常的高性能异步写入模式 (实验组)
+        MsgSendAck ack;
+        ack.set_msg_id(req.msg_id());
+        ack.set_success(true);
+        std::string ackStr;
+        ack.SerializeToString(&ackStr);
+        conn->send(MSG_SEND_ACK, ackStr);
+        LOG_DEBUG("已向发送方 UID=" + std::to_string(fromid) + " 回发接管确认 ACK, msgId=" + std::to_string(req.msg_id()));
 
-    // [新增] 3. 写入 Redis ZSet 时间线缓存中，限制保留最新 100 条
-    std::string timelineKey = "user:timeline:" + to_string(toid);
-    _redis.zadd(timelineKey, req.msg_id(), data);
-    _redis.zremrangebyrank(timelineKey, 0, -101);
+        // 写入全局异步批量存盘队列
+        {
+            lock_guard<mutex> lock(_queueMutex);
+            _saveMsgQueue.push(histMsg);
+        }
+        _queueCond.notify_one();
+
+        // 写入 Redis ZSet 时间线缓存中，限制保留最新 100 条
+        std::string timelineKey = "user:timeline:" + to_string(toid);
+        _redis.zadd(timelineKey, req.msg_id(), data);
+        _redis.zremrangebyrank(timelineKey, 0, -101);
+    }
 
     // 4. 查找接收端是否在线，在线则进行转发推送
     {
@@ -745,5 +771,58 @@ void ChatService::syncMessages(const std::shared_ptr<TcpConnection>& conn, std::
 
         resp.SerializeToString(&send_str);
         conn->send(SYNC_RESP, send_str);
+    }
+}
+
+// 加载压测配置文件 (若有)
+void ChatService::loadBenchmarkConfigFile() {
+    FILE* pf = fopen("benchmark.conf", "r");
+    if (pf == nullptr) {
+        LOG_INFO("未检测到 benchmark.conf，默认运行在正常生产环境模式下");
+        return;
+    }
+
+    while (!feof(pf)) {
+        char line[1024] = {0};
+        if (fgets(line, 1024, pf) == nullptr) {
+            break;
+        }
+        std::string str = line;
+        
+        // 找到 '=' 的位置，分割 key 和 value
+        size_t idx = str.find('=', 0);
+        if (idx == std::string::npos) { // 无效行
+            continue;
+        }
+
+        // 截取 key 和 value，并去掉末尾的换行符和回车符
+        size_t endidx = str.find('\n', idx);
+        std::string key = str.substr(0, idx);
+        
+        // 去除尾部空白字符
+        std::string value;
+        if (endidx != std::string::npos) {
+            value = str.substr(idx + 1, endidx - idx - 1);
+        } else {
+            value = str.substr(idx + 1);
+        }
+        
+        if (!value.empty() && value.back() == '\r') {
+            value.pop_back();
+        }
+
+        if (key == "benchmark_mode") {
+            _benchmarkMode = (value == "true" || value == "1");
+        } else if (key == "force_sync_write") {
+            _forceSyncWrite = (value == "true" || value == "1");
+        }
+    }
+    fclose(pf);
+
+    if (_benchmarkMode) {
+        LOG_WARN("================================================");
+        LOG_WARN("  [警告] 服务端已开启压测模式 (Benchmark Mode)  ");
+        LOG_WARN("  强制同步写库开关 (force_sync_write) = " + std::string(_forceSyncWrite ? "启用 (同步写)" : "禁用 (异步写)"));
+        LOG_WARN("================================================");
     }
 }
